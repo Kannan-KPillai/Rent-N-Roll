@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import bcrypt from 'bcryptjs';
 
 
-const userSchema = mongoose.Schema({
+const adminSchema = mongoose.Schema({
     name: {
         type:String,
         required: true
@@ -12,28 +12,14 @@ const userSchema = mongoose.Schema({
         required: true,
         unique: true
     },
-    mobile:{
-        type:Number,
-        required: true,
-        unique: true
-    },
     password:{
         type:String,
         required:true
     },
-    isBlocked: {
-        type: Boolean,
-        default: false, 
-      },
-},{
-    timestamps:true
-});
+})
 
 
-userSchema.pre('save', async function (next) {
-    if (!this.isModified('password') && !this.isModified('confirmPassword')) {
-        return next();
-    }
+adminSchema.pre('save', async function (next) {
     try {
         if (this.isModified('password')) {
             const salt = await bcrypt.genSalt(10);
@@ -45,10 +31,11 @@ userSchema.pre('save', async function (next) {
     }
 });
 
-userSchema.methods.matchPassword = async function (enteredPassword){
+adminSchema.methods.matchPassword = async function (enteredPassword){
     return await bcrypt.compare(enteredPassword, this.password)
 }
 
-const User = mongoose.model('User',userSchema);
+const Admin = mongoose.model('Admin',adminSchema);
 
-export default User;
+
+export default Admin;

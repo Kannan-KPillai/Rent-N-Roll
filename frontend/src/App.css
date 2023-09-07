@@ -1,0 +1,49 @@
+
+body{
+    height: 100vh;
+    background-size: cover;
+    background-image: url(https://blog.way.com/wp-content/uploads/2022/11/Black-car-names.jpg);
+  }
+
+.container1{
+  width: 15%;
+}
+.sidebar {
+  background-color: rgb(33, 37, 41);
+  height: 100vh;
+  color: #fff;
+  font-family: 'Cabin';
+}
+.top_section{
+  display: flex;
+  align-items: center;
+  padding: 20px 15px;
+}
+.bars{
+  display: flex;
+  font-size: 25px;
+  margin-left: 50px;
+}
+.link{
+  display: flex;
+  color: #fff;
+  padding: 10px 15px;
+  gap: 15px;
+  transition: all 0.5s;
+}
+.link:hover{
+  background: rgb(247, 28, 28);
+  color: black;
+
+}
+.logo{
+  font-size: 2rem;
+}
+
+.active{
+  background: rgb(247, 28, 28);
+  color: black;
+}
+.icon, .link_text{
+  font-size: 20px;
+}

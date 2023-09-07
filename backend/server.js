@@ -6,11 +6,13 @@ dotenv.config();
 import cookieParser from "cookie-parser";
 const port = process.env.PORT || 5000;
 import userRoutes from'./routes/userRoutes.js'
-import { connect } from "mongoose";
-
+import adminRoutes from './routes/adminRoutes.js'
+import cors from 'cors';
 
 connectDB();
 const app = express();
+
+app.use(cors({origin:"http://localhost:3000", credentials:true}))
 
 app.use(express.json());
 
@@ -19,6 +21,8 @@ app.use(express.urlencoded({extended: true}))
 app.use(cookieParser());
 
 app.use('/api/users', userRoutes)
+
+app.use('/api/admin', adminRoutes)
 
 app.get('/',(req,res)=> res.send("server is ready"));
 

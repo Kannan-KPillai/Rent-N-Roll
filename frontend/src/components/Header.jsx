@@ -52,17 +52,17 @@ function Header() {
           {userInfo ? (
             <>
              <div style={headerNavStyle}>
-            <Nav className="ms-auto">
-              <LinkContainer to='/'>
+            <Nav className="ms-auto" >
+              <LinkContainer to='/'  style={{ backgroundColor: 'white'}}>
                   <Nav.Link >Home</Nav.Link>
               </LinkContainer>
-              <LinkContainer to=''>
+              <LinkContainer to=''  style={{ backgroundColor: 'white'}}>
                   <Nav.Link >About</Nav.Link>
               </LinkContainer>
-              <LinkContainer to=''>
+              <LinkContainer to=''  style={{ backgroundColor: 'white'}}>
                   <Nav.Link>Contact Us</Nav.Link>
               </LinkContainer>
-              <LinkContainer to='' style={{ color: 'red' }}>
+              <LinkContainer to='' style={{ color: 'red', backgroundColor: 'white' }}>
                    <Nav.Link> Your Bookings</Nav.Link>
               </LinkContainer>
               <NavDropdown title={userInfo.name} id='username'>
@@ -71,7 +71,7 @@ function Header() {
                     Profile
                   </NavDropdown.Item>
                 </LinkContainer>
-                <NavDropdown.Item onClick={logoutHandler}>
+                <NavDropdown.Item onClick={logoutHandler} >
                   Logout
                 </NavDropdown.Item>
               </NavDropdown>   
@@ -80,7 +80,7 @@ function Header() {
             </>
           ) : (
             <>
-             <LinkContainer to='/login'>
+             <LinkContainer to='/login' style={{ color: 'black', backgroundColor: 'white' }}>
                    <Nav.Link>Login</Nav.Link>
               </LinkContainer>
             </>

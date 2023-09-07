@@ -1,49 +1,50 @@
 import { useState, useEffect } from "react";
 import {Link, useNavigate} from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLoginMutation } from "../slices/usersApiSlice";
-import { setCredentials } from "../slices/authSlice";
+import { useLoginMutation } from '../adminSlices/adminApiSlice';
+import { setCredentials } from '../adminSlices/adminAuthSlice' 
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
-import './styles/Login.css'
+import './AdminLogin.css'
 
+const AdminLoginScreen = () => {
 
-const LoginScreen = () => {
     const [email,setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const [login, {isLoading}] = useLoginMutation();
+    const [login, {isLoading}] = useLoginMutation(); 
 
-    const {userInfo} = useSelector((state) => state.auth);
+    const {adminInfo} = useSelector((state) => state.auth);
 
     useEffect(()=> {
-      if(userInfo) {
-         navigate('/')
+      if(adminInfo) {
+         navigate('/admin/home')
       }
-    }, [navigate,userInfo])
+    }, [navigate,adminInfo])
 
     const submitHandler = async (e)=> {
         e.preventDefault();
         try{
           const res = await login({ email, password }).unwrap();
           dispatch(setCredentials({...res}))
-          navigate('/')
+          navigate('/admin/home')
         }catch(err){
             toast.error(err?.data?.message || err.error)
         }
     }
 
+
   return (
     <>
-      <div className="login">
+      <div className="adminLogin">
         <div>
           <form className="form1" onSubmit={submitHandler}>
-            <h1>Log In</h1>
+            <h1>Admin LogIn</h1>
 
-            <div className="div1">
+            <div className="divA">
               <label htmlFor="lastName">Email</label>
               <input
                 type="text"
@@ -55,7 +56,7 @@ const LoginScreen = () => {
                 required
               />
             </div>
-            <div className="div1">
+            <div className="divA">
               <label htmlFor="password">Password:</label>
               <input
                 type="password"
@@ -74,14 +75,11 @@ const LoginScreen = () => {
                 SIGN IN
               </button>
             </div>
-            <div className="register">
-              Don't have an account ? <Link to="/register">Register</Link>
-            </div>
           </form>
             </div>
       </div>
     </>
-  );
+  )
 }
 
-export default LoginScreen
+export default AdminLoginScreen
