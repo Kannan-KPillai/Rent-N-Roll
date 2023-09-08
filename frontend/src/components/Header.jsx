@@ -26,7 +26,6 @@ function Header() {
   };
 
   const {userInfo} = useSelector((state) => state.auth)
-  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [logoutApiCall] = useLogoutMutation();

@@ -39,7 +39,6 @@ const registerUser = asyncHandler (async (req,res) =>{
     const mobile = req.body.mobile.trim()
     const password = req.body.password.trim()
    
-
     const userExists = await User.findOne({email})
     const mobileExists = await User.findOne({mobile})
     if(userExists){
@@ -54,8 +53,7 @@ const registerUser = asyncHandler (async (req,res) =>{
         res.status(400)
         throw new Error("Mobile already exists")
       }
-
-      
+  
     const user = await User.create({
         name,
         email,
@@ -127,5 +125,38 @@ const updateUserProfile = asyncHandler(async(req,res) =>{
  })
  
 
+ const verifyOtp = asyncHandler(async(req,res)=>{
+    const { email, otp } = req.body;
 
-export {authUser,registerUser,logoutUser,updateUserProfile,getUserProfile}
+    // Find the user by email
+    const user = await User.findOne({ email:email });
+    console.log("loooo"+user);
+  
+    if (!user) {
+      return res.status(400).json({ message: 'User not found' });
+    }
+  
+    // Compare the user's stored OTP with the provided OTP
+    if (user.otp === otp) {
+      console.log('koooo'+otp);
+      user.verified=true;
+      await user.save();
+      
+      // generateToken(res, user._id);
+           
+      res.status(201).json({
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          profileImage: user.profileImage,
+          status:user.status
+          
+      });
+      
+    } else {
+      res.status(400).json({ message: 'Invalid OTP' });
+    }
+ })
+
+
+export {authUser,registerUser,logoutUser,updateUserProfile,getUserProfile, verifyOtp}

@@ -2,7 +2,7 @@ import express from 'express';
 const router = express.Router();
 import { protect } from '../middleware/authMiddleware.js';
 import { authUser,registerUser,logoutUser,updateUserProfile,
-    getUserProfile } from "../controllers/userController.js";
+    getUserProfile, verifyOtp } from "../controllers/userController.js";
 
 
 
@@ -16,6 +16,7 @@ router.get('/profile', protect, getUserProfile)
 
 router.put('/profile', protect,  updateUserProfile)
 
+router.post('/verify-otp', verifyOtp)
 
 
 export default router;

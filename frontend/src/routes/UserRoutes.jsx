@@ -5,6 +5,8 @@ import LoginScreen from '../screens/LoginScreen.jsx';
 import RegisterScreen from '../screens/RegisterScreen.jsx';
 import ProfileScreen from '../screens/ProfileScreen.jsx';
 import NotFound from "../components/NotFound.jsx";
+import OtpVerificationScreen from "../screens/OtpVerificationScreen.jsx";
+
 
 const UserRoutes = () => {
   return (
@@ -14,6 +16,7 @@ const UserRoutes = () => {
 
       <Route  path='/login' element={<LoginScreen/>}/>
       <Route path='/register' element={<RegisterScreen/>}/>
+      <Route path="/verify-otp" element={<OtpVerificationScreen/>}/>
       <Route index={true} path='*' element={<NotFound/>} />
       {/* Private Routes */}
       <Route path='' element={<PrivateRoutes/>}>

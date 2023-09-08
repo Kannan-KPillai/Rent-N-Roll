@@ -88,5 +88,43 @@ const logoutOwner = asyncHandler (async (req,res) =>{
 });
 
 
+//Get owner profile
+//route GET /api/owner/profile
+const ownerProfile = asyncHandler (async (req,res) =>{  
+    const owner = {
+        _id: req.owner._id,
+        name: req.owner.name,
+        mobile: req.owner.mobile,
+        email: req.owner.email
+    }
+    res.status(200).json(owner)
+});
 
-export {authOwner, ownerRegister, logoutOwner}
+//Owner profile update
+//route PUT /api/owner/profile
+const updateOwnerProfile = asyncHandler(async(req,res) =>{
+    const owner = await Owner.findById(req.owner._id);
+ 
+    if(owner){
+         owner.name = req.body.name || owner.name;
+         owner.email = req.body.email || owner.email;  
+         owner.mobile = req.body.mobile || owner.mobile;
+ 
+       if(req.body.password){
+         user.password = req.body.password;
+       }
+      const updatedOwner = await owner.save();
+      res.json({
+         _id: updatedOwner._id,
+         name: updatedOwner.name,
+         email: updatedOwner.email,
+         mobile: updatedOwner.mobile,
+      })
+    }else{
+     req.status(404);
+     throw new Error('User not found')
+    }
+ })
+
+
+export {authOwner, ownerRegister, logoutOwner, ownerProfile, updateOwnerProfile}

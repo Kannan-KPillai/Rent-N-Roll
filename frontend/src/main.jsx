@@ -8,6 +8,8 @@ import  'bootstrap/dist/css/bootstrap.min.css';
 import './index.css'
 import UserRoutes from './routes/UserRoutes.jsx';
 import AdminRoutes from './routes/AdminRoutes.jsx';
+import OwnerRoutes from './routes/OwnerRoutes.jsx';
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -18,6 +20,7 @@ const router = createBrowserRouter(
 
       <Route index={true} path='/admin/*' element={<AdminRoutes/>}/>
 
+      <Route index={true} path='/owner/*' element={<OwnerRoutes/>}/>
 
     </Route>
   )
