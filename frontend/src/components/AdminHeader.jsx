@@ -61,9 +61,7 @@ function AdminHeader() {
           </>
         ) : (
           <>
-           <LinkContainer to='/admin/login'>
-                 <Nav.Link>Login</Nav.Link>
-            </LinkContainer>
+           
           </>
         )}
        

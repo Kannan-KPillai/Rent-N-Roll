@@ -59,48 +59,58 @@ const AdminHomeScreen = () => {
 
   return (
     <div
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        height: "100vh",
-        width: "100vw",
-      }}
-    >
-      <Sidebar />
-      <div style={containerStyle}>
-        <Card>
-          <Card.Body>
-            <h2 style={headerStyle}>Users</h2>
-            <Table striped bordered hover responsive>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Mobile</th>
-                  <th>Option</th>
+    style={{
+      display: "flex",
+      flexDirection: "row",
+      height: "100vh",
+      width: "100vw",
+    }}
+  >
+    <Sidebar />
+    <div style={containerStyle}>
+      <Card>
+        <Card.Body>
+          <h2 style={headerStyle}>Users</h2>
+          <Table striped bordered hover responsive>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Option</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((user, index) => (
+                <tr key={user._id}>
+                  <td>{index + 1}</td>
+                  <td>{user.name}</td>
+                  <td>{user.email}</td>
+                  <td>{user.mobile}</td>
+                  <td>
+                    <button
+                      style={{
+                        width: "100px", // Fixed width
+                        height: "30px", // Fixed height
+                        backgroundColor: user.isBlocked ? "green"  : "red", // Red for blocked, green for unblocked
+                        color: "white",
+                        border: "none",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => toggleBlock(user._id, user.isBlocked)}
+                    >
+                      {user.isBlocked ? "Unblock" : "Block"}
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {users.map((user, index) => (
-                  <tr key={user._id}>
-                    <td>{index + 1}</td>
-                    <td>{user.name}</td>
-                    <td>{user.email}</td>
-                    <td>{user.mobile}</td>
-                    <td>
-                      <button onClick={() => toggleBlock(user._id, user.isBlocked)}>
-                        {user.isBlocked ? "Unblock" : "Block"}
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          </Card.Body>
-        </Card>
-      </div>
+              ))}
+            </tbody>
+          </Table>
+        </Card.Body>
+      </Card>
     </div>
+  </div>
   );
 };
 

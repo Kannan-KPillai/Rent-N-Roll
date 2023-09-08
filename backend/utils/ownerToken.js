@@ -1,11 +1,11 @@
 import jwt from 'jsonwebtoken';
 
-const adminToken = (res, adminId) => {
-    const token = jwt.sign({adminId}, process.env.JWT_SECRET, {
+const generateToken = (res, ownerId) => {
+    const token = jwt.sign({ownerId}, process.env.JWT_SECRET, {
         expiresIn : '30d'
     })
 
-res.cookie('adjwt', token, {
+res.cookie('jwt', token, {
     httpOnly: true,
     secure: process.env.NODE_ENV !== 'development',
     sameSight: 'strict',
@@ -13,4 +13,4 @@ res.cookie('adjwt', token, {
 })
 }
 
-export default adminToken;
+export default generateToken;

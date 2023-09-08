@@ -9,7 +9,12 @@ import User from '../models/userModels.js'
 const authUser = asyncHandler (async (req,res) =>{
     const { email, password} = req.body;
     const user = await User.findOne({email})
+
+    
     if(user && (await user.matchPassword(password))){
+        if (user.isBlocked) {
+            res.status(401).json({ message: 'User is blocked' })
+        }else{
         generateToken(res, user._id);
         res.status(201).json({
             _id: user._id,
@@ -17,6 +22,7 @@ const authUser = asyncHandler (async (req,res) =>{
             email: user.email,
             mobile: user.mobile
         })
+    }
     }else{
         res.status(401);
         throw new Error('Invalid email or password');
