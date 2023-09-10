@@ -23,7 +23,6 @@ const UserRoutes = () => {
       <Route path='/profile' element={<ProfileScreen/>}/>
       </Route>
       
-
       </Routes>
     </>
   )

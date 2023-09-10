@@ -13,7 +13,7 @@ const Sidebar = ({children}) => {
         icon:<FaUserAlt/>
       },
       {
-        path:'/adm',
+        path:'/admin/owner',
         name:'Owners',
         icon: <FaUserAlt/>
       },

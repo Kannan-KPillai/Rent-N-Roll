@@ -2,6 +2,8 @@ import asyncHandler from 'express-async-handler'
 import generateToken from '../utils/generateToken.js';
 import Admin from '../models/adminModels.js';
 import User from '../models/userModels.js';
+import Owner from '../models/ownerModels.js';
+
 
 //Authenticating Admin and setting token
 //route POST /api/admin/login
@@ -31,18 +33,10 @@ const adminLogout = asyncHandler (async (req,res) =>{
     res.status(200).json({message: 'Admin logged out'})
 });
 
-//Getting Users listed Orginal code
-//route GET /api/admin/admin
-// const userData = asyncHandler (async (req,res)=> {
-//     try{
-//         const users = await User.find({}, { name: 1, email: 1, mobile: 1, _id: 1 });
-//         res.status(200).json({users})
-//     }catch(error){
-//         console.error("Error fetching users:", error);
-//         throw error;
-//     }
-// })
 
+
+//Getting users listed 
+//route GET /api/admin
 const userData = asyncHandler(async (req, res) => {
     try {
       const users = await User.find({}, { name: 1, email: 1, mobile: 1, _id: 1 });
@@ -55,7 +49,8 @@ const userData = asyncHandler(async (req, res) => {
   
   
 
-
+//Blocking the user
+//route PUT /api/admin/blockuser
 const userBlock = asyncHandler(async(req,res)=> {
     try{
         const user = await User.findById(req.query.userId);
@@ -72,6 +67,9 @@ const userBlock = asyncHandler(async(req,res)=> {
     }
 })
 
+
+//Unblocking the user
+//route PUT /api/admin/unblockuser
 const userUnblock = asyncHandler(async(req,res)=>{
     try{
         const user = await User.findById(req.query.userId);
@@ -87,4 +85,56 @@ const userUnblock = asyncHandler(async(req,res)=>{
     }
 })
 
-export {adminLogin,  adminLogout, userData, userBlock, userUnblock}
+
+
+//Getting owners listed 
+//route GET /api/admin/owner
+const ownerData = asyncHandler(async (req, res) => {
+    try {
+      const owner = await Owner.find({}, { name: 1, email: 1, mobile: 1, _id: 1 });
+      res.status(200).json({ owner });
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      throw error;
+    }
+  });
+  
+
+  //Blocking the owner
+//route PUT /api/admin/blockowner
+const ownerBlock = asyncHandler(async(req,res)=> {
+    try{
+        const owner = await Owner.findById(req.query.ownerId);
+        
+        if (!owner) {
+            return res.status(404).json({ message: 'Owner not found' });
+          }
+          owner.isBlocked = true;
+          await owner.save();
+          res.status(200).json({ message: 'Owner blocked successfully' });
+    }catch(error){
+        console.error('Error blocking owner:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+})
+
+//Unblocking the owner
+//route PUT /api/admin/unblockowner
+const ownerUnblock = asyncHandler(async(req,res)=>{
+    try{
+        const owner = await Owner.findById(req.query.ownerId);
+        if (!owner) {
+            return res.status(404).json({ message: 'User not found' });
+          }
+          owner.isBlocked = false;
+          await owner.save();
+          res.status(200).json({message:'Owner unblocked succesfully'})
+    }catch(error){
+        console.error('Error Unblocking owner:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+})
+
+
+
+export {adminLogin,  adminLogout, userData, userBlock, userUnblock, ownerData, ownerBlock, ownerUnblock }
