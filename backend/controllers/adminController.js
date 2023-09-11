@@ -11,7 +11,7 @@ const adminLogin = asyncHandler (async (req,res) =>{
     const { email, password} = req.body;
     const admin = await Admin.findOne({email})
     if(admin && (await admin.matchPassword(password))){
-        generateToken(res, admin._id);
+        generateToken (res, admin._id);
         res.status(201).json({
             _id: admin._id,
             name: admin.name,
@@ -136,5 +136,22 @@ const ownerUnblock = asyncHandler(async(req,res)=>{
 })
 
 
+const checkAdmin = asyncHandler(async(req,res)=>{
+    const token = req.cookies.jwt
 
-export {adminLogin,  adminLogout, userData, userBlock, userUnblock, ownerData, ownerBlock, ownerUnblock }
+    if(!token){
+        return res.status(401).json({message:"unauthorized"})
+    }
+
+    try {
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+        res.status(200).json({message: "Authorized"})
+    } catch (error) {
+        return res.status(401).json({message: 'Unauthorized'})
+    }
+})
+
+
+
+
+export {adminLogin,  adminLogout, userData, userBlock, userUnblock, ownerData, ownerBlock, ownerUnblock, checkAdmin }

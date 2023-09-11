@@ -1,21 +1,23 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useVerifyMutation } from "../slices/usersApiSlice";
+import { useVerifyMutation } from '../ownerSlices/ownerApiSlice'
 import { toast } from "react-toastify";
-import { setCredentials } from "../slices/authSlice";
+import { setOwnerCredentials } from "../ownerSlices/ownerAuthSlice";
 import Loader from "../components/Loader";
 
-const OtpVerificationScreen = () => {
-  const [otp, setOtp] = useState("");
+
+const OwnerOtpScreen = () => {
+
+    const [otp, setOtp] = useState("");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const tempInfo = localStorage.getItem("tempInfo");
+  const tempOwnerInfo = localStorage.getItem("tempOwnerInfo");
 
-  const userEmail = JSON.parse(tempInfo);
-  const email = userEmail.email;
+  const ownerEmail = JSON.parse(tempOwnerInfo);
+  const email = ownerEmail.email;
 
   const [verify, { isLoading }] = useVerifyMutation();
 
@@ -23,26 +25,26 @@ const OtpVerificationScreen = () => {
     e.preventDefault();
     try {
       const res = await verify({ email, otp });
-      console.log(res);
 
       if (res.error) {
         toast.error("wrong otp");
       } else {
-        localStorage.removeItem("tempInfo");
-        dispatch(setCredentials({ ...res }));
-        toast.success('Account succesfully created');
-        navigate("/");
+        localStorage.removeItem("tempOwnerInfo");
+        dispatch(setOwnerCredentials({ ...res }));
+        toast.success('Account successfully created...');
+        navigate("/owner");
       }
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }
   };
 
+
   return (
     <>
-      <div className="login">
+      <div className="ownerLogin">
         <div>
-          <form className="form1" onSubmit={submitHandler}>
+          <form className="ownerForm12" onSubmit={submitHandler}>
             <h1>OTP Verification</h1>
 
             <div className="div1">
@@ -68,7 +70,7 @@ const OtpVerificationScreen = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default OtpVerificationScreen;
+export default OwnerOtpScreen

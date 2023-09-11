@@ -3,8 +3,7 @@ import {Link, useNavigate} from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
-import { useRegisterMutation } from "../slices/usersApiSlice";
-import { setCredentials } from "../slices/authSlice";
+import { useRegisterMutation } from "../slices/usersApiSlice";  
 import './styles/Login.css'
 
 
@@ -34,8 +33,9 @@ const RegisterScreen = () => {
         }else{
          try{
             const res = await register({ name, email, mobile, password }).unwrap();
-          dispatch(setCredentials({...res}))
-          navigate('/')
+            localStorage.setItem('tempInfo', JSON.stringify({email}));
+            toast.success('OTP sent successfully');
+            navigate('/verify-otp',{ state: { email:res.email } });
          }catch(err){
             toast.error(err?.data?.message || err.error)
          }

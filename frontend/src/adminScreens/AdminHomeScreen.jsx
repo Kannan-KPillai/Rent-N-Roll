@@ -2,6 +2,9 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Card, Table } from "react-bootstrap";
 import Sidebar from "../components/Sidebar";
+import Swal from 'sweetalert2';
+
+
 
 const AdminHomeScreen = () => {
   const headerStyle = {
@@ -17,7 +20,6 @@ const AdminHomeScreen = () => {
     backgroundColor: "rgba(53, 55, 67, 1)",
   };
 
-  //For Getting the users listed in the admin page
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -38,21 +40,43 @@ const AdminHomeScreen = () => {
    // Function to toggle the block/unblock status of a user
    const toggleBlock = async (userId, isBlocked) => {
     try {
-      // Define the API endpoint based on the current user status
       const endpoint = isBlocked
-        ? `/api/admin/unblockUser?userId=${userId}`   : `/api/admin/blockUser?userId=${userId}`;
-      
-      // Send a request to the backend to toggle the user's status
-      await axios.put(endpoint);
-      
-      // Update the local state (users) to reflect the new user status
-      setUsers((prevUsers) =>
-        prevUsers.map((user) =>
-          user._id === userId ? { ...user, isBlocked: !isBlocked } : user
-        )
-      );
+        ? `/api/admin/unblockUser?userId=${userId}`
+        : `/api/admin/blockUser?userId=${userId}`;
+  
+      // Display a SweetAlert confirmation dialog
+      const result = await Swal.fire({
+        title: `Are you sure you want to ${isBlocked ? 'unblock' : 'block'} this user?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+      });
+  
+      if (result.isConfirmed) {
+        await axios.put(endpoint);
+  
+        setUsers((prevUsers) =>
+          prevUsers.map((user) =>
+            user._id === userId ? { ...user, isBlocked: !isBlocked } : user
+          )
+        );
+  
+        // Display a success SweetAlert message
+        Swal.fire({
+          title: 'Success',
+          text: `User ${isBlocked ? 'unblocked' : 'blocked'} successfully.`,
+          icon: 'success',
+        });
+      }
     } catch (error) {
       console.error('Error toggling user block status:', error);
+      // Display an error SweetAlert message
+      Swal.fire({
+        title: 'Error',
+        text: 'An error occurred while toggling user block status.',
+        icon: 'error',
+      });
     }
   };
 

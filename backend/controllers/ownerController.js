@@ -1,7 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import generateToken from '../utils/generateToken.js';
 import Owner from '../models/ownerModels.js';
-
+import nodemailer from 'nodemailer';
 
 //Authenticating owner and setting token
 //route POST /api/owner/login
@@ -33,17 +33,17 @@ const authOwner = asyncHandler (async (req,res) =>{
 //route POST /api/owner/register
 const ownerRegister = asyncHandler (async (req,res) =>{
    
+   
     const name = req.body.name.trim();
     const email = req.body.email.trim()
     const mobile = req.body.mobile.trim()
     const password = req.body.password.trim()
    
-
     const ownerExists = await Owner.findOne({email})
     const mobileExists = await Owner.findOne({mobile})
     if(ownerExists){
         res.status(400)
-        throw new Error("User already exists");
+        throw new Error("Owner already exists");
     }
     if (!password || password.length < 6) {
         res.status(400);
@@ -53,28 +53,46 @@ const ownerRegister = asyncHandler (async (req,res) =>{
         res.status(400)
         throw new Error("Mobile already exists")
       }
-
       
+       // Generate OTP
+        const otp = Math.floor(1000 + Math.random() * 9000);
+ 
+      // Send OTP to user's email
+       await sendOTPByEmail(email, otp);  
+
     const owner = await Owner.create({
         name,
         email,
         mobile,
         password,
+        otp
     })
-    if(owner){
-        generateToken(res, owner._id);
-        res.status(201).json({
-            _id: owner._id,
-            name: owner.name,
-            email: owner.email,
-            mobile: owner.mobile
-        })
-    }else{
-        res.status(400);
-        throw new Error('Invalid user data');
-    }
-    res.status(200).json({message: 'Register owner'})
+   
+  res.status(200).json({message: 'Register owner'})
 });
+
+//Sending OTP 
+const sendOTPByEmail = async (email, otp) => {
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.ethereal.email',
+      port: 587,
+      auth: {
+          user: 'mose.mante@ethereal.email',
+          pass: 'Nj5KtVhTH9W7g8wK3m'
+      }
+  })
+  
+    const mailOptions = {
+      from: process.env.SENDER_EMAIL,
+      to: email,
+      subject: 'OTP Verification',
+      text:` Your OTP for verification is: ${otp}`,
+    };
+  
+    await transporter.sendMail(mailOptions);
+  };
+
+  
 
 
 //Logout Owner
@@ -127,4 +145,41 @@ const updateOwnerProfile = asyncHandler(async(req,res) =>{
  })
 
 
-export {authOwner, ownerRegister, logoutOwner, ownerProfile, updateOwnerProfile}
+
+
+//Verigying OTP 
+//route POST /api/owner/verify-otp
+const verifyOwnerOtp = asyncHandler(async (req, res) => {
+    const { email, otp } = req.body;
+    
+    // Find the owner by email
+    const owner = await Owner.findOne({ email: email });
+    if (!owner) {
+      return res.status(400).json({ message: 'Owner not found' });
+    }
+  
+    if (owner.otp === otp) {
+      owner.isVerified = true;
+      await owner.save();
+  
+      if (owner.isVerified === true) {
+        generateToken(res, owner._id);
+         return res.status(201).json({
+          _id: owner._id,
+          name: owner.name,
+          email: owner.email,
+          mobile: owner.mobile
+        });
+      } else {
+        res.status(400);
+        throw new Error('owner verification failed');
+      }
+    } else {
+       res.status(400);
+      throw new Error('Invalid OTP');
+    }
+  });
+
+
+
+export {authOwner, ownerRegister, logoutOwner, ownerProfile, updateOwnerProfile, verifyOwnerOtp}

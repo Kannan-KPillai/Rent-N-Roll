@@ -13,18 +13,24 @@ const userSchema = mongoose.Schema({
         unique: true
     },
     mobile:{
-        type:Number,
-        required: true,
-        unique: true
+        type:String,
+        required: false,
     },
     password:{
         type:String,
-        required:true
+        required:false
     },
     isBlocked: {
         type: Boolean,
         default: false, 
+    },
+    otp: {
+        type: String, 
       },
+      isVerified:{
+        type: Boolean,
+        default: false
+      }
 },{
     timestamps:true
 });

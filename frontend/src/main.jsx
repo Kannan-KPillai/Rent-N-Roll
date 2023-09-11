@@ -10,7 +10,6 @@ import UserRoutes from './routes/UserRoutes.jsx';
 import AdminRoutes from './routes/AdminRoutes.jsx';
 import OwnerRoutes from './routes/OwnerRoutes.jsx';
 
-
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App/>}>
@@ -27,6 +26,7 @@ const router = createBrowserRouter(
 )
 
 ReactDOM.createRoot(document.getElementById('root')).render(
+  
   <Provider store={store}>
   <React.StrictMode>
     <RouterProvider router={ router} />

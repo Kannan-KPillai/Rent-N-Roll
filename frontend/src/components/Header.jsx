@@ -6,7 +6,7 @@ import {useNavigate} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {useSelector, useDispatch} from 'react-redux';
 import {LinkContainer} from 'react-router-bootstrap';
-import { useLogoutMutation } from '../slices/usersApiSlice';
+import { useLogoutMutation, useVerifyMutation } from '../slices/usersApiSlice';
 import { logout} from '../slices/authSlice';
 
 
@@ -64,7 +64,7 @@ function Header() {
               <LinkContainer to='' style={{ color: 'red', backgroundColor: 'white' }}>
                    <Nav.Link> Your Bookings</Nav.Link>
               </LinkContainer>
-              <NavDropdown title={userInfo.name} id='username'>
+              <NavDropdown title={userInfo.name || userInfo.data.name} id='username'>
                 <LinkContainer to='/profile'>
                   <NavDropdown.Item>
                     Profile

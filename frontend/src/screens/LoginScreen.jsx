@@ -1,11 +1,15 @@
 import { useState, useEffect } from "react";
 import {Link, useNavigate} from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLoginMutation } from "../slices/usersApiSlice";
+import { useLoginMutation,  useGoogleLoginMutation } from "../slices/usersApiSlice";
 import { setCredentials } from "../slices/authSlice";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 import './styles/Login.css'
+import { GoogleLogin, GoogleOAuthProvider  } from '@react-oauth/google';
+import jwt_decode from 'jwt-decode'
+
+
 
 
 const LoginScreen = () => {
@@ -36,7 +40,33 @@ const LoginScreen = () => {
         }
     }
 
+    const [googleLogin] = useGoogleLoginMutation();
+
+
+ const handleGoogleSignInSuccess = async (response) => {
+  const decoded = jwt_decode(response.credential); // Decode the Google response
+  console.log(decoded)
+  const { sub, name, email, picture } = decoded;
+
+  try {
+    const googleLoginData = {
+      user_id: sub,
+      name: name,
+      email: email,
+      profileGoogleImage: picture,
+    };
+
+    const res = await googleLogin(googleLoginData).unwrap();
+    console.log(res);
+    dispatch(setCredentials({ ...res }));
+    navigate('/');
+  } catch (error) {
+    toast.error('Error during Google sign-in:', error);
+  }
+};
+
   return (
+    <GoogleOAuthProvider clientId="427083747377-vjqptmsf4f720eos2k1vinkl78kmf5s4.apps.googleusercontent.com">
     <>
       <div className="login">
         <div>
@@ -77,10 +107,19 @@ const LoginScreen = () => {
             <div className="register">
               Don't have an account ? <Link to="/register">Register</Link>
             </div>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '1rem' }}>
+            <GoogleLogin
+                      onSuccess={handleGoogleSignInSuccess}
+                      onError={()=>console.log("error")}
+                      />
+</div>
+
           </form>
             </div>
+           
       </div>
     </>
+    </GoogleOAuthProvider>
   );
 }
 

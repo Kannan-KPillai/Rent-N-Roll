@@ -24,10 +24,10 @@ const OwnerProfile = () => {
     const [updateProfile,{isLoading}] = useUpdateOwnerMutation();
 
     useEffect(()=>{
-       setName(ownerInfo.name);
-       setEmail(ownerInfo.email);
-       setMobile(ownerInfo.mobile);
-    },[ownerInfo.name, ownerInfo.email, ownerInfo.mobile]);
+       setName(ownerInfo.name || ownerInfo.data.name);
+       setEmail(ownerInfo.email || ownerInfo.data.email);
+       setMobile(ownerInfo.mobile || ownerInfo.data.mobile);
+    },[ownerInfo]);
 
 
     const submitHandler = async (e) =>{

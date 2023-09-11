@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Card, Table } from "react-bootstrap";
 import Sidebar from "../components/Sidebar";
+import Swal from 'sweetalert2';
 
 
 const AdminOwnerList = () => {
@@ -41,19 +42,41 @@ const AdminOwnerList = () => {
             ? `/api/admin/unblockowner?ownerId=${ownerId}`
             : `/api/admin/blockowner?ownerId=${ownerId}`;
       
-          // Send a request to the backend to toggle the owner's status
-          await axios.put(endpoint);
+          // Display a SweetAlert confirmation dialog
+          const result = await Swal.fire({
+            title: `Are you sure you want to ${isBlocked ? 'unblock' : 'block'} this owner?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+          });
       
-          // Update the local state to reflect the new owner status
-          setOwners((prevOwners) =>
-            prevOwners.map((owner) =>
-              owner._id === ownerId ? { ...owner, isBlocked: !isBlocked } : owner
-            )
-          );
+          if (result.isConfirmed) {
+            await axios.put(endpoint);
+      
+            setOwners((prevOwners) =>
+              prevOwners.map((owner) =>
+                owner._id === ownerId ? { ...owner, isBlocked: !isBlocked } : owner
+              )
+            );
+      
+            Swal.fire({
+              title: 'Success',
+              text: `Owner ${isBlocked ? 'unblocked' : 'blocked'} successfully.`,
+              icon: 'success',
+            });
+          }
         } catch (error) {
           console.error('Error toggling owner block status:', error);
+
+          Swal.fire({
+            title: 'Error',
+            text: 'An error occurred while toggling owner block status.',
+            icon: 'error',
+          });
         }
       };
+      
 
 
   return (

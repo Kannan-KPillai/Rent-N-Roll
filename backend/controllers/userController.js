@@ -52,28 +52,44 @@ const registerUser = asyncHandler (async (req,res) =>{
         res.status(400)
         throw new Error("Mobile already exists")
       }
-  
+      
+       // Generate OTP
+        const otp = Math.floor(1000 + Math.random() * 9000);
+ 
+      // Send OTP to user's email
+       await sendOTPByEmail(email, otp);  
+
     const user = await User.create({
         name,
         email,
         mobile,
         password,
+        otp
     })
-    if(user){
-        generateToken(res, user._id);
-        res.status(201).json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            mobile: user.mobile
-        })
-    }else{
-        res.status(400);
-        throw new Error('Invalid user data');
-    }
-    res.status(200).json({message: 'Register user'})
+   
+  res.status(200).json({message: 'Register user'})
 });
 
+//Sending OTP 
+const sendOTPByEmail = async (email, otp) => {
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.ethereal.email',
+    port: 587,
+    auth: {
+        user: 'mose.mante@ethereal.email',
+        pass: 'Nj5KtVhTH9W7g8wK3m'
+    }
+})
+
+  const mailOptions = {
+    from: process.env.SENDER_EMAIL,
+    to: email,
+    subject: 'OTP Verification',
+    text:` Your OTP for verification is: ${otp}`,
+  };
+
+  await transporter.sendMail(mailOptions);
+};
 
 
 
@@ -134,7 +150,90 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 //Verigying OTP 
 //route POST /api/users/verify-otp
 const verifyOtp = asyncHandler(async (req, res) => {
+  const { email, otp } = req.body;
+  
+  // Find the user by email
+  const user = await User.findOne({ email: email });
+  
+  if (!user) {
+    return res.status(400).json({ message: 'User not found' });
+  }
 
+  if (user.otp === otp) {
+    user.isVerified = true;
+    await user.save();
+
+    if (user.isVerified === true) {
+      generateToken(res, user._id);
+       return res.status(201).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        mobile: user.mobile
+      });
+    } else {
+      res.status(400);
+      throw new Error('User verification failed');
+    }
+  } else {
+     res.status(400);
+    throw new Error('Invalid OTP');
+  }
+});
+
+ //GOOGLE LOGIN
+ const  googleLogin = asyncHandler(async(req,res)=>{
+
+  const {  user_id, name, email, profileGoogleImage } = req.body; 
+  // Check if the user already exists
+  let user = await User.findOne({ email });
+console.log("-------------"+ user);
+
+  if (user) {
+
+    // if (!user.isVerified) {
+    //   res.status(401);
+    //   throw new Error('Your account is not verified');
+    // }
+
+
+    if (user.isBlocked) {
+      res.status(401);
+      throw new Error('Your account is temporarily blocked');
+    }
+
+    // User exists, generate token and send success response
+    generateToken(res, user._id);
+    res.status(200).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      // profileGoogleImage: user.profileGoogleImage,
+      isBlocked: user.isBlocked
+    });
+  } else {
+    // User doesn't exist, create a new user
+    user = await User.create({
+    
+      name,
+      email,
+      // profileGoogleImage,
+      isVerified: true,
+    });
+
+    if (user) {
+      generateToken(res, user._id);
+      res.status(201).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        // profileGoogleImage: user.profileGoogleImage,
+      });
+    } else {
+      res.status(400);
+      throw new Error('Invalid user data');
+    }
+  }
 });
 
 
@@ -146,4 +245,5 @@ export {
   updateUserProfile,
   getUserProfile,
   verifyOtp,
+  googleLogin
 };

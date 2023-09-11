@@ -4,43 +4,44 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 import { useRegisterMutation } from "../ownerSlices/ownerApiSlice";
-import { setOwnerCredentials } from "../ownerSlices/ownerAuthSlice";
+
 
 
 const OwnerRegisterScreen = () => {
 
-    const [name, setName] = useState('');
-    const [email,setEmail] = useState('');
-    const [mobile, setMobile] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState('');
+  const [email,setEmail] = useState('');
+  const [mobile, setMobile] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-    const {ownerInfo} = useSelector((state) => state.owner);
-    const [register, {isLoading}] = useRegisterMutation();
+  const {ownerInfo} = useSelector((state) => state.owner);
+  const [register, {isLoading}] = useRegisterMutation();
 
-    useEffect(()=> {
-        if(ownerInfo) {
-           navigate('/owner')
-        }
-      }, [navigate,ownerInfo])
-  
-      const submitHandler = async (e)=> {
-        e.preventDefault();
-        if(password !== confirmPassword) {
-         toast.error('Passwords do not match')
-        }else{
-         try{
-            const res = await register({ name, email, mobile, password }).unwrap();
-          dispatch(setOwnerCredentials({...res}))
-          navigate('/owner')
-         }catch(err){
-            toast.error(err?.data?.message || err.error)
-         }
-        }
+  useEffect(()=> {
+    if(ownerInfo) {
+       navigate('/owner/verify-otp')
     }
+  }, [navigate,ownerInfo])
+
+  const submitHandler = async (e)=> {
+      e.preventDefault();
+      if(password !== confirmPassword) {
+       toast.error('Passwords do not match')
+      }else{
+       try{
+          const res = await register({ name, email, mobile, password }).unwrap();
+          localStorage.setItem('tempOwnerInfo', JSON.stringify({email}));
+          toast.success('OTP sent successfully...');
+          navigate('/owner/verify-otp',{ state: { email:res.email } });
+       }catch(err){
+          toast.error(err?.data?.message || err.error)
+       }
+      }
+  }
 
   return (
     <>

@@ -31,8 +31,14 @@ export const ownerApiSlice = apiSlice.injectEndpoints({
                 body: data
             }),
         }),
-        
+        verify: builder.mutation({
+            query: (data) => ({
+                url: `${OWNER_URL}/verify-otp`,
+                method:'POST',
+                body: data
+            }),
+        }),
     })
 })
 
-export const { useLoginMutation, useLogoutMutation, useRegisterMutation, useUpdateOwnerMutation } = ownerApiSlice;
+export const { useLoginMutation, useLogoutMutation, useRegisterMutation, useUpdateOwnerMutation, useVerifyMutation } = ownerApiSlice;

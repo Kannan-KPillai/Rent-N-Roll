@@ -1,0 +1,17 @@
+/* HomeScreen.css */
+.OwnerHomeScreen {
+    background-image: url('https://cars.tatamotors.com/images/harrier/gallery/harrier-gallery-image-03.png');
+    background-size: cover;
+    background-position: center;
+    min-height: 600px; /* Replace 300px with your desired height */
+  }
+  .ownertext {
+    font-family: 'Teko';
+    text-align: center; /* Center-align the text horizontally */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+    color: black;
+  }

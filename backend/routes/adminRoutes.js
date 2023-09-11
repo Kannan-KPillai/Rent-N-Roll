@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import {adminLogin, adminLogout, userData, userBlock, userUnblock, ownerData, ownerBlock, ownerUnblock} from '../controllers/adminController.js'
+import {adminLogin, adminLogout, userData, userBlock, userUnblock, ownerData, ownerBlock, ownerUnblock, checkAdmin} from '../controllers/adminController.js'
 
 
 router.post('/login', adminLogin)
@@ -18,5 +18,7 @@ router.get('/owner', ownerData)
 router.put('/blockowner', ownerBlock)
 
 router.put('/unblockowner', ownerUnblock)
+
+router.get('/checkAdmin', checkAdmin)
 
 export default router;

@@ -29,6 +29,19 @@
     margin-top: 6rem;
     
   }
+  .ownerForm12 {
+    margin: auto;
+    text-align: center;
+       background-image: url(https://www.team-bhp.com/sites/default/files/styles/check_extra_large_for_review/public/car-launches-2023-7.jpg);
+    width: 500px;
+    height: 18rem;
+    padding: 15px 20px;
+    max-width: 100%;
+    border-radius: 10px;
+    font-size: small;
+    margin-top: 6rem;
+    
+  }
   .ownerForm2 {
     margin: auto;
     text-align: center;
