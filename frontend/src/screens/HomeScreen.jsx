@@ -1,18 +1,17 @@
-import React from "react";
-import "./styles/HomeScreen.css";
+import FindCarForm from "./UI/FindCarForm";
+import HeroSlider from "./UI/HeroSlider";
+import { Container, Row, Col } from "reactstrap";
+
 
 const HomeScreen = () => {
+ 
   return (
-    <div className="HomeScreen">
-      <div className="text-container">
-        <h1>
-          Welcome to RENT N ROLL - destination for high-quality car rentals in
-          Kochi
-        </h1>
-        <h1>#DRIVE_IT_LIKE_YOU_OWN_IT</h1>
-      </div>
-      
-    </div>
+    <section className="p-0 hero__slider-section">
+       <HeroSlider/>
+       <div className="hero__form">
+        <FindCarForm/>
+       </div>
+       </section>
   );
 };
 

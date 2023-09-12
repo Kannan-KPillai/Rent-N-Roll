@@ -5,10 +5,17 @@ import store from './store.js';
 import { Provider } from 'react-redux';
 import App from './App.jsx'
 import  'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'remixicon/fonts/remixicon.css';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import './index.css'
 import UserRoutes from './routes/UserRoutes.jsx';
 import AdminRoutes from './routes/AdminRoutes.jsx';
 import OwnerRoutes from './routes/OwnerRoutes.jsx';
+
+
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(

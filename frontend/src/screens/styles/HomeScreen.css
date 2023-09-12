@@ -1,16 +1,16 @@
-/* HomeScreen.css */
+/* 
 .HomeScreen {
-    background-image: url('https://i.pinimg.com/originals/5c/08/6b/5c086bea4c33cfe2006803b74f3cef10.jpg'); /* Replace with the path to your image */
+    background-image: url('https://i.pinimg.com/originals/5c/08/6b/5c086bea4c33cfe2006803b74f3cef10.jpg'); 
     background-size: cover; 
     background-position: center; 
     min-height: 100vh; 
   }
   .text-container {
     font-family: 'Teko';
-    text-align: center; /* Center-align the text horizontally */
+    text-align: center; 
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 80vh;
-  }
+  } */

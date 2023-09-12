@@ -29,6 +29,8 @@ const authUser = asyncHandler(async (req, res) => {
 
 
 
+//****************************************************************************/
+
 //Registering a new user
 //route POST /api/users/register
 const registerUser = asyncHandler (async (req,res) =>{
@@ -92,6 +94,7 @@ const sendOTPByEmail = async (email, otp) => {
 };
 
 
+//*********************************************************************/
 
 //Logout user
 //route POST /api/users/logout
@@ -104,6 +107,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 });
 
 
+//**********************************************************************/
 
 //Get user profile
 //route GET /api/users/profile
@@ -118,6 +122,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 });
 
 
+//*********************************************************************/
 
 //User profile update
 //route PUT /api/users/profile
@@ -146,6 +151,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 });
 
 
+//*********************************************************************/
 
 //Verigying OTP 
 //route POST /api/users/verify-otp
@@ -169,7 +175,7 @@ const verifyOtp = asyncHandler(async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
-        mobile: user.mobile
+        mobile: user.mobile,
       });
     } else {
       res.status(400);
@@ -181,7 +187,11 @@ const verifyOtp = asyncHandler(async (req, res) => {
   }
 });
 
- //GOOGLE LOGIN
+
+//*****************************************************************/
+
+ //GOOGLE LOGIN 
+//route POST /api/users/glogin
  const  googleLogin = asyncHandler(async(req,res)=>{
 
   const {  user_id, name, email, profileGoogleImage } = req.body; 
@@ -190,13 +200,6 @@ const verifyOtp = asyncHandler(async (req, res) => {
 console.log("-------------"+ user);
 
   if (user) {
-
-    // if (!user.isVerified) {
-    //   res.status(401);
-    //   throw new Error('Your account is not verified');
-    // }
-
-
     if (user.isBlocked) {
       res.status(401);
       throw new Error('Your account is temporarily blocked');
@@ -237,6 +240,31 @@ console.log("-------------"+ user);
 });
 
 
+//**********************************************************************/
+
+//Getting user data 
+//route GET /api/users/status/:Id
+
+const getUserStatus = asyncHandler(async (req, res) => {
+  const userId = req.params.Id; 
+  const user = await User.findById(userId);
+  if (user) {
+    if (user.isBlocked) {
+      res.status(401).json({ message: 'User is blocked' });
+    } else {
+      res.status(200).json({ isBlocked: user.isBlocked });
+    }
+  } else {
+    res.status(404).json({ message: 'User not found' });
+  }
+});
+
+
+
+
+
+
+
 
 export {
   authUser,
@@ -245,5 +273,6 @@ export {
   updateUserProfile,
   getUserProfile,
   verifyOtp,
-  googleLogin
+  googleLogin,
+  getUserStatus
 };

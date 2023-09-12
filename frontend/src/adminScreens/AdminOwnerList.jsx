@@ -25,7 +25,7 @@ const AdminOwnerList = () => {
         const fetchOwners = async () => {
           try {
             const response = await axios.get(
-              "http://localhost:5000/api/admin/owner"
+              "/api/admin/owner"
             );
             setOwners(response.data.owner);
           } catch (error) {

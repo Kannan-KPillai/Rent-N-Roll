@@ -26,7 +26,7 @@ const AdminHomeScreen = () => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/admin/admin"
+          "/api/admin/admin"
         );
         setUsers(response.data.users);
       } catch (error) {

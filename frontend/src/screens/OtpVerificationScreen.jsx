@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useVerifyMutation } from "../slices/usersApiSlice";
@@ -12,12 +12,22 @@ const OtpVerificationScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const tempInfo = localStorage.getItem("tempInfo");
+   const {userInfo} = useSelector((state) => state.auth);
+   console.log(userInfo)
+  useEffect(()=> {
+    if(userInfo) {
+       navigate('/') 
+    }
+  }, [navigate,userInfo])
 
+  const tempInfo = localStorage.getItem("tempInfo");
+ 
   const userEmail = JSON.parse(tempInfo);
   const email = userEmail.email;
 
   const [verify, { isLoading }] = useVerifyMutation();
+
+  
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -27,8 +37,7 @@ const OtpVerificationScreen = () => {
 
       if (res.error) {
         toast.error("wrong otp");
-      } else {
-        localStorage.removeItem("tempInfo");
+      } else {     
         dispatch(setCredentials({ ...res }));
         toast.success('Account succesfully created');
         navigate("/");
