@@ -3,7 +3,7 @@
 
 .slider__item{
     max-width: 100%;
-    height: 650px;
+    height: 683px;
 }
 
 .slider__item-01{
@@ -40,5 +40,7 @@
     font-weight: 600;
     -webkit-text-stroke:2px black;
     text-align: center; 
-
+}
+.hero__slider{
+    margin-bottom: 10rem;
 }

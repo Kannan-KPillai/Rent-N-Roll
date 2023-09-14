@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { authOwner, ownerRegister, logoutOwner, ownerProfile, updateOwnerProfile, verifyOwnerOtp} from '../controllers/ownerController.js' 
+import { authOwner, ownerRegister, logoutOwner, ownerProfile, updateOwnerProfile, verifyOwnerOtp, checkOwner} from '../controllers/ownerController.js' 
 
 
 
@@ -16,5 +16,6 @@ router.put('/profile', updateOwnerProfile)
 
 router.post('/verify-otp', verifyOwnerOtp)
 
+router.get('/checkOwner', checkOwner)
 
 export default router;

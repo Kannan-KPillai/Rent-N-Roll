@@ -5,7 +5,7 @@ const generateToken = (res, ownerId) => {
         expiresIn : '30d'
     })
 
-res.cookie('jwt', token, {
+res.cookie('owjwt', token, {
     httpOnly: true,
     secure: process.env.NODE_ENV !== 'development',
     sameSight: 'strict',

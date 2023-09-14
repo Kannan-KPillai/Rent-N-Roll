@@ -1,4 +1,4 @@
-import {FaBars, FaTh, FaUserAlt} from 'react-icons/fa'
+import {FaBars, FaTh, FaUserAlt } from 'react-icons/fa'
 import { NavLink } from 'react-router-dom'
 import '../App.css'
 
@@ -21,6 +21,11 @@ const Sidebar = ({children}) => {
         path:'/admi',
         name:'Dashboard',
         icon:<FaTh/>
+      },
+      {
+        path:'/admin/category',
+        name: 'Category',
+        icon: <FaTh/>
       }
 ]
   return (

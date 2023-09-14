@@ -16,8 +16,15 @@ export const adminApiSlice = apiSlice.injectEndpoints({
                 url: `${ADMIN_URL}/logout`,
                 method:'POST'
             }),
-        }),     
+        }),
+        category: builder.mutation({
+            query: (data) => ({
+                url: `${ADMIN_URL}/category`,
+                method:'POST',
+                body: data,
+            }),
+        }),      
     })
 })
 
-export const { useLoginMutation, useLogoutMutation, useFetchUserMutation } = adminApiSlice
+export const { useLoginMutation, useLogoutMutation,  useCategoryMutation } = adminApiSlice

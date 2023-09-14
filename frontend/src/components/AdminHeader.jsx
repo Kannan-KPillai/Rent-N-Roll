@@ -28,8 +28,6 @@ function AdminHeader() {
   const navigate = useNavigate();
   const [logoutApiCall] = useLogoutMutation();
  
-
-  console.log(adminInfo)
   const logoutHandler = async () =>{
     try{
         await logoutApiCall().unwrap();

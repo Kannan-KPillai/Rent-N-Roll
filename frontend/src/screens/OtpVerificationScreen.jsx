@@ -43,7 +43,7 @@ const OtpVerificationScreen = () => {
         navigate("/");
       }
     } catch (err) {
-      toast.error(err?.data?.message || err.error);
+      console.log(err)
     }
   };
 

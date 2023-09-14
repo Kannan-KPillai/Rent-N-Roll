@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useVerifyMutation } from '../ownerSlices/ownerApiSlice'
@@ -16,6 +16,14 @@ const OwnerOtpScreen = () => {
 
   const tempOwnerInfo = localStorage.getItem("tempOwnerInfo");
 
+  const {ownerInfo} = useSelector((state) => state.owner);
+
+  useEffect(()=> {
+    if(ownerInfo) {
+       navigate('/owner')
+    }
+  }, [navigate,ownerInfo])
+
   const ownerEmail = JSON.parse(tempOwnerInfo);
   const email = ownerEmail.email;
 
@@ -29,7 +37,6 @@ const OwnerOtpScreen = () => {
       if (res.error) {
         toast.error("wrong otp");
       } else {
-        localStorage.removeItem("tempOwnerInfo");
         dispatch(setOwnerCredentials({ ...res }));
         toast.success('Account successfully created...');
         navigate("/owner");

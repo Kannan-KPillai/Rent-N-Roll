@@ -2,7 +2,7 @@ import express from 'express';
 const router = express.Router();
 import { protect } from '../middleware/authMiddleware.js';
 import { authUser,registerUser,logoutUser,updateUserProfile,
-    getUserProfile, verifyOtp,  googleLogin, getUserStatus} from "../controllers/userController.js";
+    getUserProfile, verifyOtp,  googleLogin, getUserStatus, checkUser} from "../controllers/userController.js";
 
 
 
@@ -18,9 +18,12 @@ router.get('/profile', protect, getUserProfile)
 
 router.put('/profile', protect,  updateUserProfile)
 
-router.post('/verify-otp', verifyOtp)
+router.post('/verify-otp', verifyOtp);
+
+router.get('/checkUser', checkUser);
 
 router.get('/status', getUserStatus);
+
 
 
 export default router;

@@ -1,7 +1,9 @@
 import asyncHandler from 'express-async-handler';
-import generateToken from '../utils/generateToken.js';
+import ownerToken from '../utils/ownerToken.js';
 import Owner from '../models/ownerModels.js';
 import nodemailer from 'nodemailer';
+import jwt from 'jsonwebtoken';
+
 
 //Authenticating owner and setting token
 //route POST /api/owner/login
@@ -13,7 +15,7 @@ const authOwner = asyncHandler (async (req,res) =>{
         if (owner.isBlocked) {
             res.status(401).json({ message: 'User is blocked' })
         }else{
-        generateToken(res, owner._id);
+        ownerToken(res, owner._id);
         res.status(201).json({
             _id: owner._id,
             name: owner.name,
@@ -182,4 +184,25 @@ const verifyOwnerOtp = asyncHandler(async (req, res) => {
 
 
 
-export {authOwner, ownerRegister, logoutOwner, ownerProfile, updateOwnerProfile, verifyOwnerOtp}
+
+  const checkOwner = asyncHandler(async(req,res)=>{
+    const token = req.cookies.owjwt
+  
+    if(!token){
+        return res.status(401).json({message:"unauthorized"})
+    }
+  
+    try {
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+        res.status(200).json({message: "Authorized"})
+    } catch (error) {
+        console.log(error)
+        return res.status(401).json({message: 'Unauthorized'})
+    }
+  })
+  
+
+
+
+
+export {authOwner, ownerRegister, logoutOwner, ownerProfile, updateOwnerProfile, verifyOwnerOtp, checkOwner}

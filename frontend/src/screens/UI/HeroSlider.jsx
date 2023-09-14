@@ -2,6 +2,7 @@ import Slider from "react-slick";
 import { Container } from "reactstrap";
 import '../styles/HeroSlider.css';
 
+
 const HeroSlider = () => {
 
     const settings = {
@@ -44,6 +45,7 @@ const HeroSlider = () => {
         </Container>
       </div>
     </Slider>
+    
   );
 };
 

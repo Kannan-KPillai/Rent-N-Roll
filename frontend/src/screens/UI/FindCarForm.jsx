@@ -4,8 +4,8 @@ import { Form, FormGroup, Label } from 'reactstrap';
 const FindCarForm = () => {
   return (
     <Form className="form">
-      <div className="d-flex align-items-center justify-content-between flex-wrap">
-        <FormGroup className="from__group" >
+      <div className="search-box">
+        <FormGroup className="from__group" style={{width:'100%'}}>
           <Label for="pickupPoint">Pickup Point</Label>
           <select id="pickupPoint">
             <option value="vytilla">Vytilla Hub</option>

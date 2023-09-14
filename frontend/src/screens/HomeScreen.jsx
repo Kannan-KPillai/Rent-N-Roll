@@ -1,6 +1,6 @@
 import FindCarForm from "./UI/FindCarForm";
 import HeroSlider from "./UI/HeroSlider";
-import { Container, Row, Col } from "reactstrap";
+
 
 
 const HomeScreen = () => {
@@ -10,6 +10,9 @@ const HomeScreen = () => {
        <HeroSlider/>
        <div className="hero__form">
         <FindCarForm/>
+       </div>
+       <div >
+        <h1>jhihihjihi</h1>
        </div>
        </section>
   );

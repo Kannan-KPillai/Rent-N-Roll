@@ -15,6 +15,7 @@ const ownerAuthSlice = createSlice({
          logout: (state, action) => {
             state.ownerInfo = null;
             localStorage.removeItem('ownerInfo');
+             localStorage.removeItem("tempOwnerInfo");
          },
     },
 });

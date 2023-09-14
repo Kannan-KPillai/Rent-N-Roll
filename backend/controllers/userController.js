@@ -2,6 +2,8 @@ import asyncHandler from "express-async-handler";
 import generateToken from "../utils/generateToken.js";
 import User from "../models/userModels.js";
 import nodemailer from 'nodemailer';
+import jwt from 'jsonwebtoken';
+
 
 //Authenticating user and setting token
 //route POST /api/users/login
@@ -259,9 +261,25 @@ const getUserStatus = asyncHandler(async (req, res) => {
   }
 });
 
+//**********************************************************************************/
+//Checking for User Token
+//route GET /api/users/checkUser
 
+const checkUser = asyncHandler(async(req,res)=>{
+  const token = req.cookies.adjwt
 
+  if(!token){
+      return res.status(401).json({message:"unauthorized"})
+  }
 
+  try {
+      const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+      res.status(200).json({message: "Authorized"})
+  } catch (error) {
+      console.log(error)
+      return res.status(401).json({message: 'Unauthorized'})
+  }
+})
 
 
 
@@ -274,5 +292,6 @@ export {
   getUserProfile,
   verifyOtp,
   googleLogin,
-  getUserStatus
+  getUserStatus,
+  checkUser
 };
