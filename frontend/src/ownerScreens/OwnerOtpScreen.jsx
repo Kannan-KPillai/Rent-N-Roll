@@ -1,28 +1,26 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useVerifyMutation } from '../ownerSlices/ownerApiSlice'
+import { useVerifyMutation } from "../ownerSlices/ownerApiSlice";
 import { toast } from "react-toastify";
 import { setOwnerCredentials } from "../ownerSlices/ownerAuthSlice";
 import Loader from "../components/Loader";
 
-
 const OwnerOtpScreen = () => {
-
-    const [otp, setOtp] = useState("");
+  const [otp, setOtp] = useState("");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const tempOwnerInfo = localStorage.getItem("tempOwnerInfo");
 
-  const {ownerInfo} = useSelector((state) => state.owner);
+  const { ownerInfo } = useSelector((state) => state.owner);
 
-  useEffect(()=> {
-    if(ownerInfo) {
-       navigate('/owner')
+  useEffect(() => {
+    if (ownerInfo) {
+      navigate("/owner");
     }
-  }, [navigate,ownerInfo])
+  }, [navigate, ownerInfo]);
 
   const ownerEmail = JSON.parse(tempOwnerInfo);
   const email = ownerEmail.email;
@@ -38,14 +36,13 @@ const OwnerOtpScreen = () => {
         toast.error("wrong otp");
       } else {
         dispatch(setOwnerCredentials({ ...res }));
-        toast.success('Account successfully created...');
+        toast.success("Account successfully created...");
         navigate("/owner");
       }
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }
   };
-
 
   return (
     <>
@@ -77,7 +74,7 @@ const OwnerOtpScreen = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default OwnerOtpScreen
+export default OwnerOtpScreen;

@@ -5,8 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import AdminHeader from "./components/AdminHeader";
 import { useLocation } from "react-router-dom";
 import OwnerHeader from "./components/OwnerHeader";
-
-
+import Footer from './components/Footer'
 
 function App() {
 
@@ -27,7 +26,9 @@ function App() {
 
     <ToastContainer />
          <Outlet/>
+         <Footer/>
     </>
+    
   )
 }
 

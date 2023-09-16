@@ -87,14 +87,12 @@ const AdminCategoryScreen = () => {
       setType("");
       setPrice("");
       setExtraPrice("");
-      // Show success notification
       Swal.fire({
         icon: "success",
         title: "Category Added",
         text: "The category has been added successfully.",
       });
     } catch (error) {
-      // Show error notification
       Swal.fire({
         icon: "error",
         title: "Error",
@@ -115,7 +113,6 @@ const handleEditSubmit = async (e) => {
       extraPrice,
     });
     setDatas([...response.data]);
-    // Show success notification
     Swal.fire({
       icon: "success",
       title: "Category Edited",
@@ -123,7 +120,6 @@ const handleEditSubmit = async (e) => {
     });
   } catch (error) {
     console.log(error.message);
-    // Show error notification
     Swal.fire({
       icon: "error",
       title: "Error",

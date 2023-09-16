@@ -54,7 +54,8 @@ const ProfileScreen = () => {
   }
 
   return (
-    <FormContainer>
+    <div style={{height: '680px'}}>
+    <FormContainer >
       <div style={{ textAlign: 'center' }}>
         <h1 style={{ color: 'black', fontSize: '2rem', marginBottom: '20px' }}>Update Profile</h1>
       </div>
@@ -121,6 +122,7 @@ const ProfileScreen = () => {
         </Button>
       </Form>
     </FormContainer>
+    </div>
   );
 }
 

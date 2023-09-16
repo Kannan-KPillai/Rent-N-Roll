@@ -58,10 +58,10 @@ const registerUser = asyncHandler (async (req,res) =>{
       }
       
        // Generate OTP
-        const otp = Math.floor(1000 + Math.random() * 9000);
+     const otp = Math.floor(1000 + Math.random() * 9000);
  
       // Send OTP to user's email
-       await sendOTPByEmail(email, otp);  
+     await sendOTPByEmail(email, otp);  
 
     const user = await User.create({
         name,
@@ -266,7 +266,7 @@ const getUserStatus = asyncHandler(async (req, res) => {
 //route GET /api/users/checkUser
 
 const checkUser = asyncHandler(async(req,res)=>{
-  const token = req.cookies.adjwt
+  const token = req.cookies.jwt
 
   if(!token){
       return res.status(401).json({message:"unauthorized"})

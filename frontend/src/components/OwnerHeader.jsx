@@ -29,7 +29,7 @@ const OwnerHeader = () => {
   };
   
   const { ownerInfo } = useSelector((state) => state.owner);
-  console.log(ownerInfo)
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [logoutApiCall] = useLogoutMutation();

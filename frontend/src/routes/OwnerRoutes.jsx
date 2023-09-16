@@ -5,6 +5,8 @@ import OwnerRegisterScreen from "../ownerScreens/OwnerRegisterScreen.jsx";
 import OwnerPrivateRoutes from '../components/OwnerPrivateRoutes.jsx'
 import OwnerProfile from '../ownerScreens/OwnerProfile.jsx'
 import OwnerOtpScreen from "../ownerScreens/OwnerOtpScreen.jsx";
+import OwnerCarRegisterScreen from "../ownerScreens/OwnerCarRegisterScreen.jsx";
+
 
 
 const OwnerRoutes = () => {
@@ -19,7 +21,7 @@ const OwnerRoutes = () => {
       <Route path='' element={<OwnerPrivateRoutes/>}>
       <Route index={true} path='/' element={<OwnerHomeScreen/>}/>
       <Route path='/profile' element={<OwnerProfile />}/>
-
+      <Route path='/addcar' element={<OwnerCarRegisterScreen/>}/>
       </Route>
 
       </Routes>

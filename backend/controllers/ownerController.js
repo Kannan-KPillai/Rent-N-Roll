@@ -3,6 +3,8 @@ import ownerToken from '../utils/ownerToken.js';
 import Owner from '../models/ownerModels.js';
 import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken';
+import Category from '../models/categoryModel.js';
+import Car from '../models/carModel.js';     
 
 
 //Authenticating owner and setting token
@@ -29,13 +31,11 @@ const authOwner = asyncHandler (async (req,res) =>{
     }
 });
 
-
-
+//***************************************************************************************/
 //Registering a new user 
 //route POST /api/owner/register
 const ownerRegister = asyncHandler (async (req,res) =>{
-   
-   
+  
     const name = req.body.name.trim();
     const email = req.body.email.trim()
     const mobile = req.body.mobile.trim()
@@ -55,7 +55,7 @@ const ownerRegister = asyncHandler (async (req,res) =>{
         res.status(400)
         throw new Error("Mobile already exists")
       }
-      
+    
        // Generate OTP
         const otp = Math.floor(1000 + Math.random() * 9000);
  
@@ -95,8 +95,7 @@ const sendOTPByEmail = async (email, otp) => {
   };
 
   
-
-
+//*********************************************************************************/
 //Logout Owner
 //route POST /api/owner/logout
 const logoutOwner = asyncHandler (async (req,res) =>{  
@@ -108,6 +107,7 @@ const logoutOwner = asyncHandler (async (req,res) =>{
 });
 
 
+//*************************************************************************/
 //Get owner profile
 //route GET /api/owner/profile
 const ownerProfile = asyncHandler (async (req,res) =>{  
@@ -120,6 +120,8 @@ const ownerProfile = asyncHandler (async (req,res) =>{
     res.status(200).json(owner)
 });
 
+
+//*******************************************************************************/
 //Owner profile update
 //route PUT /api/owner/profile
 const updateOwnerProfile = asyncHandler(async(req,res) =>{
@@ -145,10 +147,9 @@ const updateOwnerProfile = asyncHandler(async(req,res) =>{
      throw new Error('User not found')
     }
  })
+   
 
-
-
-
+//*************************************************************************************/
 //Verigying OTP 
 //route POST /api/owner/verify-otp
 const verifyOwnerOtp = asyncHandler(async (req, res) => {
@@ -183,8 +184,9 @@ const verifyOwnerOtp = asyncHandler(async (req, res) => {
   });
 
 
-
-
+//****************************************************************************************/
+//Checking for Owner Token
+//route GET /api/owner/checkOwner
   const checkOwner = asyncHandler(async(req,res)=>{
     const token = req.cookies.owjwt
   
@@ -202,7 +204,69 @@ const verifyOwnerOtp = asyncHandler(async (req, res) => {
   })
   
 
+//***************************************************************************************/
+//Getting all category datas
+//route GET /api/owner/getCategory
+const getCategory = asyncHandler(async(req, res)=>{
+  try {
+    const category= await Category.find({}, { type: 1, price: 1, extraPrice: 1, });
+    res.status(200).json({ category });
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    throw error;
+  }
+})
+
+
+//********************************************************************************************/
+//Adding new Cars 
+//route POST  /api/owner/registerCar
+const registerCar = asyncHandler (async(req,res)=>{
+
+const type = req.body.categories
+  try {
+    const {
+      name,
+      year,
+      transmission,
+      fuel,
+      rent,
+      extraRent,
+      owner, // Assuming you have owner info
+    } = req.body;
+
+    
+    // Create a new car instance with the data
+    const car = new Car({
+      name,
+      year,
+      transmission,
+      fuel,
+      type,
+      rent,
+      extraRent,
+      owner,
+      image: req.files[0].filename,
+      document: req.files[1].filename
+    });
+
+    await car.save();
+    
+    res.status(201).json({ message: 'Car registered successfully' });
+  } catch (error) {
+    console.error('Error registering car:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 
 
-export {authOwner, ownerRegister, logoutOwner, ownerProfile, updateOwnerProfile, verifyOwnerOtp, checkOwner}
+
+
+
+
+
+
+
+export {authOwner, ownerRegister, logoutOwner, ownerProfile, updateOwnerProfile, verifyOwnerOtp,
+   checkOwner, getCategory, registerCar}

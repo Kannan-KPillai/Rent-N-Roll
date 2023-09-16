@@ -5,6 +5,9 @@ import User from '../models/userModels.js';
 import Owner from '../models/ownerModels.js';
 import Category from '../models/categoryModel.js';
 import jwt  from 'jsonwebtoken';
+import Car from '../models/carModel.js';
+
+
 
 //Authenticating Admin and setting token
 //route POST /api/admin/login
@@ -23,6 +26,8 @@ const adminLogin = asyncHandler (async (req,res) =>{
         throw new Error('Invalid email or password');
     }
 });
+
+
 //*******************************************************************************************/
 //Logout Admin
 //route POST /api/admin/logout
@@ -33,6 +38,7 @@ const adminLogout = asyncHandler (async (req,res) =>{
     })
     res.status(200).json({message: 'Admin logged out'})
 });
+
 
 //*************************************************************************************/
 //Getting users listed 
@@ -47,6 +53,7 @@ const userData = asyncHandler(async (req, res) => {
     }
   });
   
+
 //****************************************************************************************/
 //Blocking the user
 //route PUT /api/admin/blockuser
@@ -65,6 +72,7 @@ const userBlock = asyncHandler(async(req,res)=> {
         res.status(500).json({ message: 'Server error' });
     }
 })
+
 
 //****************************************************************************************/
 //Unblocking the user
@@ -99,7 +107,7 @@ const ownerData = asyncHandler(async (req, res) => {
   });
   
 //*********************************************************************************************/
-  //Blocking the owner
+//Blocking the owner
 //route PUT /api/admin/blockowner
 const ownerBlock = asyncHandler(async(req,res)=> {
     try{
@@ -137,9 +145,9 @@ const ownerUnblock = asyncHandler(async(req,res)=>{
 })
 
 
+//*********************************************************************************************/
 //Checking the Owner
 //route GET /api/admin/checkAdmin
-//*********************************************************************************************/
 const checkAdmin = asyncHandler(async(req,res)=>{
     const token = req.cookies.adjwt
     if(!token){
@@ -155,7 +163,8 @@ const checkAdmin = asyncHandler(async(req,res)=>{
     }
 })
 
-//***********************************************************************/
+
+//*****************************************************************************************/
 //Adding the Car Categories
 //route POST /api/admin/category
 const addCategory = asyncHandler(async (req, res) => {
@@ -181,7 +190,6 @@ const addCategory = asyncHandler(async (req, res) => {
         price,
         extraPrice,
       });
-  
       const response = await Category.find();
       res.status(200).json(response);
     } catch (error) {
@@ -190,7 +198,6 @@ const addCategory = asyncHandler(async (req, res) => {
   });
   
   
-
 
 //*********************************************************************************************/
 //Getting Categories listed
@@ -209,7 +216,6 @@ const getCategory = asyncHandler(async (req, res) => {
   //***********************************************************************************************/
 //Getting the categories by ID 
 //route GET /api/admin/category/:id
-
 const getCategoryById = asyncHandler(async(req,res)=>{
     const category = await Category.findById(req.params.id);
     res.status(201).json(category)
@@ -217,6 +223,9 @@ const getCategoryById = asyncHandler(async(req,res)=>{
 })
 
 
+//***********************************************************************************************/
+//Editing the Categories
+//route PUT /api/admin/category/:id
 const editCategory = asyncHandler(async (req, res) => {
     const category = await Category.findById(req.params.id);
     if (category) {
@@ -234,9 +243,30 @@ const editCategory = asyncHandler(async (req, res) => {
   });
   
 
+//*******************************************************************************************/
+//Getting all car datas
+//route GET /api/admin/getCars
+const getCars = asyncHandler(async (req, res) => {
+  try {
+    const cars = await Car.find({}, {
+      name: 1,
+      year: 1,
+      transmission: 1,
+      fuel: 1,
+      type: 1,
+      rent: 1,
+      extraRent: 1, 
+      document: 1,
+      owner: 1,
+    })
+    .populate('owner', 'name mobile'); 
 
-
-
+    res.status(200).json(cars);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
 
 
 
@@ -244,4 +274,4 @@ const editCategory = asyncHandler(async (req, res) => {
 
 
 export {adminLogin,  adminLogout, userData, userBlock, userUnblock, ownerData, ownerBlock, ownerUnblock,
-        checkAdmin, addCategory, getCategory, getCategoryById, editCategory}
+        checkAdmin, addCategory, getCategory, getCategoryById, editCategory, getCars}

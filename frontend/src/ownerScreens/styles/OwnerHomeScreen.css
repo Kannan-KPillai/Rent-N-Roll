@@ -1,9 +1,10 @@
 /* HomeScreen.css */
 .OwnerHomeScreen {
-    background-image: url('https://cars.tatamotors.com/images/harrier/gallery/harrier-gallery-image-03.png');
+    background-image: url('https://cars.tatamotors.com/images/harrier/gallery/harrier-gallery-image-01.png');
     background-size: cover;
     background-position: center;
-    min-height: 600px; /* Replace 300px with your desired height */
+    min-height: 600px; 
+    background-color: rgba(255, 255, 255, 0.5);
   }
   .ownertext {
     font-family: 'Teko';
@@ -13,5 +14,72 @@
     justify-content: center;
     align-items: center;
     height: 60vh;
+    text-shadow: "2px 2px 0 white",
+  }
+  .how-it-works{
+    text-align: center; /* Center-align the text horizontally */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* font-family: 'Teko'; */
+    padding-top: 4rem;
+  }
+  .red-letter {
+    color: red;
+  }
+  .btn001 {
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+    border: 2px solid black;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 10px; 
+  }
+  
+  button:hover {
+    background-color: rgb(255, 0, 0);
     color: black;
   }
+  .car-list {
+    width: 80%;
+    margin: 1rem auto;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .car-header,
+  .car-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .car-header {
+    display: flex;
+    justify-content: space-between;
+    background-color: #262728; /* Table header background color */
+    color: white; /* Text color for table header */
+    font-weight: bold;
+    padding: 0.5rem;
+  }
+  
+  .car-type {
+    flex: 1;
+  }
+  
+  .cars {
+    flex: 2;
+  }
+  
+  .car-type,
+.cars,
+.rent-day,
+.extra-rent {
+  flex: 1;
+  padding: 0.5rem;
+  text-align: center;
+  font-weight: bold;
+}

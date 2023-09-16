@@ -32,7 +32,7 @@ const PrivateRoute = () => {
               console.error('Check auth error:', error);
           }
       };
-    
+       
       if (userInfo) {
           checkAuth();
       }

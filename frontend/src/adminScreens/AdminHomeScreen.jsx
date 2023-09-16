@@ -115,8 +115,8 @@ const AdminHomeScreen = () => {
                   <td>
                     <button
                       style={{
-                        width: "100px", // Fixed width
-                        height: "30px", // Fixed height
+                        width: "100px",
+                        height: "30px", 
                         backgroundColor: user.isBlocked ? "green"  : "red", // Red for blocked, green for unblocked
                         color: "white",
                         border: "none",
