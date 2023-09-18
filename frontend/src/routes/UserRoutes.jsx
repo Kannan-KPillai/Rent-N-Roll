@@ -6,7 +6,7 @@ import RegisterScreen from '../screens/RegisterScreen.jsx';
 import ProfileScreen from '../screens/ProfileScreen.jsx';
 import NotFound from "../components/NotFound.jsx";
 import OtpVerificationScreen from "../screens/OtpVerificationScreen.jsx";
-
+import CarListScreen from "../screens/CarListScreen.jsx";
 
 const UserRoutes = () => {
   return (
@@ -21,6 +21,7 @@ const UserRoutes = () => {
       {/* Private Routes */}
       <Route path='' element={<PrivateRoutes/>}>
       <Route path='/profile' element={<ProfileScreen/>}/>
+      <Route path='/carList' element={<CarListScreen/>}/>
       </Route>
       
       </Routes>

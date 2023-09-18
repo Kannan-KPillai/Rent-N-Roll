@@ -18,6 +18,8 @@ const AdminHomeScreen = () => {
     paddingRight: "5rem",
     width: "97%",
     backgroundColor: "rgba(53, 55, 67, 1)",
+    paddingBottom: "3rem",
+    overflowY: "scroll",
   };
 
   const [users, setUsers] = useState([]);
@@ -43,7 +45,6 @@ const AdminHomeScreen = () => {
       const endpoint = isBlocked
         ? `/api/admin/unblockUser?userId=${userId}`
         : `/api/admin/blockUser?userId=${userId}`;
-  
       // Display a SweetAlert confirmation dialog
       const result = await Swal.fire({
         title: `Are you sure you want to ${isBlocked ? 'unblock' : 'block'} this user?`,
@@ -115,8 +116,8 @@ const AdminHomeScreen = () => {
                   <td>
                     <button
                       style={{
-                        width: "100px",
-                        height: "30px", 
+                        width: "100px", // Fixed width
+                        height: "30px", // Fixed height
                         backgroundColor: user.isBlocked ? "green"  : "red", // Red for blocked, green for unblocked
                         color: "white",
                         border: "none",

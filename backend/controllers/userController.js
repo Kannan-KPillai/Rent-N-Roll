@@ -3,6 +3,7 @@ import generateToken from "../utils/generateToken.js";
 import User from "../models/userModels.js";
 import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken';
+import Car from "../models/carModel.js";
 
 
 //Authenticating user and setting token
@@ -173,6 +174,7 @@ const verifyOtp = asyncHandler(async (req, res) => {
 
     if (user.isVerified === true) {
       generateToken(res, user._id);
+     
        return res.status(201).json({
         _id: user._id,
         name: user.name,
@@ -199,7 +201,6 @@ const verifyOtp = asyncHandler(async (req, res) => {
   const {  user_id, name, email, profileGoogleImage } = req.body; 
   // Check if the user already exists
   let user = await User.findOne({ email });
-console.log("-------------"+ user);
 
   if (user) {
     if (user.isBlocked) {
@@ -261,10 +262,10 @@ const getUserStatus = asyncHandler(async (req, res) => {
   }
 });
 
+
 //**********************************************************************************/
 //Checking for User Token
 //route GET /api/users/checkUser
-
 const checkUser = asyncHandler(async(req,res)=>{
   const token = req.cookies.jwt
 
@@ -282,16 +283,39 @@ const checkUser = asyncHandler(async(req,res)=>{
 })
 
 
+//*************************************************************************/
+//Getting all car details 
+//route GET /api/users/getCars
+// Getting all car details
+// Route GET /api/users/getCars
+const getCars = asyncHandler(async (req, res) => {
+  try {
+    const cars = await Car.find({ approved: true }, { 
+      name: 1,
+      year: 1,
+      transmission: 1,
+      fuel: 1,
+      type: 1,
+      rent: 1,
+      extraRent: 1,
+      image: 1,
+    });
+    res.status(200).json(cars);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+
+
+
+
 
 
 export {
-  authUser,
-  registerUser,
-  logoutUser,
-  updateUserProfile,
-  getUserProfile,
-  verifyOtp,
-  googleLogin,
-  getUserStatus,
-  checkUser
+  authUser,registerUser,
+  logoutUser,updateUserProfile,
+  getUserProfile,verifyOtp,
+  googleLogin,getUserStatus,
+  checkUser,getCars
 };

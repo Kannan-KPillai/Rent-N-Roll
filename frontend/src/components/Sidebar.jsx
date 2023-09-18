@@ -26,6 +26,11 @@ const Sidebar = ({children}) => {
         path:'/admin/category',
         name: 'Category',
         icon: <FaTh/>
+      },
+      {
+        path:'/admin/getCars',
+        name: 'Requests',
+        icon: <FaTh/>
       }
 ]
   return (

@@ -161,12 +161,13 @@ const verifyOwnerOtp = asyncHandler(async (req, res) => {
       return res.status(400).json({ message: 'Owner not found' });
     }
   
-    if (owner.otp === otp) {
+    if (owner.otp.toString() === otp.toString()) {
       owner.isVerified = true;
       await owner.save();
   
       if (owner.isVerified === true) {
-        generateToken(res, owner._id);
+        ownerToken(res, owner._id);
+        console.log('********************************************* ')
          return res.status(201).json({
           _id: owner._id,
           name: owner.name,
@@ -261,7 +262,7 @@ const type = req.body.categories
 
 
 
-
+        
 
 
 

@@ -17,6 +17,8 @@ const AdminOwnerList = () => {
         paddingRight: "5rem",
         width: "97%",
         backgroundColor: "rgba(53, 55, 67, 1)",
+        paddingBottom:'3rem',
+        overflowY: 'scroll',
       };
 
       const [owners, setOwners] = useState([])

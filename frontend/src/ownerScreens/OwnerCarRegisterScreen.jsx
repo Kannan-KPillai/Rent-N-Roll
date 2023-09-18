@@ -3,8 +3,13 @@ import "./styles/carRegister.css";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+
 
 const OwnerCarRegisterScreen = () => {
+
+  const navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [year, setYear] = useState("");
   const [transmission, setTransmission] = useState("");
@@ -123,6 +128,7 @@ const OwnerCarRegisterScreen = () => {
       setExtraKmPrice("");
       setSelectedCategory("");
       }
+      navigate('/owner')
     } catch (error) {
       console.error("Error submitting form:", error);
       // Show an error SweetAlert
@@ -167,6 +173,7 @@ const OwnerCarRegisterScreen = () => {
             value={transmission}
             onChange={(e) => setTransmission(e.target.value)}
           >
+             <option value="">Select transmission type</option>
             <option value="automatic">Automatic</option>
             <option value="manual">Manual</option>
           </select>
@@ -180,6 +187,7 @@ const OwnerCarRegisterScreen = () => {
             value={fuel}
             onChange={(e) => setFuel(e.target.value)}
           >
+            <option value="">Select fuel type</option>
             <option value="petrol">Petrol</option>
             <option value="diesel">Diesel</option>
           </select>

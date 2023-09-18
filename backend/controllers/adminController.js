@@ -45,7 +45,7 @@ const adminLogout = asyncHandler (async (req,res) =>{
 //route GET /api/admin
 const userData = asyncHandler(async (req, res) => {
     try {
-      const users = await User.find({}, { name: 1, email: 1, mobile: 1, _id: 1 });
+      const users = await User.find({}, { name: 1, email: 1, mobile: 1, _id: 1, isBlocked:1 });
       res.status(200).json({ users });
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -66,7 +66,13 @@ const userBlock = asyncHandler(async(req,res)=> {
           }
           user.isBlocked = true;
           await user.save();
-          res.status(200).json({ message: 'User blocked successfully' });
+          res.status(200).json({ 
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            mobile: user.mobile,
+            isBlocked: user.isBlocked
+           });
     }catch(error){
         console.error('Error blocking user:', error);
         res.status(500).json({ message: 'Server error' });
@@ -85,7 +91,13 @@ const userUnblock = asyncHandler(async(req,res)=>{
           }
           user.isBlocked = false;
           await user.save();
-          res.status(200).json({message:'User unblocked succesfully'})
+          res.status(200).json({ 
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            mobile: user.mobile,
+            isBlocked: user.isBlocked
+           });
     }catch(error){
         console.error('Error Un blocking user:', error);
         res.status(500).json({ message: 'Server error' });
@@ -98,7 +110,7 @@ const userUnblock = asyncHandler(async(req,res)=>{
 //route GET /api/admin/owner
 const ownerData = asyncHandler(async (req, res) => {
     try {
-      const owner = await Owner.find({}, { name: 1, email: 1, mobile: 1, _id: 1 });
+      const owner = await Owner.find({}, { name: 1, email: 1, mobile: 1, _id: 1, isBlocked:1 });
       res.status(200).json({ owner });
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -258,6 +270,7 @@ const getCars = asyncHandler(async (req, res) => {
       extraRent: 1, 
       document: 1,
       owner: 1,
+      approved:1,
     })
     .populate('owner', 'name mobile'); 
 
@@ -269,9 +282,58 @@ const getCars = asyncHandler(async (req, res) => {
 });
 
 
+//*******************************************************************************************/
+// Accepting the car
+// Route PUT /api/admin/acceptCar
+const acceptCar = asyncHandler(async (req, res) => {
+  const car = await Car.findById(req.query.carId);
+
+  try {
+    car.approved = true;
+    await car.save();
+    
+    const updatedCar = await Car.findById(req.query.carId);
+    res.status(200).json({ car: updatedCar });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
+
+//*******************************************************************************************/
+//Reject/Delete the car request
+//route PUT/api/admin/rejectCar
+const rejectCar = asyncHandler(async(req,res)=>{
+  const carId = req.query.carId;
+
+  try {
+    const car = await Car.findById(carId);
+
+    if (!car) {
+      return res.status(404).json({ message: 'Car not found' });
+    }
+    await car.deleteOne();
+    res.status(200).json({ message: 'Car deleted successfully' });
+
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+})
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
 export {adminLogin,  adminLogout, userData, userBlock, userUnblock, ownerData, ownerBlock, ownerUnblock,
-        checkAdmin, addCategory, getCategory, getCategoryById, editCategory, getCars}
+        checkAdmin, addCategory, getCategory, getCategoryById, editCategory, getCars, acceptCar, rejectCar }

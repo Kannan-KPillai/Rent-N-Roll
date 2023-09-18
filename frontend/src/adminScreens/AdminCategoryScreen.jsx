@@ -13,6 +13,7 @@ const AdminCategoryScreen = () => {
     paddingRight: "5rem",
     width: "97%",
     backgroundColor: "rgba(53, 55, 67, 1)",
+    overflowY: 'scroll',
   };
 
   const headerStyle = {

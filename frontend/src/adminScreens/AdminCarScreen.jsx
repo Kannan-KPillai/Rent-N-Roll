@@ -11,13 +11,61 @@ const AdminCarScreen = () => {
     const fetchCars = async () => {
       try {
         const response = await axios.get("/api/admin/getCars");
-        setCars(response.data);
+        setCars(response.data.map((car) => ({ ...car, showButtons: true })));
       } catch (error) {
         console.error("Error fetching cars:", error);
       }
     };
     fetchCars();
-  }, []);
+  }, [setCars]);
+
+  const handleApprove = async (carId, index) => {
+    try {
+      const response = await axios.put(`/api/admin/acceptCar?carId=${carId}`);
+
+      if (response.status === 200) {
+        Swal.fire({
+          title: "Car Approved!",
+          text: response.data.message,
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+
+        // Update the showButtons property for the approved car to hide the buttons
+        const updatedCars = [...cars];
+        updatedCars[index].showButtons = false;
+        setCars(updatedCars);
+      } else {
+        console.error("Error approving car: Unexpected response status");
+      }
+    } catch (error) {
+      console.error("Error approving car:", error);
+    }
+  };
+
+  const handleReject = async (carId, index) => {
+    try {
+      const response = await axios.put(`/api/admin/rejectCar?carId=${carId}`);
+
+      if (response.status === 200) {
+        Swal.fire({
+          title: "Car Rejected",
+          text: "This car has been rejected.",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+
+        // Update the showButtons property for the rejected car to hide the buttons
+        const updatedCars = [...cars];
+        updatedCars[index].showButtons = false;
+        setCars(updatedCars);
+      } else {
+        console.error("Error rejecting car: Unexpected response status");
+      }
+    } catch (error) {
+      console.error("Error rejecting car:", error);
+    }
+  };
 
   const headerStyle = {
     color: "black",
@@ -42,6 +90,8 @@ const AdminCarScreen = () => {
           paddingRight: "5rem",
           width: "97%",
           backgroundColor: "rgba(53, 55, 67, 1)",
+          paddingBottom: "3rem",
+          overflowY: "scroll",
         }}
       >
         <Card>
@@ -71,12 +121,12 @@ const AdminCarScreen = () => {
                     <td>{car.year}</td>
                     <td>{car.transmission}</td>
                     <td>{car.fuel}</td>
-
                     <td>
                       <a
                         href={`http://localhost:5000/uploads/${car.document}`}
                         target="_blank"
-                        rel="noopener noreferrer">
+                        rel="noopener noreferrer"
+                      >
                         <img
                           src={`http://localhost:5000/uploads/${car.document}`}
                           alt="Car Image"
@@ -88,33 +138,40 @@ const AdminCarScreen = () => {
                         />
                       </a>
                     </td>
-
                     <td>
-                      <button
-                        style={{
-                          backgroundColor: "green",
-                          color: "white",
-                          marginRight: "5px",
-                          width: "100px",
-                          height: "30px",
-                          border: "none",
-                          cursor: "pointer",
-                        }}
-                      >
-                        Accept
-                      </button>
-                      <button
-                        style={{
-                          backgroundColor: "red",
-                          color: "white",
-                          width: "100px",
-                          height: "30px",
-                          border: "none",
-                          cursor: "pointer",
-                        }}
-                      >
-                        Reject
-                      </button>
+                      {car.showButtons && !car.approved ? (
+                        <>
+                          <button
+                            style={{
+                              backgroundColor: "green",
+                              color: "white",
+                              marginRight: "5px",
+                              width: "100px",
+                              height: "30px",
+                              border: "none",
+                              cursor: "pointer",
+                            }}
+                            onClick={() => handleApprove(car._id, index)}
+                          >
+                            Accept
+                          </button>
+                          <button
+                            style={{
+                              backgroundColor: "red",
+                              color: "white",
+                              width: "100px",
+                              height: "30px",
+                              border: "none",
+                              cursor: "pointer",
+                            }}
+                            onClick={() => handleReject(car._id, index)}
+                          >
+                            Reject
+                          </button>
+                        </>
+                      ) : (
+                        car.status
+                      )}
                     </td>
                   </tr>
                 ))}

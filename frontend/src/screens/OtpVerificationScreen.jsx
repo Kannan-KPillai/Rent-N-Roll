@@ -13,14 +13,15 @@ const OtpVerificationScreen = () => {
   const dispatch = useDispatch();
 
    const {userInfo} = useSelector((state) => state.auth);
-   console.log(userInfo)
+   const tempInfo = localStorage.getItem("tempInfo");
+
   useEffect(()=> {
     if(userInfo) {
        navigate('/') 
     }
   }, [navigate,userInfo])
 
-  const tempInfo = localStorage.getItem("tempInfo");
+ 
  
   const userEmail = JSON.parse(tempInfo);
   const email = userEmail.email;
@@ -43,7 +44,7 @@ const OtpVerificationScreen = () => {
         navigate("/");
       }
     } catch (err) {
-      console.log(err)
+      toast.error(err?.data?.message || err.error);
     }
   };
 
