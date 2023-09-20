@@ -233,11 +233,10 @@ const type = req.body.categories
       fuel,
       rent,
       extraRent,
-      owner, // Assuming you have owner info
+      owner, 
     } = req.body;
 
     
-    // Create a new car instance with the data
     const car = new Car({
       name,
       year,
@@ -262,6 +261,18 @@ const type = req.body.categories
 
 
 
+//**********************************************************************/
+//Getting owner data for checking whether blocked or not
+//route GET /api/owner/status/:Id
+const getOwnerStatus = asyncHandler(async (req, res) => {
+  const ownerId = req.params.Id; 
+  const owner = await Owner.findById(ownerId);
+  if (owner) {
+    res.status(200).json({ isBlocked: owner.isBlocked }); 
+  } else {
+    res.status(404).json({ message: 'Owner not found'});
+  }
+});
         
 
 
@@ -270,4 +281,4 @@ const type = req.body.categories
 
 
 export {authOwner, ownerRegister, logoutOwner, ownerProfile, updateOwnerProfile, verifyOwnerOtp,
-   checkOwner, getCategory, registerCar}
+   checkOwner, getCategory, registerCar, getOwnerStatus}

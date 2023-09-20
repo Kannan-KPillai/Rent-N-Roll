@@ -17,11 +17,11 @@ const Sidebar = ({children}) => {
         name:'Owners',
         icon: <FaUserAlt/>
       },
-      {
-        path:'/admi',
-        name:'Dashboard',
-        icon:<FaTh/>
-      },
+      // {
+      //   path:'/admi',
+      //   name:'Dashboard',
+      //   icon:<FaTh/>
+      // },
       {
         path:'/admin/category',
         name: 'Category',
@@ -30,6 +30,11 @@ const Sidebar = ({children}) => {
       {
         path:'/admin/getCars',
         name: 'Requests',
+        icon: <FaTh/>
+      },
+      {
+        path:'/admin/getCarData',
+        name: 'Cars',
         icon: <FaTh/>
       }
 ]

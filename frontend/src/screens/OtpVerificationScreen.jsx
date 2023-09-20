@@ -54,7 +54,7 @@ const OtpVerificationScreen = () => {
         <div>
           <form className="form1" onSubmit={submitHandler}>
             <h1>OTP Verification</h1>
-
+              <h6 style={{color: 'red'}}>* OTP has sent to your email</h6>
             <div className="div1">
               <label htmlFor="lastName">OTP</label>
               <input

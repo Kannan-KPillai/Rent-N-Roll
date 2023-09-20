@@ -22,7 +22,7 @@ router.post('/verify-otp', verifyOtp);
 
 router.get('/checkUser', checkUser);
 
-router.get('/status', getUserStatus);
+router.get('/status/:Id', getUserStatus);
 
 router.get('/getCars', getCars);
 

@@ -13,4 +13,5 @@ res.cookie('owjwt', token, {
 })
 }
 
+
 export default generateToken;

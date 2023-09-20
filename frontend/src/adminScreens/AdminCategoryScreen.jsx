@@ -75,12 +75,25 @@ const AdminCategoryScreen = () => {
     setShowEditModal(false);
   };
 
+
   // Sending data to backend for adding a new category
   const handleAddSubmit = async (e) => {
     e.preventDefault();
+  
+    const lowercaseType = type.toLowerCase();
+
+    if (datas.some((data) => data.type.toLowerCase() === lowercaseType)) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Category with the same name already exists.",
+      });
+      return; 
+    }
+  
     try {
       const response = await axios.post("/api/admin/category", {
-        type,
+        type: lowercaseType, 
         price,
         extraPrice,
       });
@@ -88,6 +101,7 @@ const AdminCategoryScreen = () => {
       setType("");
       setPrice("");
       setExtraPrice("");
+      handleCloseAddModal();
       Swal.fire({
         icon: "success",
         title: "Category Added",
@@ -100,16 +114,31 @@ const AdminCategoryScreen = () => {
         text: "An error occurred while adding the category.",
       });
     }
-    handleCloseAddModal();
   };
   
+  
 
-  // Sending data to backend for editing a category
+// Sending data to backend for editing a category
 const handleEditSubmit = async (e) => {
   e.preventDefault();
+  
+  const lowercaseType = type.toLowerCase();
+  if (
+    datas.some((data) => 
+      data.type.toLowerCase() === lowercaseType && data._id !== editCatId
+    )
+  ) {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "Category with the same name already exists.",
+    });
+    return;
+  }
+
   try {
     const response = await axios.put(`/api/admin/category/${editCatId}`, {
-      type,
+      type: lowercaseType, 
       price,
       extraPrice,
     });
@@ -129,6 +158,9 @@ const handleEditSubmit = async (e) => {
   }
   handleCloseEditModal();
 };
+
+
+
 
   return (
     <div

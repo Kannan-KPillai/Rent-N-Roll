@@ -97,6 +97,7 @@ const OwnerCarRegisterScreen = () => {
       formData.append("owner", ownerInfo._id);
       formData.append('ownerName', ownerInfo.name);
       formData.append('ownerMobile', ownerInfo.mobile);
+      formData.append('ownerEmail', ownerInfo.email);
 
       const config = {
         headers: {

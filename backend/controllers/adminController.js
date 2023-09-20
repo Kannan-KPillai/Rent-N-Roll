@@ -256,23 +256,25 @@ const editCategory = asyncHandler(async (req, res) => {
   
 
 //*******************************************************************************************/
-//Getting all car datas
-//route GET /api/admin/getCars
+// Getting all car datas
+// Route GET /api/admin/getCars
 const getCars = asyncHandler(async (req, res) => {
   try {
-    const cars = await Car.find({}, {
-      name: 1,
-      year: 1,
-      transmission: 1,
-      fuel: 1,
-      type: 1,
-      rent: 1,
-      extraRent: 1, 
-      document: 1,
-      owner: 1,
-      approved:1,
-    })
-    .populate('owner', 'name mobile'); 
+    const cars = await Car.find(
+      { approved: false }, 
+      {
+        name: 1,
+        year: 1,
+        transmission: 1,
+        fuel: 1,
+        type: 1,
+        rent: 1,
+        extraRent: 1,
+        document: 1,
+        owner: 1,
+        approved: 1,
+      }
+    ).populate('owner', 'name mobile');
 
     res.status(200).json(cars);
   } catch (error) {
@@ -280,6 +282,7 @@ const getCars = asyncHandler(async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 });
+
 
 
 //*******************************************************************************************/
@@ -322,6 +325,18 @@ const rejectCar = asyncHandler(async(req,res)=>{
 })
 
 
+//**************************************************************************************************/
+// Getting all car datas
+// Route GET /api/admin/getCarData
+const getCarData = asyncHandler(async (req, res) => {
+  try {
+    const cars = await Car.find({}).populate('owner', 'name mobile');
+    res.status(200).json(cars);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
 
 
 
@@ -333,7 +348,5 @@ const rejectCar = asyncHandler(async(req,res)=>{
 
 
 
-
-
-export {adminLogin,  adminLogout, userData, userBlock, userUnblock, ownerData, ownerBlock, ownerUnblock,
+export {adminLogin,  adminLogout, userData, userBlock, userUnblock, ownerData, ownerBlock, ownerUnblock,getCarData,
         checkAdmin, addCategory, getCategory, getCategoryById, editCategory, getCars, acceptCar, rejectCar }

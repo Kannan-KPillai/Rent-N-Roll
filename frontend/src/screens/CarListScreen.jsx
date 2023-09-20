@@ -26,27 +26,34 @@ const CarListScreen = () => {
   return (
 
    <div>
-  <div style={{ background: 'rgba(0, 0, 0, 0.6)', height: '18rem', padding: '1rem', color: 'white' }}>
-  <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Pickup Information</h2>
-  <div style={{ marginBottom: '1rem' }}>
-    <strong>Pickup Point:</strong> {bookingData ? bookingData.pickupPoint : ''}
-  </div>
-  <div style={{ marginBottom: '1rem' }}>
-    <strong>Date:</strong> {bookingData ? bookingData.pickupDate : ''}
-  </div>
-  <div style={{ marginBottom: '1rem' }}>
-    <strong>Time:</strong> {bookingData ? bookingData.pickupTime : ''}
+ <div className="pickup-dropoff-container" >
+  <div className="pickup-info">
+    <h2 className="info-title">Pickup Information</h2>
+    <div className="info-item">
+      <strong>Pickup Point:</strong> {bookingData ? bookingData.pickupPoint : ''}
+    </div>
+    <div className="info-item">
+      <strong>Date:</strong> {bookingData ? bookingData.pickupDate : ''}
+    </div>
   </div>
 
-  <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Drop-off Information</h2>
-  <div style={{ marginBottom: '1rem' }}>
-    <strong>Drop-off Point:</strong> {bookingData ? bookingData.dropoffPoint : ''}
+  <div className="dropoff-info">
+    <h2 className="info-title">Drop-off Information</h2>
+    <div className="info-item">
+      <strong>Drop-off Point:</strong> {bookingData ? bookingData.dropoffPoint : ''}
+    </div>
+    <div className="info-item">
+      <strong>Date:</strong> {bookingData ? bookingData.dropoffDate : ''}
+    </div>
   </div>
-  <div style={{ marginBottom: '1rem' }}>
-    <strong>Date:</strong> {bookingData ? bookingData.dropoffDate : ''}
-  </div>
+  <h6 style={{ color: 'red', textAlign: 'center', paddingLeft:'4rem', paddingRight: '4rem'}}>
+  * For every vehicle category in our fleet, we offer a standard allowance of 150 kilometers per rental period at no additional cost.
+  However, should your journey exceed this allotted distance, an excess kilometer charge will be applicable.
+</h6>
+
 </div>
-
+    
+    <h1 style={{textAlign: 'center', background:'grey',color:'black'}}>AVAILABLE CARS</h1>
 
     <div style={{ display: 'flex', flexWrap: 'wrap', paddingTop:'2rem', paddingLeft:'2rem' }}>
   {cars.map((car) => (

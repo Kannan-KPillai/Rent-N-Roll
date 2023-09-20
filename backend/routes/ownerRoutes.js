@@ -1,6 +1,7 @@
 import express from 'express';
 const router = express.Router();
-import { authOwner, ownerRegister, logoutOwner, ownerProfile, updateOwnerProfile, verifyOwnerOtp, checkOwner, getCategory, registerCar} from '../controllers/ownerController.js' 
+import { authOwner, ownerRegister, logoutOwner, ownerProfile, updateOwnerProfile, verifyOwnerOtp,
+   checkOwner, getCategory, registerCar, getOwnerStatus} from '../controllers/ownerController.js' 
 import multer from 'multer';
 
 
@@ -50,7 +51,7 @@ router.get('/getCategory', getCategory)
 
 router.post('/registerCar', upload.array('file'),registerCar)
 
-
+router.get('/status/:Id', getOwnerStatus);
 
 
 

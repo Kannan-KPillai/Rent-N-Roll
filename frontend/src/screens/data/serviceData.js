@@ -31,7 +31,7 @@ const serviceData = [
       id: 5,
       title: "Competitive pricing",
       icon: "ri-wallet-2-line",
-      desc: "We offer competitive pricing on all our rentals, with no hidden fees or extra charges. You can easily interact with the owners easily and no hidden charges",
+      desc: "We offer competitive pricing on all our rentals, with no hidden fees or extra charges. You can easily interact with the owners easily ",
     },
   
     {

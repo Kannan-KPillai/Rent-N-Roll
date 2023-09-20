@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { logout } from '../slices/authSlice'
 import { useLogoutMutation } from "../slices/usersApiSlice";
 import { useEffect } from "react";
+import axios from 'axios'
 
 const PrivateRoute = () => {
     const {userInfo} = useSelector ((state) => state.auth);
@@ -12,10 +13,28 @@ const PrivateRoute = () => {
     const navigate = useNavigate();
     const [logoutApiCall] = useLogoutMutation();
 
-    const isBlocked = userInfo && userInfo.isBlocked;
-    if (isBlocked) {
-      dispatch(logout());
-    }
+   
+    useEffect(() => {
+      const fetchUserStatus = async () => {
+        try {
+          const {data}= await axios.get(`/api/users/status/${userInfo._id}`);
+          
+          if (data.isBlocked) {
+            await logoutApiCall().unwrap();
+            dispatch(logout());
+            navigate('/login');       
+          }
+        } catch (error) {
+          console.error('Fetch user status error:', error);
+        }
+      };
+  
+      if (userInfo) {
+        fetchUserStatus();
+      }
+    }, [userInfo, dispatch, logoutApiCall, navigate]);
+  
+
 
     useEffect(() => {
       const checkAuth = async () => {

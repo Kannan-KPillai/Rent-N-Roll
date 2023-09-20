@@ -244,21 +244,15 @@ const verifyOtp = asyncHandler(async (req, res) => {
 
 
 //**********************************************************************/
-
 //Getting user data 
 //route GET /api/users/status/:Id
-
 const getUserStatus = asyncHandler(async (req, res) => {
   const userId = req.params.Id; 
   const user = await User.findById(userId);
   if (user) {
-    if (user.isBlocked) {
-      res.status(401).json({ message: 'User is blocked' });
-    } else {
-      res.status(200).json({ isBlocked: user.isBlocked });
-    }
+    res.status(200).json({ isBlocked: user.isBlocked }); 
   } else {
-    res.status(404).json({ message: 'User not found' });
+    res.status(404).json({ message: 'User not found'});
   }
 });
 
@@ -284,8 +278,6 @@ const checkUser = asyncHandler(async(req,res)=>{
 
 
 //*************************************************************************/
-//Getting all car details 
-//route GET /api/users/getCars
 // Getting all car details
 // Route GET /api/users/getCars
 const getCars = asyncHandler(async (req, res) => {

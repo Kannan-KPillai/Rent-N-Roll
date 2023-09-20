@@ -2,8 +2,7 @@ import express from 'express';
 const router = express.Router();
 import {adminLogin, adminLogout, userData, userBlock, userUnblock, ownerData, ownerBlock,
      ownerUnblock, checkAdmin, addCategory, getCategory, getCategoryById, editCategory, getCars,
-     acceptCar, 
-     rejectCar} from '../controllers/adminController.js'
+     acceptCar,  rejectCar, getCarData} from '../controllers/adminController.js'
 
 
 
@@ -40,7 +39,7 @@ router.put('/acceptCar', acceptCar)
 
 router.put('/rejectCar', rejectCar)
 
-
+router.get('/getCarData', getCarData)
 
 
 

@@ -49,6 +49,15 @@ const FindCarForm = () => {
     setFormData({ ...formData, [id]: value });
   };
 
+  const getMinDropoffDate = () => {
+    if (formData.pickupDate) {
+      const pickupDate = new Date(formData.pickupDate);
+      pickupDate.setDate(pickupDate.getDate() + 1); 
+      return pickupDate.toISOString().split('T')[0];
+    }
+    return new Date().toISOString().split('T')[0];
+  };
+
   return (
     <Form className="form" onSubmit={handleFormSubmit}>
       <div className="search-box">
@@ -113,17 +122,18 @@ const FindCarForm = () => {
         </FormGroup>
 
         <FormGroup className="from__group">
-          <Label for="dropoffDate">Dropoff Date</Label>
-          <input
-            type="date"
-            id="dropoffDate"
-            value={formData.dropoffDate}
-            onChange={handleInputChange}
-            placeholder="Select dropoff date"
-            required
-            min={new Date().toISOString().split('T')[0]}
-          />
-        </FormGroup>
+  <Label for="dropoffDate">Dropoff Date</Label>
+  <input
+    type="date"
+    id="dropoffDate"
+    value={formData.dropoffDate}
+    onChange={handleInputChange}
+    placeholder="Select dropoff date"
+    required
+    min={getMinDropoffDate()}
+  />
+</FormGroup>
+
       </div>
       <div className="find-button">
         <button className="btn find__car-btn">Find Car</button>

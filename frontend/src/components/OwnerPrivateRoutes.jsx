@@ -1,4 +1,5 @@
 import { Navigate, Outlet, useNavigate} from "react-router-dom";
+import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { logout } from "../ownerSlices/ownerAuthSlice";
@@ -12,6 +13,27 @@ const OwnerPrivateRoutes = () => {
     const [logoutApiCall] = useLogoutMutation();
 
     
+    useEffect(() => {
+        const fetchUserStatus = async () => {
+          try {
+            const {data}= await axios.get(`/api/owner/status/${ownerInfo._id}`);
+            console.log(data)
+            if (data.isBlocked) {
+              await logoutApiCall().unwrap();
+              dispatch(logout());
+              navigate('/owner/login');
+            }
+          } catch (error) {
+            console.error('Fetch user status error:', error);
+          }
+        };
+    
+        if (ownerInfo) {
+          fetchUserStatus();
+        }
+      }, [ownerInfo, dispatch, logoutApiCall, navigate]);
+
+
     useEffect(() => {
         const checkAuth = async () => {
             try {
