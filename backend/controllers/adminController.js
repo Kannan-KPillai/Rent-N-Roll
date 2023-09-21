@@ -6,6 +6,8 @@ import Owner from '../models/ownerModels.js';
 import Category from '../models/categoryModel.js';
 import jwt  from 'jsonwebtoken';
 import Car from '../models/carModel.js';
+import nodemailer from 'nodemailer';
+
 
 
 
@@ -294,7 +296,6 @@ const acceptCar = asyncHandler(async (req, res) => {
   try {
     car.approved = true;
     await car.save();
-    
     const updatedCar = await Car.findById(req.query.carId);
     res.status(200).json({ car: updatedCar });
   } catch (error) {
@@ -307,22 +308,53 @@ const acceptCar = asyncHandler(async (req, res) => {
 //*******************************************************************************************/
 //Reject/Delete the car request
 //route PUT/api/admin/rejectCar
-const rejectCar = asyncHandler(async(req,res)=>{
+const rejectCar = asyncHandler(async (req, res) => {
   const carId = req.query.carId;
-
   try {
     const car = await Car.findById(carId);
 
     if (!car) {
       return res.status(404).json({ message: 'Car not found' });
     }
-    await car.deleteOne();
-    res.status(200).json({ message: 'Car deleted successfully' });
 
+    const owner = await Owner.findById(car.owner);
+
+    if (!owner || !owner.email) {
+      return res.status(404).json({ message: 'Owner not found or missing email' });
+    }
+
+    await car.deleteOne();
+    
+    await sendReasonbyEmail(owner.email);
+
+    res.status(200).json({ message: 'Car deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
+});
+
+
+//Sending Reason
+const sendReasonbyEmail = async (email) => {
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.ethereal.email',
+    port: 587,
+    auth: {
+        user: 'mose.mante@ethereal.email',
+        pass: 'Nj5KtVhTH9W7g8wK3m'
+    }
 })
+
+  const mailOptions = {
+    from: process.env.SENDER_EMAIL,
+    to: email,
+    subject: 'Your Car Request has been rejected',
+    text:'Your car request for car for RENT N ROLL has been rejected due to improper / invalid document.. Thank You' ,
+  };
+
+  await transporter.sendMail(mailOptions);
+};
+
 
 
 //**************************************************************************************************/
@@ -330,7 +362,8 @@ const rejectCar = asyncHandler(async(req,res)=>{
 // Route GET /api/admin/getCarData
 const getCarData = asyncHandler(async (req, res) => {
   try {
-    const cars = await Car.find({}).populate('owner', 'name mobile');
+    const cars = await Car.find({ approved: true }).populate('owner', 'name mobile');
+
     res.status(200).json(cars);
   } catch (error) {
     console.error(error);

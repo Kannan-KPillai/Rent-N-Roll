@@ -17,7 +17,6 @@ const OwnerPrivateRoutes = () => {
         const fetchUserStatus = async () => {
           try {
             const {data}= await axios.get(`/api/owner/status/${ownerInfo._id}`);
-            console.log(data)
             if (data.isBlocked) {
               await logoutApiCall().unwrap();
               dispatch(logout());

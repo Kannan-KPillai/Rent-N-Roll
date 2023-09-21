@@ -1,145 +1,144 @@
 import React, { useState, useEffect } from "react";
 import "./styles/carRegister.css";
 import axios from "axios";
-import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
+  const OwnerCarRegisterScreen = () => {
+    const navigate = useNavigate();
 
-const OwnerCarRegisterScreen = () => {
+    const [name, setName] = useState("");
+    const [year, setYear] = useState("");
+    const [transmission, setTransmission] = useState("");
+    const [fuel, setFuel] = useState("");
+    const [imageBase64, setImageBase64] = useState(""); // Add imageBase64 state
+    const [documentBase64, setDocumentBase64] = useState(""); // Add documentBase64 state
 
-  const navigate = useNavigate();
+    const [rent, setBasicRent] = useState("");
+    const [extraRent, setExtraKmPrice] = useState("");
+    const [categories, setCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState("");
 
-  const [name, setName] = useState("");
-  const [year, setYear] = useState("");
-  const [transmission, setTransmission] = useState("");
-  const [fuel, setFuel] = useState("");
-  const [image, setImage] = useState([]);
-  const [document, setDocument] = useState([]);
+    const { ownerInfo } = useSelector((state) => state.owner);
+    useEffect(() => {
+      const fetchCategories = async () => {
+        try {
+          const response = await axios.get("/api/owner/getCategory");
+          setCategories(response.data.category);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+      fetchCategories();
+    }, []);
 
-  const [rent, setBasicRent] = useState("");
-  const [extraRent, setExtraKmPrice] = useState("");
-  const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(""); // Added selectedCategory state
+    const handleCarTypeChange = (e) => {
+      const selectedCarType = e.target.value;
+      setSelectedCategory(selectedCarType);
 
-  const { ownerInfo } = useSelector((state) => state.owner);
-
-  // Fetching data to display
-  useEffect(() => {
-    const fetchCategories = async () => {
       try {
-        const response = await axios.get("/api/owner/getCategory");
-        setCategories(response.data.category);
+        const selectedCategoryData = categories.find(
+          (category) => category.type === selectedCarType
+        );
+
+        if (selectedCategoryData) {
+          setBasicRent(selectedCategoryData.price.toString());
+          setExtraKmPrice(selectedCategoryData.extraPrice.toString());
+        } else {
+          setBasicRent("");
+          setExtraKmPrice("");
+        }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("An error occurred:", error);
       }
     };
-    fetchCategories();
-  }, []);
 
-  // Handle car type change
-  const handleCarTypeChange = (e) => {
-    const selectedCarType = e.target.value;
-    setSelectedCategory(selectedCarType); // Update selectedCategory
-    try {
-      const selectedCategoryData = categories.find(
-        (category) => category.type === selectedCarType
-      );
+    const handleImageChange = (e) => {
+      const file = e.target.files[0];
+      setFileToBase(file, setImageBase64);
+    };
 
-      if (selectedCategoryData) {
-        setBasicRent(selectedCategoryData.price.toString());
-        setExtraKmPrice(selectedCategoryData.extraPrice.toString());
-      } else {
-        setBasicRent("");
-        setExtraKmPrice("");
-      }
-    } catch (error) {
-      console.error("An error occurred:", error);
-    }
-  };
+    const handleDocumentChange = (e) => {
+      const file = e.target.files[0];
+      setFileToBase(file, setDocumentBase64);
+    };
 
-  const handleImageChange = (e) => {
-    setImage([...e.target.files]); // Use e.target.files to get the selected files
-  };
-
-  const handleDocumentChange = (e) => {
-    setDocument([...e.target.files]); // Use e.target.files to get the selected files
-  };
-
-  // Handle the form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!name || !year || !transmission || !fuel || !selectedCategory) {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Please fill in all required fields.",
-      });
-      return; // Exit the function if any required field is empty
-    }
-
-    try {
-      const arr = [image[0], document[0]];
-      console.log("HIIIIIIi");
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("year", year);
-      formData.append("transmission", transmission);
-      formData.append("fuel", fuel);
-      formData.append("categories", selectedCategory); // Use selectedCategory
-      formData.append("rent", rent);
-      formData.append("extraRent", extraRent);
-
-      // Append each image and document separately
-      for (let i = 0; i < arr.length; i++) {
-        formData.append("file", arr[i]);
-      }
-      formData.append("owner", ownerInfo._id);
-      formData.append('ownerName', ownerInfo.name);
-      formData.append('ownerMobile', ownerInfo.mobile);
-      formData.append('ownerEmail', ownerInfo.email);
-
-      const config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+    const setFileToBase = (file, setter) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setter(reader.result);
       };
-      const response = await axios.post(
-        "/api/owner/registerCar",
-        formData,
-        config
-      );
+    };
 
-      // Check if the request was successful (you can adjust this condition as needed)
-      if (response.status === 201) {
-        // Show a success SweetAlert
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      if (!name || !year || !transmission || !fuel || !selectedCategory) {
         Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: "Car registered successfully!",
+          icon: "error",
+          title: "Error",
+          text: "Please fill in all required fields.",
         });
-
-      setName("");
-      setYear("");
-      setTransmission("");
-      setFuel("");
-      setImage([]);
-      setDocument([]);
-      setBasicRent("");
-      setExtraKmPrice("");
-      setSelectedCategory("");
+        return;
       }
-      navigate('/owner')
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      // Show an error SweetAlert
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "An error occurred while registering the car. Please try again later.",
-      });
-    }
-  };
+      try {
+        const formData = {
+          name,
+          year,
+          transmission,
+          fuel,
+          categories: selectedCategory,
+          rent,
+          extraRent,
+          image: imageBase64,
+          document: documentBase64,
+          owner: ownerInfo._id,
+          ownerName: ownerInfo.name,
+          ownerEmail : ownerInfo.email,
+          ownerMobile: ownerInfo.mobile
+        };
+
+        const config = {
+          headers: {
+            "Content-Type": "application/json", // Use JSON content type
+          },
+        };
+
+        const response = await axios.post(
+          "/api/owner/registerCar",
+          JSON.stringify(formData), // Send as JSON string
+          config
+        );
+
+        if (response.status === 201) {
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Car registered successfully!",
+          });
+
+          // Reset the form fields
+          setName("");
+          setYear("");
+          setTransmission("");
+          setFuel("");
+          setImageBase64("");
+          setDocumentBase64("");
+          setBasicRent("");
+          setExtraKmPrice("");
+          setSelectedCategory("");
+        }
+        navigate("/owner");
+      } catch (error) {
+        console.error("Error submitting form:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "An error occurred while registering the car. Please try again later.",
+        });
+      }
+    };
 
   return (
     <div className="main-div">

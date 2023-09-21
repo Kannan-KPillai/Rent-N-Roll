@@ -120,8 +120,8 @@ const AdminRequestScreen = () => {
                     car.showButtons && (
                       <tr key={car._id}>
                         <td>{index + 1}</td>
-                        <td>{car.owner.name}</td>
-                        <td>{car.owner.mobile}</td>
+                        <td>{car.owner ? car.owner.name : 'N/A'}</td>
+                        <td>{car.owner ? car.owner.mobile : 'N/A'}</td>
                         <td>{car.name}</td>
                         <td>{car.year}</td>
                         <td>{car.transmission}</td>

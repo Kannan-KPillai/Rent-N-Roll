@@ -5,7 +5,7 @@ import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken';
 import Category from '../models/categoryModel.js';
 import Car from '../models/carModel.js';     
-
+import cloudinary from '../utils/cloudinary.js';
 
 //Authenticating owner and setting token
 //route POST /api/owner/login
@@ -222,10 +222,21 @@ const getCategory = asyncHandler(async(req, res)=>{
 //********************************************************************************************/
 //Adding new Cars 
 //route POST  /api/owner/registerCar
-const registerCar = asyncHandler (async(req,res)=>{
-
-const type = req.body.categories
+const registerCar = asyncHandler(async (req, res) => {
+  const type = req.body.categories;
   try {
+    const image = req.body.image; 
+    const imageUploadResult = await cloudinary.uploader.upload(image, {
+      folder: 'images',
+    });
+
+    const document = req.body.document;
+
+    const documentUploadResult = await cloudinary.uploader.upload(document, {
+      folder: 'documents',
+    });
+
+
     const {
       name,
       year,
@@ -233,10 +244,9 @@ const type = req.body.categories
       fuel,
       rent,
       extraRent,
-      owner, 
+      owner,
     } = req.body;
 
-    
     const car = new Car({
       name,
       year,
@@ -246,18 +256,25 @@ const type = req.body.categories
       rent,
       extraRent,
       owner,
-      image: req.files[0].filename,
-      document: req.files[1].filename
+      image: {
+        public_id: imageUploadResult.public_id,
+        url: imageUploadResult.secure_url,
+      },
+      document: {
+        public_id: documentUploadResult.public_id,
+        url: documentUploadResult.secure_url,
+      },
     });
 
     await car.save();
-    
+
     res.status(201).json({ message: 'Car registered successfully' });
   } catch (error) {
     console.error('Error registering car:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 
 
 
