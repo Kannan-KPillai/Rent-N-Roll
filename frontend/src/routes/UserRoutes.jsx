@@ -8,7 +8,7 @@ import NotFound from "../components/NotFound.jsx";
 import OtpVerificationScreen from "../screens/OtpVerificationScreen.jsx";
 import CarListScreen from "../screens/CarListScreen.jsx";
 import CarDetails from "../screens/CarDetails.jsx";
-
+import BookingSuccess from "../screens/BookingSuccess.jsx";
 
 const UserRoutes = () => {
   return (
@@ -24,8 +24,8 @@ const UserRoutes = () => {
       <Route path='' element={<PrivateRoutes/>}>
       <Route path='/profile' element={<ProfileScreen/>}/>
       <Route path='/carList' element={<CarListScreen/>}/>
-      <Route path='/carDetails/:id' element={<CarDetails />} />
-
+      <Route path='/carDetails/:id' element={<CarDetails/>} />
+      <Route path='/carDetails/success' element={<BookingSuccess/>} />
       </Route>
       
       </Routes>

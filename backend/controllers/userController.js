@@ -4,7 +4,7 @@ import User from "../models/userModels.js";
 import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken';
 import Car from "../models/carModel.js";
-
+import Booking from '../models/bookingModel.js';
 
 //Authenticating user and setting token
 //route POST /api/users/login
@@ -313,6 +313,30 @@ const carDetails = asyncHandler(async(req,res)=>{
 })
 
 
+//*******************************************************************************************/
+// Uploading booking details to database
+// Route POST /api/users/bookingDetails
+const bookingDetails = asyncHandler(async(req,res)=>{
+
+  const carId =  req.body.carId;
+  const userId = req.body.userId;
+  const ownerId = req.body.ownerId;
+  const pickupPoint = req.body.pickupPoint;
+  const pickupDate = req.body.pickupDate;
+  const pickupTime = req.body.pickupTime;
+  const dropoffPoint = req.body.dropoffPoint;
+  const dropoffDate = req.body.dropoffDate;
+  const totalPrice = req.body.totalPrice;
+  const advanceAmount = req.body.advanceAmount;
+  
+  await Booking.create({
+    carId,userId,ownerId,
+    pickupPoint,pickupDate,pickupTime,
+    dropoffDate, dropoffPoint,
+    totalPrice, advanceAmount
+  })
+    res.status(200).json({message: 'Booking registered'})
+})
 
 
 
@@ -324,5 +348,6 @@ export {
   logoutUser,updateUserProfile,
   getUserProfile,verifyOtp,
   googleLogin,getUserStatus,
-  checkUser,getCars,carDetails
+  checkUser,getCars,carDetails,
+  bookingDetails,
 };

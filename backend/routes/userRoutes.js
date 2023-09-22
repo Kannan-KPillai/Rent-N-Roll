@@ -1,8 +1,9 @@
 import express from 'express';
 const router = express.Router();
 import { protect } from '../middleware/authMiddleware.js';
+import { payment} from '../controllers/paymentController.js'
 import { authUser,registerUser,logoutUser,updateUserProfile,
-    getUserProfile, verifyOtp,  googleLogin, getUserStatus, checkUser, getCars, carDetails} from "../controllers/userController.js";
+    getUserProfile, verifyOtp,  googleLogin, getUserStatus, checkUser, getCars, carDetails, bookingDetails} from "../controllers/userController.js";
 
 
 
@@ -26,6 +27,14 @@ router.get('/status/:Id', getUserStatus);
 
 router.get('/getCars', getCars);
 
-router.get('/carDetails/:Id',carDetails)
+router.get('/carDetails/:Id',carDetails);
+
+router.post('/payment', payment)
+
+router.post('/bookingDetails', bookingDetails)
+
+
+
+
 
 export default router;
