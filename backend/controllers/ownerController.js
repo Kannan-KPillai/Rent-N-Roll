@@ -277,7 +277,6 @@ const registerCar = asyncHandler(async (req, res) => {
 
 
 
-
 //**********************************************************************/
 //Getting owner data for checking whether blocked or not
 //route GET /api/owner/status/:Id

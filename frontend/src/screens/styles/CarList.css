@@ -144,3 +144,30 @@
     }
   }
   
+
+  .car__info {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .rent__price {
+    color: #000000;
+    
+  }
+  
+  .extra__rent {
+    color: #000000;
+    font-size: 1.5rem;
+    margin-left: 2rem;
+  }
+  
+  .section__title {
+    font-size: 3rem;
+    color: black;
+  }
+  
+  .section__description {
+    font-size: 1.2rem;
+  }

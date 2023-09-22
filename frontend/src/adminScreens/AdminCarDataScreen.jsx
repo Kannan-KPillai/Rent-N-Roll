@@ -6,6 +6,7 @@ import Sidebar from "../components/Sidebar";
 const AdminCarDataScreen = () => {
   const [cars, setCars] = useState([]);
 
+
   useEffect(() => {
     const fetchCars = async () => {
       try {
@@ -66,22 +67,22 @@ const AdminCarDataScreen = () => {
                     <td>{car.transmission}</td>
                     <td>{car.fuel}</td>
                     <td>
-                      <a
-                        href={`http://localhost:5000/uploads/${car.document}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <img
-                          src={`http://localhost:5000/uploads/${car.document}`}
-                          alt="Car Image"
-                          style={{
-                            maxWidth: "100px",
-                            maxHeight: "100px",
-                            cursor: "pointer",
-                          }}
-                        />
-                      </a>
-                    </td>
+  <a
+    href={car.document.url} // Use the Cloudinary URL
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <img
+      src={car.document.url} // Use the Cloudinary URL
+      alt="Car Document"
+      style={{
+        maxWidth: "100px",
+        maxHeight: "100px",
+        cursor: "pointer",
+      }}
+    />
+  </a>
+</td>
                   </tr>
                 ))}
               </tbody>

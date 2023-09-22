@@ -98,7 +98,16 @@ const AdminRequestScreen = () => {
           <Card.Body>
             <h2 style={headerStyle}>Car Management</h2>
             {cars.length === 0 ? (
-            <h1 style={{ color: 'black', textAlign: 'center', fontWeight: 'bold', paddingTop:'10rem'}}>No New Requests</h1>
+              <h1
+                style={{
+                  color: "black",
+                  textAlign: "center",
+                  fontWeight: "bold",
+                  paddingTop: "10rem",
+                }}
+              >
+                No New Requests
+              </h1>
             ) : (
               <Table striped bordered hover responsive>
                 <thead>
@@ -115,68 +124,69 @@ const AdminRequestScreen = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {cars.map((car, index) => (
-                    // Conditionally render the row based on showButtons
-                    car.showButtons && (
-                      <tr key={car._id}>
-                        <td>{index + 1}</td>
-                        <td>{car.owner ? car.owner.name : 'N/A'}</td>
-                        <td>{car.owner ? car.owner.mobile : 'N/A'}</td>
-                        <td>{car.name}</td>
-                        <td>{car.year}</td>
-                        <td>{car.transmission}</td>
-                        <td>{car.fuel}</td>
-                        <td>
-                          <a
-                            href={`http://localhost:5000/uploads/${car.document}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <img
-                              src={`http://localhost:5000/uploads/${car.document}`}
-                              alt="Car Image"
-                              style={{
-                                maxWidth: "100px",
-                                maxHeight: "100px",
-                                cursor: "pointer",
-                              }}
-                            />
-                          </a>
-                        </td>
-                        <td>
-                          <>
-                            <button
-                              style={{
-                                backgroundColor: "green",
-                                color: "white",
-                                marginRight: "5px",
-                                width: "100px",
-                                height: "30px",
-                                border: "none",
-                                cursor: "pointer",
-                              }}
-                              onClick={() => handleApprove(car._id, index)}
+                  {cars.map(
+                    (car, index) =>
+                      // Conditionally render the row based on showButtons
+                      car.showButtons && (
+                        <tr key={car._id}>
+                          <td>{index + 1}</td>
+                          <td>{car.owner ? car.owner.name : "N/A"}</td>
+                          <td>{car.owner ? car.owner.mobile : "N/A"}</td>
+                          <td>{car.name}</td>
+                          <td>{car.year}</td>
+                          <td>{car.transmission}</td>
+                          <td>{car.fuel}</td>
+                          <td>
+                            <a
+                              href={car.document.url} // Use the Cloudinary URL
+                              target="_blank"
+                              rel="noopener noreferrer"
                             >
-                              Accept
-                            </button>
-                            <button
-                              style={{
-                                backgroundColor: "red",
-                                color: "white",
-                                width: "100px",
-                                height: "30px",
-                                border: "none",
-                                cursor: "pointer",
-                              }}
-                              onClick={() => handleReject(car._id, index)}
-                            >
-                              Reject
-                            </button>
-                          </>
-                        </td>
-                      </tr>
-                    )
-                  ))}
+                              <img
+                                src={car.document.url} // Use the Cloudinary URL
+                                alt="Car Document"
+                                style={{
+                                  maxWidth: "100px",
+                                  maxHeight: "100px",
+                                  cursor: "pointer",
+                                }}
+                              />
+                            </a>
+                          </td>
+                          <td>
+                            <>
+                              <button
+                                style={{
+                                  backgroundColor: "green",
+                                  color: "white",
+                                  marginRight: "5px",
+                                  width: "100px",
+                                  height: "30px",
+                                  border: "none",
+                                  cursor: "pointer",
+                                }}
+                                onClick={() => handleApprove(car._id, index)}
+                              >
+                                Accept
+                              </button>
+                              <button
+                                style={{
+                                  backgroundColor: "red",
+                                  color: "white",
+                                  width: "100px",
+                                  height: "30px",
+                                  border: "none",
+                                  cursor: "pointer",
+                                }}
+                                onClick={() => handleReject(car._id, index)}
+                              >
+                                Reject
+                              </button>
+                            </>
+                          </td>
+                        </tr>
+                      )
+                  )}
                 </tbody>
               </Table>
             )}

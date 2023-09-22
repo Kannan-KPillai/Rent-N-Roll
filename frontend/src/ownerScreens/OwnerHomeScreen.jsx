@@ -32,7 +32,10 @@ function OwnerHomeScreen() {
         </div>
       </div>
       <div className="how-it-works">
-        <h1 style={{ color: "black", fontFamily: "Teko" }}>HOW IT WORKS?</h1>
+      <button className="btn001" onClick={handleButtonClick}>
+          REGISTER YOUR CAR HERE
+        </button>
+        <h1 style={{ color: "black", fontFamily: "Teko", paddingTop:'3rem'}}>HOW IT WORKS?</h1>
 
         <h3 style={{ padding: "4rem", color: "black" }}>
           At RENT <span className="red-letter">N</span> ROLL, we understand that
@@ -41,9 +44,7 @@ function OwnerHomeScreen() {
           first-time car owner looking to make the most of your investment, our
           platform is designed to offer you
         </h3>
-        <button className="btn001" onClick={handleButtonClick}>
-          REGISTER YOUR CAR HERE
-        </button>
+      
 
         <h3
           style={{ color: "black", paddingTop: "4rem", paddingBottom: "1rem" }}

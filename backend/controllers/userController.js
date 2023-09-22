@@ -198,7 +198,7 @@ const verifyOtp = asyncHandler(async (req, res) => {
 //route POST /api/users/glogin
  const  googleLogin = asyncHandler(async(req,res)=>{
 
-  const {  user_id, name, email, profileGoogleImage } = req.body; 
+  const {  user_id, name, email } = req.body; 
   // Check if the user already exists
   let user = await User.findOne({ email });
 
@@ -207,7 +207,6 @@ const verifyOtp = asyncHandler(async (req, res) => {
       res.status(401);
       throw new Error('Your account is temporarily blocked');
     }
-
     // User exists, generate token and send success response
     generateToken(res, user._id);
     res.status(200).json({
@@ -223,7 +222,6 @@ const verifyOtp = asyncHandler(async (req, res) => {
     
       name,
       email,
-      // profileGoogleImage,
       isVerified: true,
     });
 
@@ -233,7 +231,6 @@ const verifyOtp = asyncHandler(async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
-        // profileGoogleImage: user.profileGoogleImage,
       });
     } else {
       res.status(400);
@@ -299,6 +296,24 @@ const getCars = asyncHandler(async (req, res) => {
 });
 
 
+//*******************************************************************************************/
+// Getting selected car details
+// Route GET /api/users/carDetails/:Id
+const carDetails = asyncHandler(async(req,res)=>{
+    const carId = req.params.Id;
+    try {
+      const car = await Car.findById(carId);
+      if(!car){
+        return res.status(404).json({error:'Car not found'});
+      }
+      res.status(200).json({ car })
+    } catch (error) {
+      res.status(500).json({error: 'Internal server error'});
+    }
+})
+
+
+
 
 
 
@@ -309,5 +324,5 @@ export {
   logoutUser,updateUserProfile,
   getUserProfile,verifyOtp,
   googleLogin,getUserStatus,
-  checkUser,getCars
+  checkUser,getCars,carDetails
 };
