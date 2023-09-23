@@ -12,7 +12,7 @@ function OwnerHomeScreen() {
     <div>
       <div className="OwnerHomeScreen">
         <div className="ownertext">
-          <h1 style={{ color: "black", textShadow: "2px 2px 0 white" }}>
+          <h1 style={{ color: "black", textShadow: "2px 2px 0 white", fontFamily: 'Carter One sans-serif', fontWeight:'bolder', fontSize: '3rem' }}>
             Earn While You Rest: Let Your Car Pay Its Own Bills with Us!
           </h1>
           <h3

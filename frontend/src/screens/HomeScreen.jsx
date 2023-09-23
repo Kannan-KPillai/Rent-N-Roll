@@ -22,7 +22,7 @@ const HomeScreen = () => {
        <Container>
           <Row>
             <Col lg="12" className="mb-5 text-center">
-            <h2 className="section__title">WHY RENT <span style={{ color: 'red' }}>N</span> ROLL ?</h2>
+            <h2 className="section__title" style={{ fontFamily: 'Mina, sans-serif' }}>WHY RENT <span style={{ color: 'red' }}>N</span> ROLL ?</h2>
             </Col>
             <ServicesList />
           </Row>

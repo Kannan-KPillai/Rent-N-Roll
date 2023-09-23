@@ -43,7 +43,7 @@ function AdminHeader() {
     <Navbar expand="lg" className="bg-dark">
     <Container>
       <div style={headerContainerStyle}>
-        <Navbar.Brand  className="text-white">
+        <Navbar.Brand  className="text-white" style={{ fontFamily: 'Carter One, sans-serif' }}>
           RENT <span style={{ color: 'red' }}>N</span> ROLL ADMIN
         </Navbar.Brand>
         </div>

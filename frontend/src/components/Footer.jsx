@@ -34,7 +34,7 @@ const quickLinks = [
             <Row>
                 <Col lg='4' md='4' sm='12' >
                     <div className='logo footer__logo'>
-                        <h1>RENT <span style={{color:'red'}}>N</span> ROLL</h1>
+                        <h1 style={{ fontFamily: 'Carter One, sans-serif' }}>RENT <span style={{color:'red'}}>N</span> ROLL</h1>
                     </div>
                     <p className='footer__logo-content'>
                     Join our growing community of car owners and

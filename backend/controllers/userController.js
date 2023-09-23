@@ -275,22 +275,39 @@ const checkUser = asyncHandler(async(req,res)=>{
 
 
 //*************************************************************************/
-// Getting all car details
-// Route GET /api/users/getCars
-const getCars = asyncHandler(async (req, res) => {
+// Route GET /api/users/getAvailableCars
+const getAvailableCars = asyncHandler(async (req, res) => {
   try {
-    const cars = await Car.find({ approved: true }, { 
-      name: 1,
-      year: 1,
-      transmission: 1,
-      fuel: 1,
-      type: 1,
-      rent: 1,
-      extraRent: 1,
-      image: 1,
-    });
-    res.status(200).json(cars);
+    const { pickupDate, dropoffDate } = req.query;
+    const pickupDateObj = new Date(pickupDate);
+    const dropoffDateObj = new Date(dropoffDate);
+
+    const cars = await Car.find({ approved: true }).lean();
+    const availableCars = [];
+    for (const car of cars) {
+      const overlappingBookings = await Booking.findOne({
+        carId: car._id,
+        $and: [
+          {
+            pickupDate: {
+              $lte: dropoffDateObj,
+            },
+          },
+          {
+            dropoffDate: {
+              $gte: pickupDateObj,
+            },
+          },
+        ],
+      });
+      if (!overlappingBookings) {
+        availableCars.push(car);
+      }
+    }
+
+    res.status(200).json(availableCars);
   } catch (error) {
+    console.error("Error fetching available cars", error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
@@ -328,7 +345,7 @@ const bookingDetails = asyncHandler(async(req,res)=>{
   const dropoffDate = req.body.dropoffDate;
   const totalPrice = req.body.totalPrice;
   const advanceAmount = req.body.advanceAmount;
-  
+
   await Booking.create({
     carId,userId,ownerId,
     pickupPoint,pickupDate,pickupTime,
@@ -340,6 +357,34 @@ const bookingDetails = asyncHandler(async(req,res)=>{
 
 
 
+//*******************************************************************************************/
+// Getting the  bookings to be listed on user Side...
+// Route GET /api/users/allBookings
+const getAllBookings = asyncHandler(async (req, res) => {
+  const userId = req.params.Id;
+
+  const userBookings = await Booking.find({ userId: userId }).exec();
+
+  const bookingsWithCarNames = [];
+
+  for (const booking of userBookings) {
+    const car = await Car.findById(booking.carId).exec(); 
+    const bookingWithCarName = {
+      carName: car.name,
+      pickupPoint: booking.pickupPoint,
+      dropoffPoint: booking.dropoffPoint,
+      pickupDate: booking.pickupDate,
+      dropoffDate: booking.dropoffDate,
+      totalPrice: booking.totalPrice,
+      advanceAmount: booking.advanceAmount,
+    };
+    bookingsWithCarNames.push(bookingWithCarName);
+  }
+  res.status(200).json(bookingsWithCarNames);
+});
+
+
+
 
 
 
@@ -348,6 +393,6 @@ export {
   logoutUser,updateUserProfile,
   getUserProfile,verifyOtp,
   googleLogin,getUserStatus,
-  checkUser,getCars,carDetails,
-  bookingDetails,
+  checkUser,getAvailableCars,carDetails,
+  bookingDetails,getAllBookings
 };

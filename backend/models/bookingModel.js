@@ -25,7 +25,7 @@ const bookingSchema = mongoose.Schema({
       dropoffPoint: {
         type:String
       },
-      totalAmount: {
+      totalPrice: {
         type: Number
       },
       advanceAmount: {
@@ -33,6 +33,10 @@ const bookingSchema = mongoose.Schema({
       },
       pickupTime: {
         type: String
+      },
+      cancelBooking: {
+        type: Boolean,
+        default: false
       }
 })
 

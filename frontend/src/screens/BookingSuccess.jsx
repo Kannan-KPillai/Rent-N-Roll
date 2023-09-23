@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import "./styles/HomeScreen.css";
 import { useEffect } from "react";
 import axios from "axios";
@@ -62,7 +61,7 @@ const BookingSuccess = () => {
             fontSize: "3rem", // Increase the font size
           }}
         >
-          BOOKING SUCCESS
+          YOUR BOOKING HAS BEEN CONFIRMED
         </h1>
 
         {/* <Link to={'/history'}>Bookigs</Link> */}

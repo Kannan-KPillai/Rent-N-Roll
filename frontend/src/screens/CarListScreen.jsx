@@ -11,19 +11,23 @@ const CarListScreen = () => {
   const storedData = localStorage.getItem("booking");
   const bookingData = JSON.parse(storedData);
 
-  useEffect(() => {
-    const fetchCars = async () => {
-      try {
-        const response = await axios.get("/api/users/getCars");
+  const fetchAvailableCars = async () => {
+    try {
+      if (bookingData) {
+        const { pickupDate, dropoffDate } = bookingData;
+        const response = await axios.get(
+          `/api/users/getAvailableCars?pickupDate=${pickupDate}&dropoffDate=${dropoffDate}`
+        );
         setCars(response.data);
-      } catch (error) {
-        console.error("Error fetching cars", error);
       }
-    };
-
-    fetchCars(); // Don't forget to call the fetchCars function
+    } catch (error) {
+      console.error("Error fetching available cars", error);
+    }
+  };
+  useEffect(() => {
+    fetchAvailableCars();
   }, []);
-
+  
   const navigateToCarDetails = (carId) => {
     navigate(`/carDetails/${carId}`);
   };
@@ -114,10 +118,16 @@ const CarListScreen = () => {
 
                 <button
                   className="w-50 car__item-btn car__btn-rent"
-                  onClick={() => navigateToCarDetails(car._id)}>RENT</button>
+                  onClick={() => navigateToCarDetails(car._id)}
+                >
+                  RENT
+                </button>
                 <button
                   className="w-50 car__item-btn car__btn-details"
-                  onClick={() => navigateToCarDetails(car._id)}>DETAILS</button>
+                  onClick={() => navigateToCarDetails(car._id)}
+                >
+                  DETAILS
+                </button>
               </div>
             </div>
           </Col>

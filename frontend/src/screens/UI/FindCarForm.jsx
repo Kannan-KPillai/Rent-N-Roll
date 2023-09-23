@@ -111,13 +111,13 @@ const FindCarForm = () => {
             value={formData.dropoffPoint}
           >
             <option value="">Select dropoff point</option>
-            <option value="vytilla">Vytilla Hub</option>
-            <option value="kaloor">Kaloor Stadium</option>
-            <option value="edappally">Edappally Metro</option>
-            <option value="kalamasseri">Kalamasserri Metro</option>
-            <option value="aluva">Aluva Station</option>
-            <option value="south">South Railway</option>
-            <option value="kakkanad">InfoPark expressway</option>
+            <option value="Vytilla">Vytilla Hub</option>
+            <option value="Kaloor">Kaloor Stadium</option>
+            <option value="Edappally">Edappally Metro</option>
+            <option value="Kalamasseri">Kalamasserri Metro</option>
+            <option value="Aluva">Aluva Station</option>
+            <option value="South">South Railway</option>
+            <option value="Kakkanad">InfoPark expressway</option>
           </select>
         </FormGroup>
 

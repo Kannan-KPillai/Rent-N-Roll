@@ -48,7 +48,7 @@ const OwnerHeader = () => {
     <Navbar expand="lg" className="bg-black">
       <Container>
         <div style={headerContainerStyle}>
-          <Navbar.Brand className="text-white">
+          <Navbar.Brand className="text-white" style={{ fontFamily: 'Carter One, sans-serif' }}>
             RENT <span style={{ color: 'red' }}>N</span> ROLL OWNER
           </Navbar.Brand>
         </div>
@@ -61,7 +61,7 @@ const OwnerHeader = () => {
               <LinkContainer to="/owner" style={{ backgroundColor: 'black', color: 'red' }}>
                 <Nav.Link>Bookings</Nav.Link>
               </LinkContainer>
-              <LinkContainer to="/owner" style={{ backgroundColor: 'black', color: 'white' }}>
+              <LinkContainer to="/owner/termsNconditions" style={{ backgroundColor: 'black', color: 'white' }}>
                 <Nav.Link>Terms&Conditions</Nav.Link>
               </LinkContainer>
               <NavDropdown title={<span style={{ color: 'white' }}>{ownerInfo.name || ownerInfo.data.name}</span>} id='ownername'>

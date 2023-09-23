@@ -44,7 +44,7 @@ function Header() {
     <Navbar expand="lg" className="bg-white">
       <Container>
         <div style={headerContainerStyle}>
-          <Navbar.Brand  className="text-black">
+          <Navbar.Brand  className="text-black" style={{ fontFamily: 'Carter One, sans-serif' }}>
             RENT <span style={{ color: 'red' }}>N</span> ROLL
           </Navbar.Brand>
           </div>
@@ -55,13 +55,13 @@ function Header() {
               <LinkContainer to='/'  style={{ backgroundColor: 'white'}}>
                   <Nav.Link >Home</Nav.Link>
               </LinkContainer>
-              <LinkContainer to=''  style={{ backgroundColor: 'white'}}>
+              <LinkContainer to='/about'  style={{ backgroundColor: 'white'}}>
                   <Nav.Link >About</Nav.Link>
               </LinkContainer>
               <LinkContainer to=''  style={{ backgroundColor: 'white'}}>
                   <Nav.Link>Contact Us</Nav.Link>
               </LinkContainer>
-              <LinkContainer to='' style={{ color: 'red', backgroundColor: 'white' }}>
+              <LinkContainer to='/booking' style={{ color: 'red', backgroundColor: 'white' }}>
                    <Nav.Link> Your Bookings</Nav.Link>
               </LinkContainer>
               <NavDropdown title={userInfo.name || userInfo.data.name} id='username'>

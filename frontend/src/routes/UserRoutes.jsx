@@ -9,6 +9,9 @@ import OtpVerificationScreen from "../screens/OtpVerificationScreen.jsx";
 import CarListScreen from "../screens/CarListScreen.jsx";
 import CarDetails from "../screens/CarDetails.jsx";
 import BookingSuccess from "../screens/BookingSuccess.jsx";
+import AboutScreen from "../screens/AboutScreen.jsx";
+import BookingScreen from "../screens/BookingScreen.jsx";
+
 
 const UserRoutes = () => {
   return (
@@ -26,6 +29,8 @@ const UserRoutes = () => {
       <Route path='/carList' element={<CarListScreen/>}/>
       <Route path='/carDetails/:id' element={<CarDetails/>} />
       <Route path='/carDetails/success' element={<BookingSuccess/>} />
+      <Route path='/about' element={<AboutScreen/>} />
+      <Route path='/booking' element={<BookingScreen/>} />
       </Route>
       
       </Routes>

@@ -6,6 +6,8 @@ import jwt from 'jsonwebtoken';
 import Category from '../models/categoryModel.js';
 import Car from '../models/carModel.js';     
 import cloudinary from '../utils/cloudinary.js';
+import Booking from '../models/bookingModel.js'
+
 
 //Authenticating owner and setting token
 //route POST /api/owner/login
@@ -290,6 +292,7 @@ const getOwnerStatus = asyncHandler(async (req, res) => {
   }
 });
         
+
 
 
 

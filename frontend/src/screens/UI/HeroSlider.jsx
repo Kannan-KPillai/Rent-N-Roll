@@ -21,10 +21,10 @@ const HeroSlider = () => {
       <div className="slider__item slider__item-01 mt0">
       <Container>
   <div className="slider__content text-center">
-    <h1 className="text-black">
+    <h1 >
       Welcome to RENT N ROLL - destination for high-quality car rentals in Kochi
     </h1>
-    <h2 className="text-white mb-4">#DRIVE_IT_LIKE_YOU_OWN_IT</h2>
+    <h2 >#DRIVE_IT_LIKE_YOU_OWN_IT</h2>
   </div>
 </Container>
 
@@ -33,8 +33,8 @@ const HeroSlider = () => {
       <div className="slider__item slider__item-02 mt0">
         <Container>
           <div className="slider__content text-center">
-          <h1 className="text-black "> Welcome to RENT N ROLL - destination for high-quality car rentals in Kochi </h1>
-          <h2 className="text-white mb-4">#DRIVE_IT_LIKE_YOU_OWN_IT</h2>
+          <h1 > Welcome to RENT N ROLL - destination for high-quality car rentals in Kochi </h1>
+          <h2 >#DRIVE_IT_LIKE_YOU_OWN_IT</h2>
           </div>
         </Container>
       </div>
@@ -42,8 +42,8 @@ const HeroSlider = () => {
       <div className="slider__item slider__item-03 mt0">
         <Container>
           <div className="slider__content text-center">
-          <h1 className="text-black mb-4">Welcome to RENT N ROLL - destination for high-quality car rentals in Kochi </h1>
-          <h2 className="text-white mb-4">#DRIVE_IT_LIKE_YOU_OWN_IT</h2>
+          <h1 >Welcome to RENT N ROLL - destination for high-quality car rentals in Kochi </h1>
+          <h2 >#DRIVE_IT_LIKE_YOU_OWN_IT</h2>
           </div>
         </Container>
       </div>

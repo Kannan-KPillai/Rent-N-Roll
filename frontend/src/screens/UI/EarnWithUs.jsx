@@ -24,15 +24,14 @@ const EarnWithUs = () => {
     <section className="become__driver">
       <Container>
         <Row>   
-          {/* <Col lg="6" md="6" sm="12"> */}
-            <h2 className="section__title become__driver-title">
+
+            <h2 className="section__title become__driver-title" style={{ fontFamily: 'Mina, sans-serif', textAlign: 'center', color: 'white'}}>
               Do You Want to Earn With Us? So Don't Be Late
             </h2>
 
             <button className="btn become__driver-btn mt-4" onClick={handleButtonClick}>
               Rent Your Car
             </button>
-          {/* </Col> */}
         </Row>
       </Container>
     </section>
