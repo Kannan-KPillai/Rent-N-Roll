@@ -5,6 +5,10 @@ function OwnerHomeScreen() {
   const navigate = useNavigate();
 
   const handleButtonClick = () => {
+      window.scrollTo({
+        top: 0,             
+        behavior: 'smooth'  
+      });
     navigate("/owner/addcar");
   };
 
@@ -32,9 +36,7 @@ function OwnerHomeScreen() {
         </div>
       </div>
       <div className="how-it-works">
-      <button className="btn001" onClick={handleButtonClick}>
-          REGISTER YOUR CAR HERE
-        </button>
+ 
         <h1 style={{ color: "black", fontFamily: "Teko", paddingTop:'3rem'}}>HOW IT WORKS?</h1>
 
         <h3 style={{ padding: "4rem", color: "black" }}>
@@ -45,7 +47,9 @@ function OwnerHomeScreen() {
           platform is designed to offer you
         </h3>
       
-
+        <button className="btn001" onClick={handleButtonClick}>
+          REGISTER YOUR CAR HERE
+        </button>
         <h3
           style={{ color: "black", paddingTop: "4rem", paddingBottom: "1rem" }}
         >

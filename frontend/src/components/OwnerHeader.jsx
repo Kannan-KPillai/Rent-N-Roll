@@ -58,7 +58,7 @@ const OwnerHeader = () => {
               <LinkContainer to="/owner" style={{ backgroundColor: 'black', color: 'white' }}>
                 <Nav.Link>Home</Nav.Link>
               </LinkContainer>
-              <LinkContainer to="/owner" style={{ backgroundColor: 'black', color: 'red' }}>
+              <LinkContainer to="/owner/bookings" style={{ backgroundColor: 'black', color: 'red' }}>
                 <Nav.Link>Bookings</Nav.Link>
               </LinkContainer>
               <LinkContainer to="/owner/termsNconditions" style={{ backgroundColor: 'black', color: 'white' }}>

@@ -3,6 +3,9 @@ import axios from "axios";
 import { Card, Table } from "react-bootstrap";
 import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
+import data from '../screens/data/data.json'
+import Lottie from 'lottie-react'
+
 
 const AdminRequestScreen = () => {
   const [cars, setCars] = useState([]);
@@ -31,7 +34,6 @@ const AdminRequestScreen = () => {
           confirmButtonText: "OK",
         });
 
-        // Update the showButtons property for the approved car to hide the buttons
         const updatedCars = [...cars];
         updatedCars[index].showButtons = false;
         setCars(updatedCars);
@@ -55,7 +57,6 @@ const AdminRequestScreen = () => {
           confirmButtonText: "OK",
         });
 
-        // Update the showButtons property for the rejected car to hide the buttons
         const updatedCars = [...cars];
         updatedCars[index].showButtons = false;
         setCars(updatedCars);
@@ -98,16 +99,19 @@ const AdminRequestScreen = () => {
           <Card.Body>
             <h2 style={headerStyle}>Car Management</h2>
             {cars.length === 0 ? (
+              <div style={{ height: '30rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+              <Lottie animationData={data} style={{ width: '50%', marginBottom: '1rem' }} /> 
               <h1
                 style={{
-                  color: "black",
-                  textAlign: "center",
-                  fontWeight: "bold",
-                  paddingTop: "10rem",
+                  color: 'black',
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                  paddingBottom: '3rem'
                 }}
               >
                 No New Requests
               </h1>
+            </div>
             ) : (
               <Table striped bordered hover responsive>
                 <thead>

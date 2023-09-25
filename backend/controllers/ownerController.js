@@ -291,7 +291,26 @@ const getOwnerStatus = asyncHandler(async (req, res) => {
     res.status(404).json({ message: 'Owner not found'});
   }
 });
-        
+               
+const getAllBookings = asyncHandler(async (req, res) => {
+  const ownerId = req.params.Id;
+  const ownerBookings = await Booking.find({ ownerId: ownerId })
+    .populate('userId') 
+    .exec();
+  const bookingsWithCarNames = ownerBookings.map((booking) => ({
+    bookingId: booking._id,
+    carName: booking.carId.name, 
+    pickupPoint: booking.pickupPoint,
+    pickupDate: booking.pickupDate,
+    dropoffPoint: booking.dropoffPoint,
+    dropoffDate: booking.dropoffDate,
+    pickupTime: booking.pickupTime,
+    advanceAmount: booking.advanceAmount,
+    userName: booking.userId.name, 
+    userMobile: booking.userId.mobile, 
+  }));
+  res.status(200).json(bookingsWithCarNames);
+});
 
 
 
@@ -300,4 +319,4 @@ const getOwnerStatus = asyncHandler(async (req, res) => {
 
 
 export {authOwner, ownerRegister, logoutOwner, ownerProfile, updateOwnerProfile, verifyOwnerOtp,
-   checkOwner, getCategory, registerCar, getOwnerStatus}
+   checkOwner, getCategory, registerCar, getOwnerStatus, getAllBookings}

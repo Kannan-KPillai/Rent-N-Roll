@@ -1,5 +1,6 @@
 import "./styles/HomeScreen.css";
 import { useEffect } from "react";
+import { useSelector } from 'react-redux'; 
 import axios from "axios";
 
 
@@ -7,6 +8,7 @@ import axios from "axios";
 const BookingSuccess = () => {
   const storedData = localStorage.getItem("bookingDetails");
   const bookingData = JSON.parse(storedData);
+  const { userInfo } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (bookingData) {
@@ -19,7 +21,7 @@ const BookingSuccess = () => {
         totalPrice: bookingData.totalPrice,
         pickupTime: bookingData.pickupTime,
         advanceAmount: bookingData.advanceAmount,
-        userId: bookingData.userId,
+        userId: userInfo._id,
         ownerId: bookingData.ownerId
       };
       axios.post("/api/users/bookingDetails", data).then((response) => {     

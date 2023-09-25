@@ -362,14 +362,13 @@ const bookingDetails = asyncHandler(async(req,res)=>{
 // Route GET /api/users/allBookings
 const getAllBookings = asyncHandler(async (req, res) => {
   const userId = req.params.Id;
-
   const userBookings = await Booking.find({ userId: userId }).exec();
-
   const bookingsWithCarNames = [];
 
   for (const booking of userBookings) {
     const car = await Car.findById(booking.carId).exec(); 
     const bookingWithCarName = {
+      _id: booking._id,
       carName: car.name,
       pickupPoint: booking.pickupPoint,
       dropoffPoint: booking.dropoffPoint,
@@ -377,11 +376,37 @@ const getAllBookings = asyncHandler(async (req, res) => {
       dropoffDate: booking.dropoffDate,
       totalPrice: booking.totalPrice,
       advanceAmount: booking.advanceAmount,
+      cancelBooking: booking.cancelBooking
     };
     bookingsWithCarNames.push(bookingWithCarName);
   }
   res.status(200).json(bookingsWithCarNames);
 });
+
+
+//*******************************************************************************************/
+// Cancel the booking
+// Route GET /api/users/cancel:Id
+const cancelBooking = asyncHandler(async(req,res)=>{
+
+   try {
+    
+    const booking = await Booking.findById(req.params.Id)
+
+    if(!booking){
+      return res.status(404).json({ message: 'User not found' });
+    }
+    booking.cancelBooking = true;
+    await booking.save();
+    res.status(200).json({ cancelBooking: booking.cancelBooking})
+   } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+   }
+})
+
+ 
+ 
+
 
 
 
@@ -394,5 +419,5 @@ export {
   getUserProfile,verifyOtp,
   googleLogin,getUserStatus,
   checkUser,getAvailableCars,carDetails,
-  bookingDetails,getAllBookings
+  bookingDetails,getAllBookings,cancelBooking
 };

@@ -12,6 +12,10 @@ const EarnWithUs = () => {
   const { userInfo } = useSelector((state) => state.auth);
 
   const handleButtonClick = () => {
+    window.scrollTo({
+      top: 0,             
+      behavior: 'smooth'  
+    });
    
     if(!userInfo){
     navigate('/owner/register')

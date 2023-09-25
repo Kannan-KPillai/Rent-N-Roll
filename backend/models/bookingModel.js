@@ -37,6 +37,10 @@ const bookingSchema = mongoose.Schema({
       cancelBooking: {
         type: Boolean,
         default: false
+      },
+      completed: {
+        type: Boolean,
+        default: false
       }
 })
 

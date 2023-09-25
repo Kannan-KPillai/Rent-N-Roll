@@ -2,9 +2,9 @@ import express from 'express';
 const router = express.Router();
 import { protect } from '../middleware/authMiddleware.js';
 import { payment} from '../controllers/paymentController.js'
-import { authUser,registerUser,logoutUser,updateUserProfile,
-    getUserProfile, verifyOtp,  googleLogin, getUserStatus, checkUser, 
-     carDetails, bookingDetails, getAvailableCars, getAllBookings} from "../controllers/userController.js";
+import { authUser,registerUser,logoutUser,updateUserProfile,getUserProfile,
+         verifyOtp,  googleLogin, getUserStatus, checkUser, carDetails,
+         bookingDetails, getAvailableCars, getAllBookings, cancelBooking} from "../controllers/userController.js";
 
 
 
@@ -36,6 +36,6 @@ router.post('/bookingDetails', bookingDetails)
 
 router.get('/allBookings/:Id', getAllBookings)
 
-
+router.post('/cancel/:Id', cancelBooking)
 
 export default router;

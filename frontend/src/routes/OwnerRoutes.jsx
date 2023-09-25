@@ -7,6 +7,7 @@ import OwnerProfile from '../ownerScreens/OwnerProfile.jsx'
 import OwnerOtpScreen from "../ownerScreens/OwnerOtpScreen.jsx";
 import OwnerCarRegisterScreen from "../ownerScreens/OwnerCarRegisterScreen.jsx";
 import OwnerTermsNConditions from "../ownerScreens/OwnerTermsNConditions.jsx";
+import OwnerBookingScreen from "../ownerScreens/OwnerBookingScreen.jsx";
 
 
 const OwnerRoutes = () => {
@@ -23,6 +24,7 @@ const OwnerRoutes = () => {
       <Route path='/profile' element={<OwnerProfile />}/>
       <Route path='/addcar' element={<OwnerCarRegisterScreen/>}/>
       <Route path='/termsNconditions' element={<OwnerTermsNConditions/>}/>
+      <Route path='/bookings' element={<OwnerBookingScreen/>}/>
       </Route>
 
       </Routes>

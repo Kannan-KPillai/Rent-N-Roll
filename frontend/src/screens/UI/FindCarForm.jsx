@@ -22,6 +22,10 @@ const FindCarForm = () => {
 
   // Handle form submission
   const handleFormSubmit = (e) => {
+    window.scrollTo({
+      top: 0,             
+      behavior: 'smooth'  
+    });
     e.preventDefault();
 
     if (!userInfo) {

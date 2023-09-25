@@ -1,8 +1,8 @@
 import express from 'express';
 const router = express.Router();
 import { authOwner, ownerRegister, logoutOwner, ownerProfile, updateOwnerProfile, verifyOwnerOtp,
-   checkOwner, getCategory, registerCar, getOwnerStatus} from '../controllers/ownerController.js' 
-import multer from 'multer';
+         checkOwner, getCategory, registerCar, getOwnerStatus, getAllBookings} from '../controllers/ownerController.js' 
+
 
 
 
@@ -29,6 +29,6 @@ router.post('/registerCar',registerCar)
 
 router.get('/status/:Id', getOwnerStatus);
 
-
+router.get('/getallBookings/:Id', getAllBookings);
 
 export default router;
