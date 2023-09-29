@@ -24,7 +24,7 @@ import { useSelector } from "react-redux";
     useEffect(() => {
       const fetchCategories = async () => {
         try {
-          const response = await axios.get("/api/owner/getCategory");
+          const response = await axios.get("/api/owner/getCategory", {withCredentials: true });
           setCategories(response.data.category);
         } catch (error) {
           console.error("Error fetching data:", error);

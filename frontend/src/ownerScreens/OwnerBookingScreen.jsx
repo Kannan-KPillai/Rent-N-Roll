@@ -12,7 +12,7 @@ const OwnerBookingScreen = () => {
 
     const fetchBookings = async () => {
         try {
-          const response = await axios.get(`/api/owner/getallBookings/${ownerInfo._id}`);
+          const response = await axios.get(`/api/owner/getallBookings/${ownerInfo._id}`, {withCredentials: true });
           setBookings(response.data);
         } catch (error) {
           console.error('Error fetching bookings', error);

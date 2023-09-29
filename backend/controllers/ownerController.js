@@ -291,7 +291,11 @@ const getOwnerStatus = asyncHandler(async (req, res) => {
     res.status(404).json({ message: 'Owner not found'});
   }
 });
-               
+          
+
+//**********************************************************************/
+//Getting all Bookings to be displayed
+//route GET /api/owner/getallBookings/:Id
 const getAllBookings = asyncHandler(async (req, res) => {
   const ownerId = req.params.Id;
   const ownerBookings = await Booking.find({ ownerId: ownerId })
@@ -314,9 +318,87 @@ const getAllBookings = asyncHandler(async (req, res) => {
 
 
 
+//**********************************************************************/
+//Getting cars of specefic Owner
+//route GET /api/owner/getCar/:Id
+const getCars = asyncHandler(async (req, res) => {
+  const ownerId = req.params.Id;
+
+  const cars = await Car.find({ "owner": ownerId },{
+    name: 1,
+    image: 1,
+    transmission: 1,
+    fuel: 1,
+    rent: 1,
+    extraRent: 1,
+    isAvailable: 1,
+  });
+  res.status(200).json(cars);
+});
+
+
+//**********************************************************************/
+//Changine the car availability- Turning Off
+//route GET /api/owner/cars/turnoff/:Id
+const turnOffCar = asyncHandler(async (req, res) => {
+  try {
+    const car = await Car.findById(req.params.Id);
+    if (!car) { 
+      return res.status(404).json({ message: 'Car not found' });
+    }
+    car.isAvailable = true;
+    await car.save();
+    res.status(200).json({
+      _id: car._id,
+      name:car.name,
+      image:car.image,
+      transmission: car.transmission,
+      fuel: car.fuel,
+      rent:car.rent,
+      extraRent: car.extraRent,
+      isAvailable: car.isAvailable,
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+  
+  
+//**********************************************************************/
+//Changine the car availability- Turning On
+//route GET /api/owner/cars/turnon/:Id
+const turnOnCar = asyncHandler(async (req, res) => {
+  const car = await Car.findById(req.params.Id);
+  if (!car) {
+    return res.status(404).json({ message: 'Car not found' });
+  }
+  try {
+    car.isAvailable = false;
+    await car.save();
+    res.status(200).json({
+      _id: car._id,
+      name:car.name,
+      image:car.image,
+      transmission: car.transmission,
+      fuel: car.fuel,
+      rent:car.rent,
+      extraRent: car.extraRent,
+      isAvailable: car.isAvailable,
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});  
+
+
+
+
+
+
+
 
 
 
 
 export {authOwner, ownerRegister, logoutOwner, ownerProfile, updateOwnerProfile, verifyOwnerOtp,
-   checkOwner, getCategory, registerCar, getOwnerStatus, getAllBookings}
+   checkOwner, getCategory, registerCar, getOwnerStatus, getAllBookings, getCars, turnOffCar, turnOnCar}

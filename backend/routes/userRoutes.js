@@ -26,15 +26,15 @@ router.get('/checkUser', checkUser);
 
 router.get('/status/:Id', getUserStatus);
 
-router.get('/getAvailableCars', getAvailableCars);
+router.get('/getAvailableCars',protect, getAvailableCars);
 
-router.get('/carDetails/:Id',carDetails);
+router.get('/carDetails/:Id',protect, carDetails);
 
 router.post('/payment', payment)
 
-router.post('/bookingDetails', bookingDetails)
+router.post('/bookingDetails',protect, bookingDetails)
 
-router.get('/allBookings/:Id', getAllBookings)
+router.get('/allBookings/:Id',protect, getAllBookings)
 
 router.post('/cancel/:Id', cancelBooking)
 

@@ -1,5 +1,6 @@
 import express from 'express';
 const router = express.Router();
+// import { protect } from '../middleware/adminMiddleware.js';
 import {adminLogin, adminLogout, userData, userBlock, userUnblock, ownerData, ownerBlock,
      ownerUnblock, checkAdmin, addCategory, getCategory, getCategoryById, editCategory, getCars,
      acceptCar,  rejectCar, getCarData} from '../controllers/adminController.js'

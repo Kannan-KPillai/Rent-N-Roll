@@ -64,6 +64,9 @@ const OwnerHeader = () => {
               <LinkContainer to="/owner/termsNconditions" style={{ backgroundColor: 'black', color: 'white' }}>
                 <Nav.Link>Terms&Conditions</Nav.Link>
               </LinkContainer>
+              <LinkContainer to="/owner/cars" style={{ backgroundColor: 'black', color: 'white' }}>
+                <Nav.Link>Cars</Nav.Link>
+              </LinkContainer>
               <NavDropdown title={<span style={{ color: 'white' }}>{ownerInfo.name || ownerInfo.data.name}</span>} id='ownername'>
                 <LinkContainer to='/owner/profile'>
                   <NavDropdown.Item >

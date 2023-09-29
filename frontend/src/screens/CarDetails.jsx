@@ -86,7 +86,7 @@ const CarDetails = () => {
 
   return (
     <section>
-      <div style={{ height: "35rem" }}>
+      <div style={{ height: "45rem" }}>
         <Container
           style={{
             paddingTop: "5rem",
@@ -198,6 +198,9 @@ const CarDetails = () => {
                 </div>
               </div>
             </Col>
+            <h6 style={{color: 'red', paddingTop: '1rem'}}> * For every booking, an advance payment of 20% of
+        the total rental cost is required. Please note that this advance
+        payment is <strong>non-refundable</strong></h6>
           </Row>
         </Container>
       </div>

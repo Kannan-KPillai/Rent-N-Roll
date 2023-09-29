@@ -8,11 +8,10 @@ const BookingScreen = () => {
   const [bookings, setBookings] = useState([]);
 
   const { userInfo } = useSelector((state) => state.auth);
-
   const fetchBookings = async () => {
     try {
       const response = await axios.get(
-        `/api/users/allBookings/${userInfo._id}`
+        `/api/users/allBookings/${userInfo._id|| userInfo.data._id}`
       );
         setBookings(response.data);
     } catch (error) {

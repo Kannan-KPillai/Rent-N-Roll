@@ -57,7 +57,7 @@ const registerUser = asyncHandler (async (req,res) =>{
         res.status(400)
         throw new Error("Mobile already exists")
       }
-      
+          
        // Generate OTP
      const otp = Math.floor(1000 + Math.random() * 9000);
  
@@ -198,7 +198,7 @@ const verifyOtp = asyncHandler(async (req, res) => {
 //route POST /api/users/glogin
  const  googleLogin = asyncHandler(async(req,res)=>{
 
-  const {  user_id, name, email } = req.body; 
+  const {  user_id, name, email, mobile } = req.body; 
   // Check if the user already exists
   let user = await User.findOne({ email });
 
@@ -213,7 +213,7 @@ const verifyOtp = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      // profileGoogleImage: user.profileGoogleImage,
+      mobile: user.mobile,
       isBlocked: user.isBlocked
     });
   } else {
@@ -231,6 +231,7 @@ const verifyOtp = asyncHandler(async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
+         mobile: user.mobile,
       });
     } else {
       res.status(400);
@@ -282,7 +283,7 @@ const getAvailableCars = asyncHandler(async (req, res) => {
     const pickupDateObj = new Date(pickupDate);
     const dropoffDateObj = new Date(dropoffDate);
 
-    const cars = await Car.find({ approved: true }).lean();
+    const cars = await Car.find({ approved: true, isAvailable: false }).lean();
     const availableCars = [];
     for (const car of cars) {
       const overlappingBookings = await Booking.findOne({
@@ -364,7 +365,6 @@ const getAllBookings = asyncHandler(async (req, res) => {
   const userId = req.params.Id;
   const userBookings = await Booking.find({ userId: userId }).exec();
   const bookingsWithCarNames = [];
-
   for (const booking of userBookings) {
     const car = await Car.findById(booking.carId).exec(); 
     const bookingWithCarName = {

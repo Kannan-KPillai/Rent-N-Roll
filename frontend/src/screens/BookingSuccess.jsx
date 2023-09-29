@@ -2,13 +2,17 @@ import "./styles/HomeScreen.css";
 import { useEffect } from "react";
 import { useSelector } from 'react-redux'; 
 import axios from "axios";
-
-
+import { useNavigate } from "react-router-dom";
 
 const BookingSuccess = () => {
   const storedData = localStorage.getItem("bookingDetails");
   const bookingData = JSON.parse(storedData);
   const { userInfo } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  
+  const navigateToBookingPage = () => {
+    navigate('/booking')
+  };
 
   useEffect(() => {
     if (bookingData) {
@@ -21,7 +25,7 @@ const BookingSuccess = () => {
         totalPrice: bookingData.totalPrice,
         pickupTime: bookingData.pickupTime,
         advanceAmount: bookingData.advanceAmount,
-        userId: userInfo._id,
+        userId: userInfo._id||userInfo.data._id,
         ownerId: bookingData.ownerId
       };
       axios.post("/api/users/bookingDetails", data).then((response) => {     
@@ -33,6 +37,9 @@ const BookingSuccess = () => {
         });
     }
   }, [bookingData]);
+
+
+
 
   return (
     <div style={{ height: "42rem", display: "flex", justifyContent: "center" }}>
@@ -65,8 +72,15 @@ const BookingSuccess = () => {
         >
           YOUR BOOKING HAS BEEN CONFIRMED
         </h1>
-
-        {/* <Link to={'/history'}>Bookigs</Link> */}
+          <div style={{paddingTop: '4rem'}}>
+        <button onClick={navigateToBookingPage} style={{
+                  backgroundColor: "red",
+                  color: "white",
+                  padding: "5px 10px",
+                  border: "none",
+                  borderRadius: "5px",
+                }}>View Bookings</button>
+                </div>
       </div>
     </div>
   );

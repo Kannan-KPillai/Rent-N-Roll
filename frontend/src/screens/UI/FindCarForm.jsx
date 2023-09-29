@@ -20,7 +20,6 @@ const FindCarForm = () => {
     dropoffDate: '',
   });
 
-  // Handle form submission
   const handleFormSubmit = (e) => {
     window.scrollTo({
       top: 0,             
@@ -29,14 +28,12 @@ const FindCarForm = () => {
     e.preventDefault();
 
     if (!userInfo) {
-      // Display a toast message if userInfo is not available
       toast.error('Please login to continue.');
     } else {
 
       localStorage.setItem('booking', JSON.stringify(formData));
       navigate('/carList')
 
-      // Clear the form data (optional)
       setFormData({
         pickupPoint: '',
         pickupDate: '',
@@ -47,7 +44,6 @@ const FindCarForm = () => {
     }
   };
 
-  // Handle input changes and update the form data state
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
@@ -73,13 +69,13 @@ const FindCarForm = () => {
             value={formData.pickupPoint}
           >
             <option value="">Select pickup point</option>
-            <option value="Vytilla">Vytilla Hub</option>
-            <option value="Kaloor">Kaloor Stadium</option>
-            <option value="Edappally">Edappally Metro</option>
-            <option value="Kalamasseri">Kalamasserri Metro</option>
-            <option value="Aluva">Aluva Station</option>
-            <option value="South">South Railway</option>
-            <option value="Kakkanad">InfoPark expressway</option>
+            <option value="Vytilla Hub">Vytilla Hub</option>
+            <option value="Kaloor Stadium">Kaloor Stadium</option>
+            <option value="Edappally Metro">Edappally Metro</option>
+            <option value="Kalamasseri Metro">Kalamasserri Metro</option>
+            <option value="Aluva Station">Aluva Station</option>
+            <option value="South Railway">South Railway</option>
+            <option value="Kakkanad Infopark">InfoPark expressway</option>
           </select>
         </FormGroup>
         <FormGroup className="from__group">
@@ -115,13 +111,13 @@ const FindCarForm = () => {
             value={formData.dropoffPoint}
           >
             <option value="">Select dropoff point</option>
-            <option value="Vytilla">Vytilla Hub</option>
-            <option value="Kaloor">Kaloor Stadium</option>
-            <option value="Edappally">Edappally Metro</option>
-            <option value="Kalamasseri">Kalamasserri Metro</option>
-            <option value="Aluva">Aluva Station</option>
-            <option value="South">South Railway</option>
-            <option value="Kakkanad">InfoPark expressway</option>
+            <option value="Vytilla Hub">Vytilla Hub</option>
+            <option value="Kaloor Stadium">Kaloor Stadium</option>
+            <option value="Edappally Metro">Edappally Metro</option>
+            <option value="Kalamasseri Metro">Kalamasserri Metro</option>
+            <option value="Aluva Station">Aluva Station</option>
+            <option value="South Railway">South Railway</option>
+            <option value="Kakkanad Infopark">InfoPark expressway</option>
           </select>
         </FormGroup>
 

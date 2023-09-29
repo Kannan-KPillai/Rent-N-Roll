@@ -7,11 +7,10 @@ import Owner from "../models/ownerModels.js";
 const protect = asyncHandler (async (req,res,next) => {
     let token ;
     token = req.cookies.jwt;
-
     if(token){
         try{
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
+ 
             req.owner = await Owner.findById(decoded.ownerId).select('-password');
             next();
         }catch(error){
