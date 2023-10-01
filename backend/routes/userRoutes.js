@@ -38,4 +38,6 @@ router.get('/allBookings/:Id',protect, getAllBookings)
 
 router.post('/cancel/:Id', cancelBooking)
 
+
+
 export default router;

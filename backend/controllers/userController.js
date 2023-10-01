@@ -363,25 +363,59 @@ const bookingDetails = asyncHandler(async(req,res)=>{
 // Route GET /api/users/allBookings
 const getAllBookings = asyncHandler(async (req, res) => {
   const userId = req.params.Id;
-  const userBookings = await Booking.find({ userId: userId }).exec();
-  const bookingsWithCarNames = [];
-  for (const booking of userBookings) {
-    const car = await Car.findById(booking.carId).exec(); 
-    const bookingWithCarName = {
-      _id: booking._id,
-      carName: car.name,
-      pickupPoint: booking.pickupPoint,
-      dropoffPoint: booking.dropoffPoint,
-      pickupDate: booking.pickupDate,
-      dropoffDate: booking.dropoffDate,
-      totalPrice: booking.totalPrice,
-      advanceAmount: booking.advanceAmount,
-      cancelBooking: booking.cancelBooking
+  const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
+  const limit = parseInt(req.query.limit) || 5; // Default to 10 items per page
+
+  try {
+    const userBookings = await Booking.find({ userId: userId })
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .exec();
+
+    const totalBookings = await Booking.countDocuments({ userId: userId });
+
+    const totalPages = Math.ceil(totalBookings / limit);
+
+    const bookingsWithCarNames = {
+      bookings: [],
+      totalBookings: totalBookings,
+      totalPages: totalPages,
     };
-    bookingsWithCarNames.push(bookingWithCarName);
+
+    if (page < totalPages) {
+      bookingsWithCarNames.next = {
+        page: page + 1,
+      };
+    }
+    if (page > 1) {
+      bookingsWithCarNames.prev = {
+        page: page - 1,
+      };
+    }
+
+    for (const booking of userBookings) {
+      const car = await Car.findById(booking.carId).exec();
+      const bookingWithCarName = {
+        _id: booking._id,
+        carName: car.name,
+        pickupPoint: booking.pickupPoint,
+        dropoffPoint: booking.dropoffPoint,
+        pickupDate: booking.pickupDate,
+        dropoffDate: booking.dropoffDate,
+        totalPrice: booking.totalPrice,
+        advanceAmount: booking.advanceAmount,
+        cancelBooking: booking.cancelBooking,
+      };
+      bookingsWithCarNames.bookings.push(bookingWithCarName);
+    }
+
+    res.status(200).json(bookingsWithCarNames);
+  } catch (error) {
+    console.error("Error fetching bookings", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
-  res.status(200).json(bookingsWithCarNames);
 });
+
 
 
 //*******************************************************************************************/
@@ -405,6 +439,7 @@ const cancelBooking = asyncHandler(async(req,res)=>{
 })
 
  
+
  
 
 
