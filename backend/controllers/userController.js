@@ -5,6 +5,9 @@ import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken';
 import Car from "../models/carModel.js";
 import Booking from '../models/bookingModel.js';
+import Rating from "../models/ratingModel.js";
+
+
 
 //Authenticating user and setting token
 //route POST /api/users/login
@@ -405,6 +408,7 @@ const getAllBookings = asyncHandler(async (req, res) => {
         totalPrice: booking.totalPrice,
         advanceAmount: booking.advanceAmount,
         cancelBooking: booking.cancelBooking,
+        completed: booking.completed
       };
       bookingsWithCarNames.bookings.push(bookingWithCarName);
     }
@@ -439,6 +443,36 @@ const cancelBooking = asyncHandler(async(req,res)=>{
 })
 
  
+//*******************************************************************************************/
+// Posting the user reviews...
+// Route POST /api/users/ratings/:bookingId
+const userReview = asyncHandler(async (req, res) => {
+  try {
+    const { carId, userId, review, rating } = req.body;
+
+    const newRating = new Rating({
+      carId,
+      userId,
+      review,
+      rating,
+    });
+
+    await newRating.save();
+
+    await Car.findByIdAndUpdate(carId, {
+      $inc: { totalRatings: 1 },
+    });
+
+    const booking = await Booking.findById(carId);
+    booking.completed = true;   
+    await booking.save();
+
+    res.status(201).json({ newRating, completed: booking.completed });
+  } catch (error) {
+    console.error("Error creating rating:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
  
 
@@ -454,5 +488,6 @@ export {
   getUserProfile,verifyOtp,
   googleLogin,getUserStatus,
   checkUser,getAvailableCars,carDetails,
-  bookingDetails,getAllBookings,cancelBooking
+  bookingDetails,getAllBookings,cancelBooking,
+  userReview
 };
