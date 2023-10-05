@@ -181,3 +181,40 @@
     font-weight: bold;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
   }
+
+  /* Rating container */
+.ratings-container {
+  background-color: #f8f8f8; /* Background color for the rating section */
+  border-radius: 10px; /* Rounded corners for the rating section */
+  padding: 20px; /* Spacing around the rating items */
+  margin-top: 20px; /* Top margin to separate from the car details */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Box shadow for a card-like appearance */
+  width: 91%;
+}
+
+/* Rating item */
+.rating-item {
+  background-color: #fff; /* Background color for each rating item */
+  border-radius: 10px; /* Rounded corners for each rating item */
+  padding: 15px; /* Spacing inside each rating item */
+  margin-bottom: 15px; /* Spacing between rating items */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Box shadow for each rating item */
+  padding-left: 5rem;
+}
+
+/* User name */
+.rating-item h5 {
+  font-size: 18px; /* Font size for the user name */
+  margin-bottom: 10px; /* Spacing below the user name */
+}
+
+/* Star ratings */
+.rating-item .star-ratings {
+  margin-bottom: 10px; /* Spacing below the star ratings */
+}
+
+/* Review text */
+.rating-item p {
+  font-size: 16px; /* Font size for the review text */
+  color: #333; /* Text color for the review text */
+}

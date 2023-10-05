@@ -400,6 +400,7 @@ const getAllBookings = asyncHandler(async (req, res) => {
       const car = await Car.findById(booking.carId).exec();
       const bookingWithCarName = {
         _id: booking._id,
+        carId: booking.carId,
         carName: car.name,
         pickupPoint: booking.pickupPoint,
         dropoffPoint: booking.dropoffPoint,
@@ -456,14 +457,14 @@ const userReview = asyncHandler(async (req, res) => {
       review,
       rating,
     });
-
+  
     await newRating.save();
 
     await Car.findByIdAndUpdate(carId, {
       $inc: { totalRatings: 1 },
     });
 
-    const booking = await Booking.findById(carId);
+    const booking = await Booking.findOne({ carId: carId });
     booking.completed = true;   
     await booking.save();
 
@@ -474,8 +475,24 @@ const userReview = asyncHandler(async (req, res) => {
   }
 });
 
- 
+        
 
+//*******************************************************************************************/
+// Getting the user ratings and reviews to be displayed...
+// Route GET /api/users/ratings/:Id
+const getReviews = async (req, res) => {
+  try {
+    const carId = req.params.Id; 
+
+    const ratingsAndReviews = await Rating.find({ carId }).populate('userId', 'name');
+
+    res.status(200).json(ratingsAndReviews);
+
+  } catch (error) {
+    console.error('Error fetching ratings and reviews:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
 
 
 
@@ -489,5 +506,5 @@ export {
   googleLogin,getUserStatus,
   checkUser,getAvailableCars,carDetails,
   bookingDetails,getAllBookings,cancelBooking,
-  userReview
+  userReview, getReviews
 };

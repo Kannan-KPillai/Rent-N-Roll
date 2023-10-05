@@ -32,7 +32,8 @@ const BookingScreen = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
-  const [selectedBookingId, setSelectedBookingId] = useState(null); // State to store the booking ID for review
+  const [selectedBookingId, setSelectedBookingId] = useState(null);
+  const [selectedCarId, setSelectedCarId] = useState(null);
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState("");
 
@@ -67,6 +68,17 @@ const BookingScreen = () => {
     return 0;
   };
 
+  const filteredBookings = bookings
+  ? bookings.filter((booking) =>
+      booking.carName.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  : [];
+
+filteredBookings.sort(sortBookings);
+// {filteredBookings.map((booking) => ( console.log(booking.carId)))}
+
+ 
+
   const handleCancelBooking = async (bookingId) => {
     Swal.fire({
       title: "Are you sure?",
@@ -89,11 +101,13 @@ const BookingScreen = () => {
     });
   };
 
-  const handleSubmit = async (bookingId) => {
+  const handleSubmit = async (bookingId, carId) => {
+
+    console.log(carId);
     try {
       const payload = {
         userId: userInfo._id,
-        carId: selectedBookingId,
+        carId,
         rating,
         review: reviewText,
       };
@@ -101,7 +115,8 @@ const BookingScreen = () => {
       await axios.post(`/api/users/ratings/${bookingId}`, payload);
       closeReviewModal();
       setRating(0);
-      setReviewText("");  
+      setReviewText(""); 
+      fetchBookings(); 
     } catch (error) {
       console.error("Error submitting review:", error);
     }
@@ -123,17 +138,12 @@ const BookingScreen = () => {
     return currentDate > formattedDropoffDate;
   };
 
-  const filteredBookings = bookings
-    ? bookings.filter((booking) =>
-        booking.carName.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    : [];
 
-  filteredBookings.sort(sortBookings);
 
   // Function to open the review modal
-  const openReviewModal = (bookingId) => {
+  const openReviewModal = (bookingId, carId) => {
     setSelectedBookingId(bookingId);
+    setSelectedCarId(carId); 
     setIsReviewModalOpen(true);
   };
 
@@ -256,7 +266,7 @@ const BookingScreen = () => {
                     border: "none",
                     borderRadius: "5px",
                   }}
-                  onClick={() => openReviewModal(booking._id)}
+                  onClick={() => openReviewModal(booking._id, booking.carId)}
                 >
                   Add Review
                 </button>
@@ -335,7 +345,7 @@ const BookingScreen = () => {
               borderRadius: "5px",
               cursor: "pointer",
             }}
-            onClick={handleSubmit}
+            onClick={() => handleSubmit(selectedBookingId, selectedCarId)}
           >
             Submit
           </button>

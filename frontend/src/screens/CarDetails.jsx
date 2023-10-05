@@ -4,16 +4,18 @@ import axios from "axios";
 import { Container, Row, Col } from "reactstrap";
 import "./styles/CarList.css";
 import { useSelector } from "react-redux";
-import {loadStripe} from '@stripe/stripe-js'
+import { loadStripe } from "@stripe/stripe-js";
 import { toast } from "react-toastify";
-
+import StarRatings from "react-star-ratings";
 
 
 const CarDetails = () => {
-  const pKey = 'pk_test_51Nt66mSHgmItS963HCAKMYVjghgP5cn42RTbiGNmcMDC6LP5b2bMEGGZh0f3QtdiGQA7ylJ6EF1MJhxTZsg1Nvin00XUPMobdG';
+  const pKey =
+    "pk_test_51Nt66mSHgmItS963HCAKMYVjghgP5cn42RTbiGNmcMDC6LP5b2bMEGGZh0f3QtdiGQA7ylJ6EF1MJhxTZsg1Nvin00XUPMobdG";
 
   const { id } = useParams();
   const [car, setCar] = useState({});
+  const [ratingsAndReviews, setRatingsAndReviews] = useState([]);
   const storedData = localStorage.getItem("booking");
   const bookingData = JSON.parse(storedData);
 
@@ -34,7 +36,9 @@ const CarDetails = () => {
     const fetchDetails = async () => {
       try {
         if (id) {
-          const response = await axios.get(`/api/users/carDetails/${id}`,{withCredentials: true });
+          const response = await axios.get(`/api/users/carDetails/${id}`, {
+            withCredentials: true,
+          });
           setCar(response.data.car);
         }
       } catch (error) {
@@ -43,6 +47,19 @@ const CarDetails = () => {
     };
 
     fetchDetails();
+  }, [id]);
+
+  useEffect(() => {
+    const fetchRatingsAndReviews = async () => {
+      try {
+        const response = await axios.get(`/api/users/ratings/${id}`);
+        setRatingsAndReviews(response.data);
+      } catch (error) {
+        console.error("Error fetching ratings and reviews:", error);
+      }
+    };
+
+    fetchRatingsAndReviews();
   }, [id]);
 
   const handlePayNowClick = () => {
@@ -82,11 +99,9 @@ const CarDetails = () => {
     }
   }
 
-
-
   return (
     <section>
-      <div style={{ height: "45rem" }}>
+      <div style={{ height: "65rem" }}>
         <Container
           style={{
             paddingTop: "5rem",
@@ -198,9 +213,39 @@ const CarDetails = () => {
                 </div>
               </div>
             </Col>
-            <h6 style={{color: 'red', paddingTop: '1rem'}}> * For every booking, an advance payment of 20% of
-        the total rental cost is required. Please note that this advance
-        payment is <strong>non-refundable</strong></h6>
+            <h6 style={{ color: "red", paddingTop: "1rem" }}>
+              {" "}
+              * For every booking, an advance payment of 20% of the total rental
+              cost is required. Please note that this advance payment is{" "}
+              <strong>non-refundable</strong>
+            </h6>
+            <div
+              className="ratings-container" // Add a CSS class for the rating container
+            >
+              <h1
+                style={{
+                  textAlign: "center",
+                  color: "black",
+                  fontSize: "30px",
+                  paddingTop: "1rem",
+                }}
+              >
+                User Experiences
+              </h1>
+              {ratingsAndReviews.map((review, index) => (
+                <div key={index} className="rating-item"> {/* Add a CSS class for each rating item */}
+                  <h5 style={{ color: "black" }}>{review.userId.name}</h5>
+                  <StarRatings
+                    rating={review.rating}
+                    starDimension="30px" // Increase star size for a more attractive look
+                    starRatedColor="#f9a826"
+                    numberOfStars={5}
+                    name={`rating-${index}`} // Unique name for each rating
+                  />
+                  <p style={{ color: "black" }}>{review.review}</p>
+                </div>
+              ))}
+            </div>
           </Row>
         </Container>
       </div>
