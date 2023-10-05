@@ -34,7 +34,7 @@ const CarDetails = () => {
     const fetchDetails = async () => {
       try {
         if (id) {
-          const response = await axios.get(`/api/users/carDetails/${id}`);
+          const response = await axios.get(`/api/users/carDetails/${id}`,{withCredentials: true });
           setCar(response.data.car);
         }
       } catch (error) {

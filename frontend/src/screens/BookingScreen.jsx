@@ -15,13 +15,13 @@ const BookingScreen = () => {
 
   const { userInfo } = useSelector((state) => state.auth);
 
-  const ITEMS_PER_PAGE = 10; 
+
 
 
   const fetchBookings = async (page = 1) => {
     try {
       const response = await axios.get(
-        `/api/users/allBookings/${userInfo._id || userInfo.data._id}?page=${page}`
+        `/api/users/allBookings/${userInfo._id || userInfo.data._id}?page=${page}`,{withCredentials: true }
       );
       setBookings(response.data.bookings);
       setTotalPages(response.data.totalPages);

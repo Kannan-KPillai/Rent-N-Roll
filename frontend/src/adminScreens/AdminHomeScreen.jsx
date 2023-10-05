@@ -1,10 +1,9 @@
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useState, useEffect } from "react";
 import { Card, Table } from "react-bootstrap";
 import Sidebar from "../components/Sidebar";
 import Swal from 'sweetalert2';
-
-
+import ReactPaginate from 'react-paginate';
 
 const AdminHomeScreen = () => {
   const headerStyle = {
@@ -23,29 +22,32 @@ const AdminHomeScreen = () => {
   };
 
   const [users, setUsers] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredUsers, setFilteredUsers] = useState([]);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get(
-          "/api/admin/admin"
-        );
-        setUsers(response.data.users);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
-    fetchUsers();
-  }, []);
+  const handlePageClick = (data) => {
+    const selectedPage = data.selected + 1;
+    fetchUsers(selectedPage); 
+  };
 
+  const fetchUsers = async (page) => {
+    try {
+      const response = await axios.get(`/api/admin/admin?page=${page}&search=${searchQuery}`);
+      setUsers(response.data.users);
+      setTotalPages(response.data.totalPages);
+      setCurrentPage(page);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
 
-   // Function to toggle the block/unblock status of a user
-   const toggleBlock = async (userId, isBlocked) => {
+  const toggleBlock = async (userId, isBlocked) => {
     try {
       const endpoint = isBlocked
         ? `/api/admin/unblockUser?userId=${userId}`
         : `/api/admin/blockUser?userId=${userId}`;
-      // Display a SweetAlert confirmation dialog
       const result = await Swal.fire({
         title: `Are you sure you want to ${isBlocked ? 'unblock' : 'block'} this user?`,
         icon: 'warning',
@@ -63,7 +65,6 @@ const AdminHomeScreen = () => {
           )
         );
   
-        // Display a success SweetAlert message
         Swal.fire({
           title: 'Success',
           text: `User ${isBlocked ? 'unblocked' : 'blocked'} successfully.`,
@@ -72,7 +73,6 @@ const AdminHomeScreen = () => {
       }
     } catch (error) {
       console.error('Error toggling user block status:', error);
-      // Display an error SweetAlert message
       Swal.fire({
         title: 'Error',
         text: 'An error occurred while toggling user block status.',
@@ -81,6 +81,16 @@ const AdminHomeScreen = () => {
     }
   };
 
+  useEffect(() => {
+    fetchUsers(currentPage); // Initialize with the current page
+  }, [currentPage]); // Run when currentPage changes
+
+  useEffect(() => {
+    const filtered = users.filter((user) =>
+      user.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredUsers(filtered);
+  }, [users, searchQuery]);
 
   return (
     <div
@@ -92,7 +102,17 @@ const AdminHomeScreen = () => {
     }}
   >
     <Sidebar />
+    
     <div style={containerStyle}>
+    <div>
+    <input
+          type="text"
+          placeholder="Search by user name..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          style={{ width: "200px", padding: "5px" }}
+        />
+        </div>
       <Card>
         <Card.Body>
           <h2 style={headerStyle}>Users</h2>
@@ -107,7 +127,7 @@ const AdminHomeScreen = () => {
               </tr>
             </thead>
             <tbody>
-              {users.map((user, index) => (
+              {filteredUsers.map((user, index) => (
                 <tr key={user._id}>
                   <td>{index + 1}</td>
                   <td>{user.name}</td>
@@ -134,6 +154,25 @@ const AdminHomeScreen = () => {
           </Table>
         </Card.Body>
       </Card>
+      <div style={{ bottom: "0", left: "0", width: "100%",
+       textAlign: "center", backgroundColor: "white", borderTop: "1px solid #ccc", padding: "10px 0" }}>
+      <ReactPaginate
+        breakLabel="..."
+        nextLabel="next >"
+        onPageChange={handlePageClick}
+        pageCount={totalPages}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={5}
+        containerClassName="pagination justify-content-center"
+        pageClassName="page-item"
+        pageLinkClassName="page-link"
+        previousClassName="page-item"
+        previousLinkClassName="page-link"
+        nextClassName="page-item"
+        nextLinkClassName="page-link"
+        activeClassName="active"
+      />
+      </div>
     </div>
   </div>
   );

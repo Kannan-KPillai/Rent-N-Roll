@@ -363,8 +363,8 @@ const bookingDetails = asyncHandler(async(req,res)=>{
 // Route GET /api/users/allBookings
 const getAllBookings = asyncHandler(async (req, res) => {
   const userId = req.params.Id;
-  const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
-  const limit = parseInt(req.query.limit) || 5; // Default to 10 items per page
+  const page = parseInt(req.query.page) || 1; 
+  const limit = parseInt(req.query.limit) || 5; 
 
   try {
     const userBookings = await Booking.find({ userId: userId })

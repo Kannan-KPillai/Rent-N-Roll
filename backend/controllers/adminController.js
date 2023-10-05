@@ -46,14 +46,36 @@ const adminLogout = asyncHandler (async (req,res) =>{
 //Getting users listed 
 //route GET /api/admin
 const userData = asyncHandler(async (req, res) => {
-    try {
-      const users = await User.find({}, { name: 1, email: 1, mobile: 1, _id: 1, isBlocked:1 });
-      res.status(200).json({ users });
-    } catch (error) {
-      console.error("Error fetching users:", error);
-      throw error;
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 5;
+
+  try {
+    const users = await User.find({}, { name: 1, email: 1, mobile: 1, _id: 1, isBlocked: 1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    const totalUsers = await User.countDocuments();
+    const totalPages = Math.ceil(totalUsers / limit);
+
+    const paginationInfo = {
+      totalPages,
+      currentPage: page,
+    };
+
+    if (page < totalPages) {
+      paginationInfo.next = page + 1;
     }
-  });
+    if (page > 1) {
+      paginationInfo.prev = page - 1;
+    }
+
+    res.status(200).json({ users, totalPages: totalPages, paginationInfo });
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
   
 
 //****************************************************************************************/
@@ -111,9 +133,31 @@ const userUnblock = asyncHandler(async(req,res)=>{
 //Getting owners listed 
 //route GET /api/admin/owner
 const ownerData = asyncHandler(async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 5;
+
     try {
-      const owner = await Owner.find({}, { name: 1, email: 1, mobile: 1, _id: 1, isBlocked:1 });
-      res.status(200).json({ owner });
+      const owner = await Owner.find({}, { name: 1, email: 1, mobile: 1, _id: 1, isBlocked:1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
+      
+      const totalOwners = await Owner.countDocuments();
+      const totalPages = Math.ceil(totalOwners / limit);
+
+      const paginationInfo = {
+        totalPages,
+        currentPage: page,
+      };
+
+      
+    if (page < totalPages) {
+      paginationInfo.next = page + 1;
+    }
+    if (page > 1) {
+      paginationInfo.prev = page - 1;
+    }
+      
+      res.status(200).json({ owner, totalPages });
     } catch (error) {
       console.error("Error fetching users:", error);
       throw error;
