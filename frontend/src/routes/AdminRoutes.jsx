@@ -7,7 +7,7 @@ import AdminOwnerList from "../adminScreens/AdminOwnerList.jsx";
 import AdminCategoryScreen from "../adminScreens/AdminCategoryScreen.jsx";
 import AdminRequestScreen from "../adminScreens/AdminRequestScreen.jsx";
 import AdminCarDataScreen from "../adminScreens/AdminCarDataScreen.jsx";
-
+import AdminDashboard from "../adminScreens/AdminDashboard.jsx";
 
 const AdminRoutes = () => {
   return (
@@ -21,6 +21,7 @@ const AdminRoutes = () => {
       <Route index={true} path="/category" element={<AdminCategoryScreen/>}/>
       <Route index={true} path="/getCars" element={<AdminRequestScreen/>}/>
       <Route index={true} path="/getCarData" element={<AdminCarDataScreen/>}/>
+      <Route index={true} path="/dashboard" element={<AdminDashboard/>}/>
       </Route>
       </Routes>
     </>

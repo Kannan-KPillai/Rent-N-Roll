@@ -17,11 +17,6 @@ const Sidebar = ({children}) => {
         name:'Owners',
         icon: <FaUserAlt/>
       },
-      // {
-      //   path:'/admi',
-      //   name:'Dashboard',
-      //   icon:<FaTh/>
-      // },
       {
         path:'/admin/category',
         name: 'Category',
@@ -36,7 +31,12 @@ const Sidebar = ({children}) => {
         path:'/admin/getCarData',
         name: 'Cars',
         icon: <FaTh/>
-      }
+      },
+      {
+        path:'/admin/dashboard',
+        name:'Dashboard',
+        icon:<FaTh/>
+      },
 ]
   return (
   <div className='container1'>

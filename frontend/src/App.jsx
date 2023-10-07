@@ -6,7 +6,6 @@ import AdminHeader from "./components/AdminHeader";
 import { useLocation } from "react-router-dom";
 import OwnerHeader from "./components/OwnerHeader";
 import Footer from './components/Footer'
-import axios from 'axios';
 
 
 function App() {
@@ -15,8 +14,7 @@ function App() {
   const isAdminPage = location.pathname.startsWith('/admin');
   const isOwnerPage = location.pathname.startsWith('/owner');
 
-  // axios.defaults.baseURL = 'http://localhost:5000/api';
-  // axios.defaults.withCredentials = true;
+
 
   return (
     <>

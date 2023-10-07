@@ -7,7 +7,7 @@ import Category from '../models/categoryModel.js';
 import jwt  from 'jsonwebtoken';
 import Car from '../models/carModel.js';
 import nodemailer from 'nodemailer';
-
+import Booking from '../models/bookingModel.js';
 
 
 
@@ -417,6 +417,54 @@ const getCarData = asyncHandler(async (req, res) => {
 
 
 
+//**************************************************************************************************/
+// Getting all datas for dashboard
+// Route GET /api/admin/dashboard
+const dashboardDatas = asyncHandler(async(req,res)=>{
+  try {
+    const userCount = await User.countDocuments();
+    const ownerCount = await Owner.countDocuments();
+    const carCount = await Car.countDocuments();
+    const bookingCount = await Booking.countDocuments();
+    res.status(200).json({
+      userCount,
+      ownerCount,
+      carCount,
+      bookingCount,
+    });
+  } catch (error) {
+    console.error("Error fetching counts:", error);
+    throw error;
+  }
+
+})
+
+
+//**************************************************************************************************/
+// Getting all datas for dashboard
+// Route GET /api/admin/fetchBookings 
+const fetchBookings = asyncHandler(async(req,res)=>{
+  try {
+    const monthlyBookings = await Booking.aggregate([
+      {
+        $group: {
+          _id: {
+            month: { $month: "$pickupDate" }, 
+            year: { $year: "$pickupDate" }, 
+          },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $sort: { "_id.year": 1, "_id.month": 1 },
+      },
+    ]);
+    res.status(200).json(monthlyBookings);
+  } catch (error) {
+    console.error("Error fetching monthly bookings:", error);
+    throw error;
+  }
+})
 
 
 
@@ -425,5 +473,10 @@ const getCarData = asyncHandler(async (req, res) => {
 
 
 
-export {adminLogin,  adminLogout, userData, userBlock, userUnblock, ownerData, ownerBlock, ownerUnblock,getCarData,
-        checkAdmin, addCategory, getCategory, getCategoryById, editCategory, getCars, acceptCar, rejectCar }
+
+
+
+
+
+export {adminLogin,  adminLogout, userData, userBlock, userUnblock, ownerData, ownerBlock, ownerUnblock,getCarData,fetchBookings,
+        checkAdmin, addCategory, getCategory, getCategoryById, editCategory, getCars, acceptCar, rejectCar, dashboardDatas }

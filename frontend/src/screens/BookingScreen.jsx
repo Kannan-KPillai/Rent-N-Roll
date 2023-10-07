@@ -274,34 +274,7 @@ filteredBookings.sort(sortBookings);
           </div>
         </div>
       ))}
-      <div
-        style={{
-          bottom: "0",
-          left: "0",
-          width: "100%",
-          textAlign: "center",
-          backgroundColor: "white",
-          borderTop: "1px solid #ccc",
-          padding: "10px 0",
-        }}
-      >
-        <ReactPaginate
-          breakLabel="..."
-          nextLabel="next >"
-          onPageChange={handlePageClick}
-          pageCount={totalPages}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={5}
-          containerClassName="pagination justify-content-center"
-          pageClassName="page-item"
-          pageLinkClassName="page-link"
-          previousClassName="page-item"
-          previousLinkClassName="page-link"
-          nextClassName="page-item"
-          nextLinkClassName="page-link"
-          activeClassName="active"
-        />
-      </div>
+     
 
       {/* Review Modal */}
       <Modal
@@ -351,6 +324,36 @@ filteredBookings.sort(sortBookings);
           </button>
         </div>
       </Modal>
+      {!isReviewModalOpen && (
+      <div
+        style={{
+          bottom: "0",
+          left: "0",
+          width: "100%",
+          textAlign: "center",
+          backgroundColor: "white",
+          borderTop: "1px solid #ccc",
+          padding: "10px 0",
+        }}
+      >
+        <ReactPaginate
+          breakLabel="..."
+          nextLabel="next >"
+          onPageChange={handlePageClick}
+          pageCount={totalPages}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          containerClassName="pagination justify-content-center"
+          pageClassName="page-item"
+          pageLinkClassName="page-link"
+          previousClassName="page-item"
+          previousLinkClassName="page-link"
+          nextClassName="page-item"
+          nextLinkClassName="page-link"
+          activeClassName="active"
+        />
+      </div>
+       )}
     </div>
   );
 };
