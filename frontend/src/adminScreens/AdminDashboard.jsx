@@ -2,6 +2,8 @@ import Sidebar from "../components/Sidebar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./styles.css";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 import {
   BsPeopleFill,
   BsFillBookmarkFill,
@@ -28,7 +30,6 @@ const AdminDashboard = () => {
     bookingCount: "Loading...",
   });
   const [monthlyBookings, setMonthlyBookings] = useState([]);
-
   useEffect(() => {
     const fetchDetails = async () => {
       try {
@@ -44,20 +45,51 @@ const AdminDashboard = () => {
     fetchDetails();
   }, []);
 
-    useEffect(() => {
-      async function fetchData() {
-        try {
-          const response = await axios.get('/api/admin/fetchBookings');
-          setMonthlyBookings(response.data);
-        } catch (error) {
-          console.error('Error fetching monthly bookings:', error);
-        }
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get("/api/admin/fetchBookings");
+        setMonthlyBookings(response.data);
+      } catch (error) {
+        console.error("Error fetching monthly bookings:", error);
       }
+    }
 
-      fetchData();
-    }, []);
+    fetchData();
+  }, []);
 
-
+  const handleDownloadReport = () => {
+    const doc = new jsPDF();
+  
+    doc.text("Sales Report", 10, 10);
+  
+    const rows = monthlyBookings.map((entry, index) => {
+      const monthNames = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+      const monthName = monthNames[entry._id.month - 1];
+      return [monthName, entry.count];
+    });
+  
+    doc.autoTable({
+      head: [["Month", "Bookings"]],
+      body: rows,
+    });
+    doc.save("sales_report.pdf");
+  };
+  
+  
 
   return (
     <div
@@ -109,7 +141,7 @@ const AdminDashboard = () => {
         </div>
         <div className="charts">
           <ResponsiveContainer width="50%" height="100%">
-            <BarChart
+            <LineChart
               width={500}
               height={300}
               data={monthlyBookings}
@@ -122,72 +154,40 @@ const AdminDashboard = () => {
             >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
-              dataKey="_id.month"
-              tickFormatter={(month) => {
-                const monthNames = [
-                  'Jan',
-                  'Feb',
-                  'Mar',
-                  'Apr',
-                  'May',
-                  'Jun',
-                  'Jul',
-                  'Aug',
-                  'Sep',
-                  'Oct',
-                  'Nov',
-                  'Dec',
-                ];
-                return monthNames[month - 1];
-              }}
-            />
+                dataKey="_id.month"
+                tickFormatter={(month) => {
+                  const monthNames = [
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
+                    "May",
+                    "Jun",
+                    "Jul",
+                    "Aug",
+                    "Sep",
+                    "Oct",
+                    "Nov",
+                    "Dec",
+                  ];
+                  return monthNames[month - 1];
+                }}
+              />
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="pv" fill="#8884d8" />
-              <Bar dataKey="uv" fill="#82ca9d" />
-            </BarChart>
+              <Line
+                type="monotone"
+                dataKey="count"
+                name="Bookings"
+                stroke="#8884d8"
+                activeDot={{ r: 8 }}
+              />
+            </LineChart>
           </ResponsiveContainer>
-
-          <ResponsiveContainer width="50%" height="100%">
-          <LineChart
-            width={500}
-            height={300}
-            data={monthlyBookings} 
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis
-              dataKey="_id.month"
-              tickFormatter={(month) => {
-                const monthNames = [
-                  'Jan',
-                  'Feb',
-                  'Mar',
-                  'Apr',
-                  'May',
-                  'Jun',
-                  'Jul',
-                  'Aug',
-                  'Sep',
-                  'Oct',
-                  'Nov',
-                  'Dec',
-                ];
-                return monthNames[month - 1];
-              }}
-            />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line type="monotone" dataKey="count" name="Bookings" stroke="#8884d8" activeDot={{ r: 8 }} />
-          </LineChart>
-        </ResponsiveContainer>
+        </div>
+        <div style={{paddingTop: '2rem'}}>
+        <button className="download-button" onClick={handleDownloadReport}>Download Sales Report</button>
         </div>
       </main>
     </div>
