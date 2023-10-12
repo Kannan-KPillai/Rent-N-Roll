@@ -18,21 +18,21 @@ router.post('/logout', logoutOwner)
 
 router.get('/profile',protect, ownerProfile)
 
-router.put('/profile',protect, updateOwnerProfile)
+router.put('/profile', updateOwnerProfile)
 
 router.post('/verify-otp', verifyOwnerOtp)
 
 router.get('/checkOwner', checkOwner)
 
-router.get('/getCategory',protect, getCategory)
+router.get('/getCategory',getCategory)
 
-router.post('/registerCar',protect, registerCar)
+router.post('/registerCar', registerCar)
 
 router.get('/status/:Id',getOwnerStatus);
 
-router.get('/getallBookings/:Id',protect, getAllBookings);
+router.get('/getallBookings/:Id', getAllBookings);
 
-router.get('/getCar/:Id',protect, getCars);
+router.get('/getCar/:Id', getCars);
 
 router.put('/cars/turnoff/:Id', turnOffCar);
 

@@ -19,7 +19,7 @@ import { useSelector } from "react-redux";
     const [extraRent, setExtraKmPrice] = useState("");
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState("");
-
+    
     const { ownerInfo } = useSelector((state) => state.owner);
     useEffect(() => {
       const fetchCategories = async () => {

@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Card, Table } from "react-bootstrap";
+import { Card, Table, Modal, Button } from "react-bootstrap";
 import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
-import data from '../screens/data/data.json'
-import Lottie from 'lottie-react'
-
+import data from '../screens/data/data.json';
+import Lottie from 'lottie-react';
 
 const AdminRequestScreen = () => {
   const [cars, setCars] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [rejectedCarId, setRejectedCarId] = useState(null);
+  const [rejectedCarIndex, setRejectedCarIndex] = useState(null);
+  const [reason, setReason] = useState("");
 
   useEffect(() => {
     const fetchCars = async () => {
@@ -22,51 +25,40 @@ const AdminRequestScreen = () => {
     fetchCars();
   }, []);
 
-  const handleApprove = async (carId, index) => {
-    try {
-      const response = await axios.put(`/api/admin/acceptCar?carId=${carId}`);
-
-      if (response.status === 200) {
-        Swal.fire({
-          title: "Car Approved!",
-          text: response.data.message,
-          icon: "success",
-          confirmButtonText: "OK",
-        });
-
-        const updatedCars = [...cars];
-        updatedCars[index].showButtons = false;
-        setCars(updatedCars);
-      } else {
-        console.error("Error approving car: Unexpected response status");
-      }
-    } catch (error) {
-      console.error("Error approving car:", error);
-    }
+  const handleOpenModal = (carId, index) => {
+    setRejectedCarId(carId);
+    setRejectedCarIndex(index);
+    setShowModal(true);
   };
 
-  const handleReject = async (carId, index) => {
-    try {
-      const response = await axios.put(`/api/admin/rejectCar?carId=${carId}`);
-
-      if (response.status === 200) {
-        Swal.fire({
-          title: "Car Rejected",
-          text: "This car has been rejected.",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-
-        const updatedCars = [...cars];
-        updatedCars[index].showButtons = false;
-        setCars(updatedCars);
-      } else {
-        console.error("Error rejecting car: Unexpected response status");
-      }
-    } catch (error) {
-      console.error("Error rejecting car:", error);
-    }
+  const handleReasonChange = (e) => {
+    setReason(e.target.value);
   };
+
+ const handleSubmitReason = async () => {
+  try {
+    const response = await axios.put(`/api/admin/rejectCar?carId=${rejectedCarId}`, { reason });
+
+    if (response.status === 200) {
+      Swal.fire({
+        title: "Car Rejected",
+        text: "This car has been rejected.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+
+      const updatedCars = [...cars];
+      updatedCars[rejectedCarIndex].showButtons = false;
+      setCars(updatedCars);
+
+      setShowModal(false);
+    } else {
+      console.error("Error rejecting car: Unexpected response status");
+    }
+  } catch (error) {
+    console.error("Error rejecting car:", error);
+  }
+};
 
   const headerStyle = {
     color: "black",
@@ -100,18 +92,18 @@ const AdminRequestScreen = () => {
             <h2 style={headerStyle}>Car Management</h2>
             {cars.length === 0 ? (
               <div style={{ height: '30rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-              <Lottie animationData={data} style={{ width: '50%', marginBottom: '1rem' }} /> 
-              <h1
-                style={{
-                  color: 'black',
-                  textAlign: 'center',
-                  fontWeight: 'bold',
-                  paddingBottom: '3rem'
-                }}
-              >
-                No New Requests
-              </h1>
-            </div>
+                <Lottie animationData={data} style={{ width: '50%', marginBottom: '1rem' }} />
+                <h1
+                  style={{
+                    color: 'black',
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                    paddingBottom: '3rem'
+                  }}
+                >
+                  No New Requests
+                </h1>
+              </div>
             ) : (
               <Table striped bordered hover responsive>
                 <thead>
@@ -130,7 +122,6 @@ const AdminRequestScreen = () => {
                 <tbody>
                   {cars.map(
                     (car, index) =>
-                      // Conditionally render the row based on showButtons
                       car.showButtons && (
                         <tr key={car._id}>
                           <td>{index + 1}</td>
@@ -142,12 +133,12 @@ const AdminRequestScreen = () => {
                           <td>{car.fuel}</td>
                           <td>
                             <a
-                              href={car.document.url} // Use the Cloudinary URL
+                              href={car.document.url}
                               target="_blank"
                               rel="noopener noreferrer"
                             >
                               <img
-                                src={car.document.url} // Use the Cloudinary URL
+                                src={car.document.url}
                                 alt="Car Document"
                                 style={{
                                   maxWidth: "100px",
@@ -182,7 +173,7 @@ const AdminRequestScreen = () => {
                                   border: "none",
                                   cursor: "pointer",
                                 }}
-                                onClick={() => handleReject(car._id, index)}
+                                onClick={() => handleOpenModal(car._id, index)}
                               >
                                 Reject
                               </button>
@@ -197,6 +188,27 @@ const AdminRequestScreen = () => {
           </Card.Body>
         </Card>
       </div>
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Reject Reason</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <input
+            type="text"
+            value={reason}
+            onChange={handleReasonChange}
+            placeholder="Enter reason for rejection"
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleSubmitReason}>
+            Submit
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

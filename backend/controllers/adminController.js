@@ -354,6 +354,7 @@ const acceptCar = asyncHandler(async (req, res) => {
 //route PUT/api/admin/rejectCar
 const rejectCar = asyncHandler(async (req, res) => {
   const carId = req.query.carId;
+  const reason = req.body.reason; 
   try {
     const car = await Car.findById(carId);
 
@@ -368,8 +369,8 @@ const rejectCar = asyncHandler(async (req, res) => {
     }
 
     await car.deleteOne();
-    
-    await sendReasonbyEmail(owner.email);
+
+    await sendReasonbyEmail(owner.email, reason);
 
     res.status(200).json({ message: 'Car deleted successfully' });
   } catch (error) {
@@ -377,28 +378,25 @@ const rejectCar = asyncHandler(async (req, res) => {
   }
 });
 
-
-//Sending Reason
-const sendReasonbyEmail = async (email) => {
+const sendReasonbyEmail = async (email, reason) => {
   const transporter = nodemailer.createTransport({
     host: 'smtp.ethereal.email',
     port: 587,
     auth: {
-        user: 'mose.mante@ethereal.email',
-        pass: 'Nj5KtVhTH9W7g8wK3m'
-    }
-})
+      user: 'mose.mante@ethereal.email',
+      pass: 'Nj5KtVhTH9W7g8wK3m',
+    },
+  });
 
   const mailOptions = {
     from: process.env.SENDER_EMAIL,
     to: email,
     subject: 'Your Car Request has been rejected',
-    text:'Your car request for car for RENT N ROLL has been rejected due to improper / invalid document.. Thank You' ,
+    text: `Your car request for car for RENT N ROLL has been rejected with the following reason: ${reason}. Thank You`,
   };
 
   await transporter.sendMail(mailOptions);
 };
-
 
 
 //**************************************************************************************************/
