@@ -7,6 +7,8 @@ import ReactPaginate from "react-paginate";
 import Modal from "react-modal";
 import StarRatings from "react-star-ratings";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+
 
 const customModalStyles = {
   content: {
@@ -37,7 +39,9 @@ const BookingScreen = () => {
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState("");
 
+
   const { userInfo } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
 
   const fetchBookings = async (page = 1) => {
     try {
@@ -69,15 +73,13 @@ const BookingScreen = () => {
   };
 
   const filteredBookings = bookings
-  ? bookings.filter((booking) =>
-      booking.carName.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-  : [];
+    ? bookings.filter((booking) =>
+        booking.carName.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : [];
 
-filteredBookings.sort(sortBookings);
-// {filteredBookings.map((booking) => ( console.log(booking.carId)))}
-
- 
+  filteredBookings.sort(sortBookings);
+  // {filteredBookings.map((booking) => ( console.log(booking.carId)))}
 
   const handleCancelBooking = async (bookingId) => {
     Swal.fire({
@@ -102,7 +104,6 @@ filteredBookings.sort(sortBookings);
   };
 
   const handleSubmit = async (bookingId, carId) => {
-
     console.log(carId);
     try {
       const payload = {
@@ -115,8 +116,8 @@ filteredBookings.sort(sortBookings);
       await axios.post(`/api/users/ratings/${bookingId}`, payload);
       closeReviewModal();
       setRating(0);
-      setReviewText(""); 
-      fetchBookings(); 
+      setReviewText("");
+      fetchBookings();
     } catch (error) {
       console.error("Error submitting review:", error);
     }
@@ -138,12 +139,10 @@ filteredBookings.sort(sortBookings);
     return currentDate > formattedDropoffDate;
   };
 
-
-
   // Function to open the review modal
   const openReviewModal = (bookingId, carId) => {
     setSelectedBookingId(bookingId);
-    setSelectedCarId(carId); 
+    setSelectedCarId(carId);
     setIsReviewModalOpen(true);
   };
 
@@ -160,6 +159,10 @@ filteredBookings.sort(sortBookings);
   const handleRatingChange = (newRating) => {
     setRating(newRating);
   };
+
+const openShowReviewModal = (carId)=> {
+    navigate(`/review/${carId}`)
+}
 
   return (
     <div className="car-list" style={{ minHeight: "38rem" }}>
@@ -256,25 +259,36 @@ filteredBookings.sort(sortBookings);
             )}
           </div>
           <div className="extra-rent">
-            {isBookingCompleted(booking.dropoffDate) &&
-              !booking.completed && (
-                <button
-                  style={{
-                    backgroundColor: "blue",
-                    color: "white",
-                    padding: "5px 10px",
-                    border: "none",
-                    borderRadius: "5px",
-                  }}
-                  onClick={() => openReviewModal(booking._id, booking.carId)}
-                >
-                  Add Review
-                </button>
-              )}
+            {booking.completed ? (
+              <button
+                style={{
+                  backgroundColor: "blue",
+                  color: "white",
+                  padding: "5px 10px",
+                  border: "none",
+                  borderRadius: "5px",
+                }}
+                onClick={() => openShowReviewModal( booking.carId)}
+              >
+                Show Review
+              </button>
+            ) : isBookingCompleted(booking.dropoffDate) ? (
+              <button
+                style={{
+                  backgroundColor: "yellow",
+                  color: "black",
+                  padding: "5px 10px",
+                  border: "none",
+                  borderRadius: "5px",
+                }}
+                onClick={() => openReviewModal(booking._id, booking.carId)}
+              >
+                Add Review
+              </button>
+            ) : null}
           </div>
         </div>
       ))}
-     
 
       {/* Review Modal */}
       <Modal
@@ -325,35 +339,35 @@ filteredBookings.sort(sortBookings);
         </div>
       </Modal>
       {!isReviewModalOpen && (
-      <div
-        style={{
-          bottom: "0",
-          left: "0",
-          width: "100%",
-          textAlign: "center",
-          backgroundColor: "white",
-          borderTop: "1px solid #ccc",
-          padding: "10px 0",
-        }}
-      >
-        <ReactPaginate
-          breakLabel="..."
-          nextLabel="next >"
-          onPageChange={handlePageClick}
-          pageCount={totalPages}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={5}
-          containerClassName="pagination justify-content-center"
-          pageClassName="page-item"
-          pageLinkClassName="page-link"
-          previousClassName="page-item"
-          previousLinkClassName="page-link"
-          nextClassName="page-item"
-          nextLinkClassName="page-link"
-          activeClassName="active"
-        />
-      </div>
-       )}
+        <div
+          style={{
+            bottom: "0",
+            left: "0",
+            width: "100%",
+            textAlign: "center",
+            backgroundColor: "white",
+            borderTop: "1px solid #ccc",
+            padding: "10px 0",
+          }}
+        >
+          <ReactPaginate
+            breakLabel="..."
+            nextLabel="next >"
+            onPageChange={handlePageClick}
+            pageCount={totalPages}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            containerClassName="pagination justify-content-center"
+            pageClassName="page-item"
+            pageLinkClassName="page-link"
+            previousClassName="page-item"
+            previousLinkClassName="page-link"
+            nextClassName="page-item"
+            nextLinkClassName="page-link"
+            activeClassName="active"
+          />
+        </div>
+      )}
     </div>
   );
 };

@@ -450,7 +450,6 @@ const cancelBooking = asyncHandler(async(req,res)=>{
 const userReview = asyncHandler(async (req, res) => {
   try {
     const { carId, userId, review, rating } = req.body;
-
     const newRating = new Rating({
       carId,
       userId,
@@ -467,7 +466,7 @@ const userReview = asyncHandler(async (req, res) => {
     const booking = await Booking.findOne({ carId: carId });
     booking.completed = true;   
     await booking.save();
-
+    
     res.status(201).json({ newRating, completed: booking.completed });
   } catch (error) {
     console.error("Error creating rating:", error);
@@ -495,6 +494,41 @@ const getReviews = async (req, res) => {
 };
 
 
+//*******************************************************************************************/
+// Getting the car Details  to be displayed...
+// Route GET /api/users/carReview/:Id
+const carReviews = asyncHandler(async(req,res)=>{
+  const carId = req.params.Id; 
+  try {
+    const car = await Car.findById(carId);
+    if(!car){
+      return res.status(404).json({error:'Car not found'});
+    }
+    res.status(200).json({ car })
+   
+  } catch (error) {
+    res.status(500).json({error: 'Internal server error'});
+  }
+})
+
+
+//*******************************************************************************************/
+// Getting the reviews to be displayed...
+// Route GET /api/users/reviews/:Id
+const getAllReviews = asyncHandler (async(req,res)=> {
+  try {
+    const carId = req.params.Id; 
+    const ratingsAndReviews = await Rating.find({ carId }).populate('userId', 'name');
+
+    res.status(200).json(ratingsAndReviews);
+
+  } catch (error) {
+    console.error('Error fetching ratings and reviews:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+
+})
+
 
 
 
@@ -503,8 +537,8 @@ export {
   authUser,registerUser,
   logoutUser,updateUserProfile,
   getUserProfile,verifyOtp,
-  googleLogin,getUserStatus,
+  googleLogin,getUserStatus,getAllReviews ,
   checkUser,getAvailableCars,carDetails,
   bookingDetails,getAllBookings,cancelBooking,
-  userReview, getReviews
+  userReview, getReviews,carReviews
 };

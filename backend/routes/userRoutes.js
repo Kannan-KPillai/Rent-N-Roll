@@ -3,8 +3,8 @@ const router = express.Router();
 import { protect } from '../middleware/authMiddleware.js';
 import { payment} from '../controllers/paymentController.js'
 import { authUser,registerUser,logoutUser,updateUserProfile,getUserProfile,
-         verifyOtp,  googleLogin, getUserStatus, checkUser, carDetails,
-         bookingDetails, getAvailableCars, getAllBookings, cancelBooking, userReview, getReviews} from "../controllers/userController.js";
+         verifyOtp,  googleLogin, getUserStatus, checkUser, carDetails,carReviews,
+         bookingDetails, getAvailableCars, getAllBookings, cancelBooking, userReview, getReviews, getAllReviews} from "../controllers/userController.js";
 
 
 
@@ -41,6 +41,10 @@ router.post('/cancel/:Id', cancelBooking)
 router.post('/ratings/:bookingId', userReview)
 
 router.get('/ratings/:Id', getReviews)
+
+router.get('/carReview/:Id', carReviews)
+
+router.get('/reviews/:Id', getAllReviews)
 
 
 export default router;

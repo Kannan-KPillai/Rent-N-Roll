@@ -6,10 +6,7 @@ import EarnWithUs from "./UI/EarnWithUs";
 
 
 
-
-
 const HomeScreen = () => {
- 
  
 
   return (

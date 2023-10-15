@@ -11,7 +11,7 @@ import CarDetails from "../screens/CarDetails.jsx";
 import BookingSuccess from "../screens/BookingSuccess.jsx";
 import AboutScreen from "../screens/AboutScreen.jsx";
 import BookingScreen from "../screens/BookingScreen.jsx";
-
+import UserReview from "../screens/UserReview.jsx";
 
 const UserRoutes = () => {
   return (
@@ -31,6 +31,7 @@ const UserRoutes = () => {
       <Route path='/carDetails/success' element={<BookingSuccess/>} />
       <Route path='/about' element={<AboutScreen/>} />
       <Route path='/booking' element={<BookingScreen/>} />
+      <Route path='/review/:id' element={<UserReview/>} />
       </Route>
       
       </Routes>
