@@ -61,7 +61,7 @@ const UserReview = () => {
                     class="ri-timer-flash-line"
                     style={{ color: "#f9a826" }}
                   ></i>{" "}
-                  <strong>₹ {car.transmission} </strong>
+                  <strong> {car.transmission} </strong>
                 </span>
             </div>
 

@@ -1,4 +1,5 @@
 import express from "express";
+import path from 'path';
 import dotenv from 'dotenv';
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import connectDB from "./config/db.js";
@@ -29,7 +30,16 @@ app.use('/api/admin', adminRoutes)
 
 app.use('/api/owner', ownerRoutes)
 
-app.get('/',(req,res)=> res.send("server is ready"));
+if(process.env.NODE_ENV === 'production'){
+    const __dirname = path.resolve();
+    app.use(express.static(path.join(__dirname, 'frontend/dist')));
+
+    app.get('*', (req,res) => res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html')));
+}else{
+    app.get('/',(req,res)=> res.send("server is ready"));
+}
+
+
 
 app.use(notFound);
 app.use(errorHandler);
