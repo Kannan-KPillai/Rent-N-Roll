@@ -1,4 +1,4 @@
-import { apiSlice } from "./ApiSlice";
+import { apiSlice } from "./apiSlice";
 
 const ADMIN_URL = '/api/admin';
 
