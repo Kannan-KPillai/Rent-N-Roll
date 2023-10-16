@@ -1,4 +1,4 @@
-import '../styles/FindCarForm.css';
+import '../styles/findCarForm.css';
 import { useState } from 'react';
 import { Form, FormGroup, Label } from 'reactstrap';
 import { useSelector } from 'react-redux';
