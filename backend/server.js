@@ -1,4 +1,3 @@
-"use strict";
 import express from "express";
 import path from 'path';
 import dotenv from 'dotenv';
@@ -11,7 +10,6 @@ import adminRoutes from './routes/adminRoutes.js'
 import ownerRoutes from './routes/ownerRoutes.js'
 
 
-const __dirname = path.resolve(); 
 
 dotenv.config();
 const port = process.env.PORT || 5000;
@@ -35,7 +33,7 @@ app.use('/api/admin', adminRoutes)
 app.use('/api/owner', ownerRoutes)
 
 if(process.env.NODE_ENV === 'production'){
-    // const __dirname = path.resolve();
+    const __dirname = path.resolve();
     app.use(express.static(path.join(__dirname, 'frontend/dist')));
 
     app.get('*', (req,res) => res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html')));

@@ -1,6 +1,4 @@
-import Lottie from 'lottie-react';
 import axios from 'axios';
-import data from '../screens/data/data.json';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux'; 
 
@@ -34,7 +32,7 @@ const OwnerBookingScreen = () => {
     <div className="car-list" style={{minHeight:'38rem'}}>
       {bookings.length === 0 ? (
        <div style={{ height: '40rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-       <Lottie animationData={data} />
+          <h1>No Bookings Yet</h1>
        <div style={{ marginTop: '1rem', textAlign: 'center', paddingBottom: '3rem' }}>
          <h1 style={{ fontFamily: 'Mina, sans-serif', color: 'black' }}>NO BOOKINGS YET</h1>
        </div>

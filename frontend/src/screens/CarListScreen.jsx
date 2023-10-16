@@ -3,8 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "./styles/CarList.css";
 import { useNavigate } from "react-router-dom";
-import car from './data/data.json'
-import Lottie from 'lottie-react'
+
 
 
 const CarListScreen = () => {
@@ -94,7 +93,6 @@ const CarListScreen = () => {
         {cars.length === 0 ? (
          <div style={{ textAlign: "center", width: "100%" }}>
          <div style={{ width: "30%", margin: "0 auto" }}>
-           <Lottie animationData={car} />
            <h2>No cars available for the selected date.</h2>
          </div>
        </div>

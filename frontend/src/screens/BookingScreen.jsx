@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import Lottie from "lottie-react";
-import data from "./data/data.json";
 import ReactPaginate from "react-paginate";
 import Modal from "react-modal";
 import StarRatings from "react-star-ratings";
@@ -202,7 +200,6 @@ const openShowReviewModal = (carId)=> {
             justifyContent: "center",
           }}
         >
-          <Lottie animationData={data} />
           <div
             style={{
               marginTop: "1rem",

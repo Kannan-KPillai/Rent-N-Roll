@@ -3,8 +3,7 @@ import axios from "axios";
 import { Card, Table, Modal, Button } from "react-bootstrap";
 import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
-import data from '../screens/data/data.json';
-import Lottie from 'lottie-react';
+
 
 const AdminRequestScreen = () => {
   const [cars, setCars] = useState([]);
@@ -92,7 +91,7 @@ const AdminRequestScreen = () => {
             <h2 style={headerStyle}>Car Management</h2>
             {cars.length === 0 ? (
               <div style={{ height: '30rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                <Lottie animationData={data} style={{ width: '50%', marginBottom: '1rem' }} />
+                <h1>No Requests Yet....</h1>
                 <h1
                   style={{
                     color: 'black',
