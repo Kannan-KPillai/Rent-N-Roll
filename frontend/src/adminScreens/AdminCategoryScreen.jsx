@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card, Table, Button, Modal, Form } from "react-bootstrap";
 import Sidebar from "../components/Sidebar";
-import { toast } from "react-toastify";
 import axios from "axios";
 import Swal from "sweetalert2"
 
