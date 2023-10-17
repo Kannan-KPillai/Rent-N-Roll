@@ -1,5 +1,5 @@
-import path from 'path';
 import express from "express";
+import path from 'path';
 import dotenv from 'dotenv';
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import connectDB from "./config/db.js";
