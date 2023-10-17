@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLoginMutation } from "../ownerSlices/ownerApiSlice";
 import { setOwnerCredentials } from "../ownerSlices/ownerAuthSlice";
 import { toast } from "react-toastify";
-import Loader from "../components/Loader";
+// import Loader from "../components/Loader";
 import "./styles/login.css";
 
 const OwnerLoginScreen = () => {
@@ -69,7 +69,7 @@ const OwnerLoginScreen = () => {
             </div>
 
             <div className="submitButton">
-              {isLoading && <Loader />}
+              {isLoading }
               <button className="btn" type="submit">
                 SIGN IN
               </button>

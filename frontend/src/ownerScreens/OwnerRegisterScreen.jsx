@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import Loader from "../components/Loader";
+// import Loader from "../components/Loader";
 import { useRegisterMutation } from "../ownerSlices/ownerApiSlice";
 
 const OwnerRegisterScreen = () => {
@@ -113,7 +113,7 @@ const OwnerRegisterScreen = () => {
             </div>
 
             <div>
-              {isLoading && <Loader />}
+              {isLoading }
               <button className="btn" type="submit">
                 SIGN IN
               </button>

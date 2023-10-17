@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useVerifyMutation } from "../ownerSlices/ownerApiSlice";
 import { toast } from "react-toastify";
 import { setOwnerCredentials } from "../ownerSlices/ownerAuthSlice";
-import Loader from "../components/Loader";
+// import Loader from "../components/Loader";
 
 const OwnerOtpScreen = () => {
   const [otp, setOtp] = useState("");
@@ -65,7 +65,7 @@ const OwnerOtpScreen = () => {
             </div>
 
             <div>
-              {isLoading && <Loader />}
+              {isLoading }
               <button className="btn" type="submit">
                 SUBMIT
               </button>

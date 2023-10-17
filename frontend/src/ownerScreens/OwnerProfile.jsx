@@ -5,7 +5,7 @@ import FormContainer from "../components/FormContainer";
 import { toast } from "react-toastify";
 import { setOwnerCredentials } from "../ownerSlices/ownerAuthSlice";
 import { useUpdateOwnerMutation } from "../ownerSlices/ownerApiSlice";
-import Loader from "../components/Loader";
+// import Loader from "../components/Loader";
 
 const OwnerProfile = () => {
   const [name, setName] = useState("");
@@ -117,7 +117,7 @@ const OwnerProfile = () => {
             />
           </Form.Group>
 
-          {isLoading && <Loader />}
+          {isLoading }
 
           <Button
             type="submit"

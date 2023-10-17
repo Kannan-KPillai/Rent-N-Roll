@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLoginMutation } from '../adminSlices/adminApiSlice';
 import { setCredentials } from '../adminSlices/adminAuthSlice' 
 import { toast } from "react-toastify";
-import Loader from "../components/Loader";
+// import Loader from "../components/Loader";
 import './AdminLogin.css'
 
 const AdminLoginScreen = () => {
@@ -70,7 +70,7 @@ const AdminLoginScreen = () => {
             </div>
 
             <div>
-              {isLoading && <Loader />}
+              {isLoading }
               <button className="btn" type="submit">
                 SIGN IN
               </button>

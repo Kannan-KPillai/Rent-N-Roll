@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useVerifyMutation } from "../slices/usersApiSlice";
 import { toast } from "react-toastify";
 import { setCredentials } from "../slices/authSlice";
-import Loader from "../components/Loader";
+// import Loader from "../components/Loader";
 
 const OtpVerificationScreen = () => {
   const [otp, setOtp] = useState("");
@@ -69,7 +69,7 @@ const OtpVerificationScreen = () => {
             </div>
 
             <div>
-              {isLoading && <Loader />}
+              {isLoading }
               <button className="btn" type="submit">
                 SUBMIT
               </button>

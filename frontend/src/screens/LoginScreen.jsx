@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLoginMutation,  useGoogleLoginMutation } from "../slices/usersApiSlice";
 import { setCredentials } from "../slices/authSlice";
 import { toast } from "react-toastify";
-import Loader from "../components/Loader";
+// import Loader from "../components/Loader";
 import './styles/Login.css'
 import { GoogleLogin, GoogleOAuthProvider  } from '@react-oauth/google';
 import jwt_decode from 'jwt-decode'
@@ -99,7 +99,7 @@ const LoginScreen = () => {
             </div>
 
             <div>
-              {isLoading && <Loader />}
+              {isLoading }
               <button className="btn" type="submit">
                 SIGN IN
               </button>
