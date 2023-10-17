@@ -1,6 +1,6 @@
 import express from "express";
-import path from 'path';
 import dotenv from 'dotenv';
+import path from 'path';
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import connectDB from "./config/db.js";
 import cookieParser from "cookie-parser";
