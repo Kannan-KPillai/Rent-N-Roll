@@ -34,6 +34,7 @@ app.use('/api/owner', ownerRoutes)
 
 if(process.env.NODE_ENV === 'production'){
     const __dirname = path.resolve();
+    console.log(__dirname)
     app.use(express.static(path.join(__dirname, 'frontend/dist')));
 
     app.get('*', (req,res) => res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html')));
